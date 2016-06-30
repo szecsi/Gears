@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{DB828387-D70C-4AF0-A1A0-EF12FCEE8CB7}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Ophtho</RootNamespace>
+    <ProjectName>Gears</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(ProjectDir.Replace($(SolutionDir),$(SolutionDir)Bin\$(Configuration)\))</OutDir>
+    <IntDir>$(ProjectDir.Replace($(SolutionDir),$(SolutionDir)Build\$(Configuration)\))</IntDir>
+    <TargetExt>.pyd</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(ProjectDir.Replace($(SolutionDir),$(SolutionDir)Bin\$(Configuration)\))</OutDir>
+    <IntDir>$(ProjectDir.Replace($(SolutionDir),$(SolutionDir)Build\$(Configuration)\))</IntDir>
+    <TargetExt>.pyd</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;OPHTHO_EXPORTS;BOOST_PYTHON_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>D:\Development\Python34\include;$(SolutionDir)libs/freeglut/include;$(SolutionDir)libs/glew-1.10.0/include;$(SolutionDir)libs/devil1.6.8-rc2/include;$(ProjectDir)src;$(ProjectDir)src/gpu;$(ProjectDir)src/core;$(ProjectDir)src/fft;$(SolutionDir)libs/TILLPolychrome/include;$(ProjectDir)src/font;$(SolutionDir)libs/libav-11.3-win32\win32\usr\include\;$(ProjectDir)src/video;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\Development\External\boost_1_57_0\bin.v2\libs\system\build\msvc-12.0\debug\link-static\threading-multi;d:\Development\External\boost_1_57_0\bin.v2\libs\python\build\msvc-12.0\debug\link-static\threading-multi;D:\Development\Python34\libs;$(SolutionDir)libs/freeglut/lib;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)libs/devil1.6.8-rc2/lib;d:\Development\External\boost_1_57_0\bin.v2\libs\filesystem\build\msvc-12.0\debug\link-static\threading-multi\;$(SolutionDir)libs/TILLPolychrome/lib;$(SolutionDir)libs/libav-11.3-win32\win32\usr\bin\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <PerUserRedirection>true</PerUserRedirection>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;ILU.lib;opengl32.lib;TILLPolychrome.lib;avcodec.lib;swscale.lib;avfilter.lib;avformat.lib;avdevice.lib;avutil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OptimizeReferences>
+      </OptimizeReferences>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y $(OutDir)Gears.pyd $(SolutionDir)GearsPy\</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;OPHTHO_EXPORTS;BOOST_PYTHON_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>D:\Development\Python34\include;$(SolutionDir)libs/freeglut/include;$(SolutionDir)libs/glew-1.10.0/include;$(SolutionDir)libs/devil1.6.8-rc2/include;$(ProjectDir)src;$(ProjectDir)src/gpu;$(ProjectDir)src/core;$(ProjectDir)src/fft;$(ProjectDir)src/font;$(SolutionDir)libs/libav-11.3-win32\win32\usr\include\;$(ProjectDir)src/video;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>d:\Development\External\boost_1_57_0\bin.v2\libs\python\build\msvc-12.0\release\link-static\threading-multi\;D:\Development\Python34\libs;$(SolutionDir)libs/freeglut/lib;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)libs/devil1.6.8-rc2/lib;d:\Development\External\boost_1_57_0\bin.v2\libs\filesystem\build\msvc-12.0\release\link-static\threading-multi\;d:\Development\External\boost_1_57_0\bin.v2\libs\system\build\msvc-12.0\release\link-static\threading-multi\;D:\Development\External\boost_1_57_0\lib32-msvc-12.0;$(SolutionDir)libs/libav-11.3-win32\win32\usr\bin\;$(SolutionDir)libs/TILLPolychrome/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <PerUserRedirection>true</PerUserRedirection>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;ILU.lib;opengl32.lib;TILLPolychrome.lib;avcodec.lib;swscale.lib;avfilter.lib;avformat.lib;avdevice.lib;avutil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y $(OutDir)Gears.pyd $(SolutionDir)GearsPy\</Command>
+      <Message>Copy pyd.</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\KernelManager.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\core\Pass.cpp" />
+    <ClCompile Include="src\core\PassRenderer .cpp" />
+    <ClCompile Include="src\core\Sequence.cpp" />
+    <ClCompile Include="src\core\SequenceRenderer.cpp" />
+    <ClCompile Include="src\core\ShaderManager.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\core\SpatialFilter.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\core\SpatialFilterRenderer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\core\Stimulus.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\core\StimulusRenderer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\core\StimulusWindow.cpp" />
+    <ClCompile Include="src\core\Ticker.cpp" />
+    <ClCompile Include="src\curve\clipper.cpp" />
+    <ClCompile Include="src\curve\common\shapes.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\curve\sweep\advancing_front.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\curve\sweep\cdt.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\curve\sweep\sweep.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\curve\sweep\sweep_context.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\dllmain.cpp" />
+    <ClCompile Include="src\event\events.cpp" />
+    <ClCompile Include="src\fft\FFT.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\fft\load_shaders.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\font\FontManager.cpp" />
+    <ClCompile Include="src\font\TexFont.cpp" />
+    <ClCompile Include="src\gpu\Framebuffer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\gpu\Nothing.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\gpu\Pointgrid.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\gpu\Quad.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\gpu\RandomSequenceBuffer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\gpu\Shader.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\gpu\StimulusGrid.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\gpu\Texture.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\gpu\TextureQueue.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\math\constants.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\Gears.cpp" />
+    <ClCompile Include="src\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\video\FrameRenderer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\video\MovieDecoder.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\video\VideoFrame.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\core\KernelManager.h" />
+    <ClInclude Include="src\core\Pass.h" />
+    <ClInclude Include="src\core\PassRenderer.h" />
+    <ClInclude Include="src\core\PythonDict.h" />
+    <ClInclude Include="src\core\pythonerr.h" />
+    <ClInclude Include="src\core\Sequence.h" />
+    <ClInclude Include="src\core\SequenceRenderer.h" />
+    <ClInclude Include="src\core\ShaderManager.h" />
+    <ClInclude Include="src\core\Signal.h" />
+    <ClInclude Include="src\core\SpatialFilter.h" />
+    <ClInclude Include="src\core\SpatialFilterRenderer.h" />
+    <ClInclude Include="src\core\Stimulus.h" />
+    <ClInclude Include="src\core\StimulusRenderer.h" />
+    <ClInclude Include="src\core\StimulusWindow.h" />
+    <ClInclude Include="src\core\TextureManager.h" />
+    <ClInclude Include="src\core\Ticker.h" />
+    <ClInclude Include="src\core\wglext.h" />
+    <ClInclude Include="src\curve\clipper.hpp" />
+    <ClInclude Include="src\curve\common\shapes.h" />
+    <ClInclude Include="src\curve\common\utils.h" />
+    <ClInclude Include="src\curve\poly2tri.h" />
+    <ClInclude Include="src\curve\sweep\advancing_front.h" />
+    <ClInclude Include="src\curve\sweep\cdt.h" />
+    <ClInclude Include="src\curve\sweep\sweep.h" />
+    <ClInclude Include="src\curve\sweep\sweep_context.h" />
+    <ClInclude Include="src\event\Base.h" />
+    <ClInclude Include="src\event\events.h" />
+    <ClInclude Include="src\event\Frame.h" />
+    <ClInclude Include="src\event\KeyPressed.h" />
+    <ClInclude Include="src\event\KeyReleased.h" />
+    <ClInclude Include="src\event\MouseMove.h" />
+    <ClInclude Include="src\event\MousePressedLeft.h" />
+    <ClInclude Include="src\event\MousePressedMiddle.h" />
+    <ClInclude Include="src\event\MousePressedRight.h" />
+    <ClInclude Include="src\event\MouseReleasedLeft.h" />
+    <ClInclude Include="src\event\MouseReleasedMiddle.h" />
+    <ClInclude Include="src\event\MouseReleasedRight.h" />
+    <ClInclude Include="src\event\StimulusEnd.h" />
+    <ClInclude Include="src\event\StimulusStart.h" />
+    <ClInclude Include="src\event\Wheel.h" />
+    <ClInclude Include="src\fft\FFT.h" />
+    <ClInclude Include="src\fft\load_shaders.h" />
+    <ClInclude Include="src\font\FontManager.h" />
+    <ClInclude Include="src\font\TexFont.h" />
+    <ClInclude Include="src\gpu\Framebuffer.hpp" />
+    <ClInclude Include="src\gpu\Nothing.hpp" />
+    <ClInclude Include="src\gpu\Pointgrid.hpp" />
+    <ClInclude Include="src\gpu\Quad.hpp" />
+    <ClInclude Include="src\gpu\RandomSequenceBuffer.hpp" />
+    <ClInclude Include="src\gpu\Shader.hpp" />
+    <ClInclude Include="src\gpu\StimulusGrid.hpp" />
+    <ClInclude Include="src\gpu\Texture.hpp" />
+    <ClInclude Include="src\gpu\TextureQueue.hpp" />
+    <ClInclude Include="src\math\bool1.h" />
+    <ClInclude Include="src\math\bool2.h" />
+    <ClInclude Include="src\math\bool3.h" />
+    <ClInclude Include="src\math\bool4.h" />
+    <ClInclude Include="src\math\boolswizzle.h" />
+    <ClInclude Include="src\math\dualquat.h" />
+    <ClInclude Include="src\math\float1.h" />
+    <ClInclude Include="src\math\float2.h" />
+    <ClInclude Include="src\math\float2swizzle.h" />
+    <ClInclude Include="src\math\float3.h" />
+    <ClInclude Include="src\math\float3swizzle.h" />
+    <ClInclude Include="src\math\float4.h" />
+    <ClInclude Include="src\math\float4swizzle.h" />
+    <ClInclude Include="src\math\float4x4.h" />
+    <ClInclude Include="src\math\floatswizzle.h" />
+    <ClInclude Include="src\math\int1.h" />
+    <ClInclude Include="src\math\int2.h" />
+    <ClInclude Include="src\math\int3.h" />
+    <ClInclude Include="src\math\int4.h" />
+    <ClInclude Include="src\math\intswizzle.h" />
+    <ClInclude Include="src\math\math.h" />
+    <ClInclude Include="src\math\uint1.h" />
+    <ClInclude Include="src\math\uint2.h" />
+    <ClInclude Include="src\math\uint3.h" />
+    <ClInclude Include="src\math\uint4.h" />
+    <ClInclude Include="src\math\uintswizzle.h" />
+    <ClInclude Include="src\stdafx.h" />
+    <ClInclude Include="src\targetver.h" />
+    <ClInclude Include="src\video\FrameRenderer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\video\MovieDecoder.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\video\VideoFrame.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
