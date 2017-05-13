@@ -810,7 +810,7 @@ std::string Stimulus::getDynamicToneShaderSource() const
 		return s +
 					"	uniform sampler1D gamma;																	\n"
 			+ erfDynamicToneShaderSource;
-	else if(toneMappingMode == ToneMappingMode::EQUALIZED)
+	else //if(toneMappingMode == ToneMappingMode::EQUALIZED)
 		return s +
 					"	uniform sampler1D gamma;																	\n"
 			+ equalizedDynamicToneShaderSource;

@@ -66,7 +66,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>d:\Development\External\boost_1_57_0\bin.v2\libs\python\build\msvc-12.0\debug\link-static\threading-multi\;D:\Development\Python34\libs;$(SolutionDir)libs/freeglut/lib;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)libs/devil1.6.8-rc2/lib;d:\Development\External\boost_1_57_0\bin.v2\libs\filesystem\build\msvc-12.0\debug\link-static\threading-multi\;d:\Development\External\boost_1_57_0\bin.v2\libs\system\build\msvc-12.0\debug\link-static\threading-multi\;D:\Development\External\boost_1_57_0\lib32-msvc-12.0;$(SolutionDir)libs/TILLPolychrome/lib;$(SolutionDir)libs/libav-11.3-win32/win32/usr/bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <PerUserRedirection>true</PerUserRedirection>
-      <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;ILU.lib;opengl32.lib;TILLPolychrome.lib;avcodec.lib;swscale.lib;avfilter.lib;avformat.lib;avdevice.lib;avutil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;ILU.lib;opengl32.lib;avcodec.lib;swscale.lib;avfilter.lib;avformat.lib;avdevice.lib;avutil.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OptimizeReferences>
       </OptimizeReferences>
     </Link>
@@ -92,7 +92,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>d:\Development\External\boost_1_57_0\bin.v2\libs\python\build\msvc-12.0\release\link-static\threading-multi\;D:\Development\Python34\libs;$(SolutionDir)libs/freeglut/lib;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)libs/devil1.6.8-rc2/lib;d:\Development\External\boost_1_57_0\bin.v2\libs\filesystem\build\msvc-12.0\release\link-static\threading-multi\;d:\Development\External\boost_1_57_0\bin.v2\libs\system\build\msvc-12.0\release\link-static\threading-multi\;D:\Development\External\boost_1_57_0\lib32-msvc-12.0;$(SolutionDir)libs/TILLPolychrome/lib;$(SolutionDir)libs/libav-11.3-win32/win32/usr/bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <PerUserRedirection>true</PerUserRedirection>
-      <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;ILU.lib;opengl32.lib;TILLPolychrome.lib;avcodec.lib;swscale.lib;avfilter.lib;avformat.lib;avdevice.lib;avutil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;ILU.lib;opengl32.lib;avcodec.lib;swscale.lib;avfilter.lib;avformat.lib;avdevice.lib;avutil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y $(OutDir)Gears.pyd $(SolutionDir)GearsPy\</Command>
