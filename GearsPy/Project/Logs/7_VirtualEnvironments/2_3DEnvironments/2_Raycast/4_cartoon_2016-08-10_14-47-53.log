@@ -1,0 +1,19 @@
+#Sequence launch at 2016-08-10_14-47-53
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+SinglePass
+ args = {'duration_s': 30, 'spass': <Project.Components.Pass.ExtCartoon.ExtCartoon object at 0x0AA9A210>, 'name': 'Cartoon'}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

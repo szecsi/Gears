@@ -1,0 +1,28 @@
+#Sequence launch at 2016-10-25_02-56-33
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {'exportRandomsChannelCount': 1, 'exportRandomsAsReal': False, 'frameRateDivisor': 1, 'exportRandomsWithHashmarkComments': True, 'exportRandomsAsBinary': True}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+ShiftingBarcode
+ args = {'initialValue': 'random', 'randomSeed': 35436546, 'duration_s': 3}
+----------------------STIMULUS-----------------------
+ShiftingBarcode
+ args = {'step': (1, 0), 'initialValue': 'keep', 'randomSeed': 35436546, 'duration_s': 3}
+----------------------STIMULUS-----------------------
+ShiftingBarcode
+ args = {'step': (0, -1), 'randomGridSize': (1, 0), 'initialValue': 'random', 'randomSeed': 35436546, 'duration_s': 3}
+----------------------STIMULUS-----------------------
+ShiftingBarcode
+ args = {'step': (0, 1), 'randomGridSize': (1, 0), 'initialValue': 'keep', 'randomSeed': 35436546, 'duration_s': 3}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

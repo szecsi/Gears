@@ -1,0 +1,25 @@
+#Sequence launch at 2016-07-10_10-18-52
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'background': 0.75, 'duration_s': 2, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'background': 0.75, 'duration_s': 2, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'background': 0.75, 'duration_s': 2, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'background': 0.75, 'duration_s': 2, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'background': 0.75, 'duration_s': 2, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.5}

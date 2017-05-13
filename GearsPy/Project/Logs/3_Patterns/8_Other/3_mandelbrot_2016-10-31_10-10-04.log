@@ -1,0 +1,13 @@
+#Sequence launch at 2016-10-31_10-10-04
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+SingleShape
+ args = {'duration_s': 20, 'pattern': Mandelbrot{'color1': <Project.Components.Interactive.MouseColor.MouseColor object at 0x0CE47990>, 'color2': <Project.Components.Interactive.MouseColor.MouseColor object at 0x0CE479D0>}}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

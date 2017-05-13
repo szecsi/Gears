@@ -1,0 +1,13 @@
+#Sequence launch at 2016-07-20_17-44-09
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Video
+ args = {'duration_s': 20, 'spatialFilter': DogFftSpatSpec{'weight1': 8, 'sigma1': 100, 'weight2': 0}, 'greyscale': True, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

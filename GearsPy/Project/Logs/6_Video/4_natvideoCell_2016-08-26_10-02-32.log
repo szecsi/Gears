@@ -1,0 +1,7 @@
+#Sequence launch at 2016-08-26_10-02-32
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Video
+ args = {'videoPath': './Project/Media/Birds_7.mp4', 'temporalFilter': Cell{}, 'duration_s': 8}

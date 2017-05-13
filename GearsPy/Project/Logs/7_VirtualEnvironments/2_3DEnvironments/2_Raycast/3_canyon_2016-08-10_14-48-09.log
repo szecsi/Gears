@@ -1,0 +1,19 @@
+#Sequence launch at 2016-08-10_14-48-09
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+SinglePass
+ args = {'duration_s': 30, 'spass': <Project.Components.Pass.ExtCanyon.ExtCanyon object at 0x0AA9EE40>, 'name': 'Canyon'}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

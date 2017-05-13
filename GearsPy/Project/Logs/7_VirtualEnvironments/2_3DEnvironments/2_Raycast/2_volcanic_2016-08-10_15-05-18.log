@@ -1,0 +1,19 @@
+#Sequence launch at 2016-08-10_15-05-18
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+SinglePass
+ args = {'duration_s': 30, 'spass': <Project.Components.Pass.ExtVolcanic.ExtVolcanic object at 0x0B9E3900>, 'name': 'Volcanic'}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

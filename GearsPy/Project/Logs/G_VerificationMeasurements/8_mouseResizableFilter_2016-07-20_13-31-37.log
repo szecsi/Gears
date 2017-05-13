@@ -1,0 +1,19 @@
+#Sequence launch at 2016-07-20_13-31-37
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+SingleShape
+ args = {'spatialFilter': DogFftSpatSpec{'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0A2D1AD0>, 'weight1': 10, 'weight2': 0}, 'shape': Spot{'radius': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0A2D1A10>, 'innerRadius': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0A2D14F0>}, 'duration_s': 60}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}

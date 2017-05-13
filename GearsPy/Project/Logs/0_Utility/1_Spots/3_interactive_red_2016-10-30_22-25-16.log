@@ -1,0 +1,19 @@
+#Sequence launch at 2016-10-30_22-25-16
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': 'red', 'duration_s': 2000, 'innerRadius': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0ACC5AB0>, 'radius': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x061F1190>}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}

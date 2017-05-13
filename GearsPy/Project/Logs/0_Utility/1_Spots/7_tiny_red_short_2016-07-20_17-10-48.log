@@ -1,0 +1,13 @@
+#Sequence launch at 2016-07-20_17-10-48
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration': 2}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration': 6, 'color': 'red', 'radius': 50}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration': 2}

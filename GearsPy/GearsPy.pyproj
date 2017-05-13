@@ -1,0 +1,637 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>ff0443fe-728e-4315-a960-7ac62935294a</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>Gears.pyw</StartupFile>
+    <SearchPath>.</SearchPath>
+    <WorkingDirectory>D:\Development\Retina\Gears\GearsPy</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>OphthoPy</Name>
+    <RootNamespace>OphthoPy</RootNamespace>
+    <IsWindowsApplication>False</IsWindowsApplication>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <EnableNativeCodeDebugging>True</EnableNativeCodeDebugging>
+    <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
+    <InterpreterVersion>3.4</InterpreterVersion>
+    <Environment>APPDATA=local</Environment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="BrowserTree.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BrowserWindow.py" />
+    <Compile Include="AppData.py" />
+    <Compile Include="ConfigWindow.py" />
+    <Compile Include="Ide.py" />
+    <Compile Include="ILog.py" />
+    <Compile Include="Preview.py" />
+    <Compile Include="Project\Components\Composition\InstancedParticles.py" />
+    <Compile Include="Project\Components\Composition\Instanced.py" />
+    <Compile Include="Project\Components\Composition\Modulate.py" />
+    <Compile Include="Project\Components\Composition\Sub.py" />
+    <Compile Include="Project\Components\Composition\Warp.py" />
+    <Compile Include="Project\Components\Composition\Move.py" />
+    <Compile Include="Project\Components\Composition\Max.py" />
+    <Compile Include="Project\Components\Composition\Min.py" />
+    <Compile Include="Project\Components\Composition\Mul.py" />
+    <Compile Include="Project\Components\Composition\Add.py" />
+    <Compile Include="Project\Components\Composition\Mix.py" />
+    <Compile Include="Project\Components\Composition\__init__.py" />
+    <Compile Include="Project\Components\Interactive\Control.py" />
+    <Compile Include="Project\Components\Interactive\MouseColor.py" />
+    <Compile Include="Project\Components\Interactive\MouseMotion.py" />
+    <Compile Include="Project\Components\Interactive\MouseWheel.py" />
+    <Compile Include="Project\Components\Interactive\__init__.py" />
+    <Compile Include="Project\Components\Pass\OwnCanyon.py" />
+    <Compile Include="Project\Components\Pif\Base.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Pif\CampbellRobertson.py" />
+    <Compile Include="Project\Components\Pif\ColorRandomGrid.py" />
+    <Compile Include="Project\Components\Pif\ForwardRendered.py" />
+    <Compile Include="Project\Components\Pif\Gradient.py" />
+    <Compile Include="Project\Components\Pif\GreyscaleRandomGrid.py" />
+    <Compile Include="Project\Components\Pif\Image.py" />
+    <Compile Include="Project\Components\Pif\Mandelbrot.py" />
+    <Compile Include="Project\Components\Pif\MouseRect.py" />
+    <Compile Include="Project\Components\Pif\MultiSpot.py" />
+    <Compile Include="Project\Components\Pif\RandomGrid.py" />
+    <Compile Include="Project\Components\Pif\Rect.py" />
+    <Compile Include="Project\Components\Pif\SaturatedColorRandomGrid.py" />
+    <Compile Include="Project\Components\Pif\SineGrating.py" />
+    <Compile Include="Project\Components\Pif\SineWheel.py" />
+    <Compile Include="Project\Components\Pif\Solid.py" />
+    <Compile Include="Project\Components\Pif\Spot.py" />
+    <Compile Include="Project\Components\Pif\Video.py" />
+    <Compile Include="Project\Components\Pif\__init__.py" />
+    <Compile Include="Project\Components\Modulation\Base.py" />
+    <Compile Include="Project\Components\Modulation\Product.py" />
+    <Compile Include="Project\Components\Motion\Base.py" />
+    <Compile Include="Project\Components\Motion\DiscreteLinear.py" />
+    <Compile Include="Project\Components\Motion\MouseCrossing.py" />
+    <Compile Include="Project\Components\ParticleSystem\Linear.py" />
+    <Compile Include="Project\Components\ParticleSystem\Brownian.py" />
+    <Compile Include="Project\Components\ParticleSystem\Nop.py" />
+    <Compile Include="Project\Components\ParticleSystem\__init__.py" />
+    <Compile Include="Project\Components\Pass\Base.py" />
+    <Compile Include="Project\Components\Pass\ExtApollonian.py" />
+    <Compile Include="Project\Components\Pass\ExtCanyon.py" />
+    <Compile Include="Project\Components\Pass\ExtCartoon.py" />
+    <Compile Include="Project\Components\Pass\ExtVolcanic.py" />
+    <Compile Include="Project\Components\Pass\Fade.py" />
+    <Compile Include="Project\Components\Pass\Generic.py" />
+    <Compile Include="Project\Components\Pass\SingleShape.py" />
+    <Compile Include="Project\Components\Pass\__init__.py" />
+    <Compile Include="Project\Components\Prng\StaticHash.py" />
+    <Compile Include="Project\Components\Response\Base.py" />
+    <Compile Include="Project\Components\Response\End.py" />
+    <Compile Include="Project\Components\Response\Start.py" />
+    <Compile Include="Project\Components\Response\__init__.py" />
+    <Compile Include="Project\Components\Spatial\BandPass.py" />
+    <Compile Include="Project\Components\Spatial\DisplayStimFft.py" />
+    <Compile Include="Project\Components\Spatial\Median.py" />
+    <Compile Include="Project\Components\Spatial\DogFftSpatSpec.py" />
+    <Compile Include="Project\Components\Spatial\DogFftFreqSpec.py" />
+    <Compile Include="Project\Components\Spatial\LowPass.py" />
+    <Compile Include="Project\Components\Stimulus\Base.py" />
+    <Compile Include="Project\Components\Stimulus\PhaseInvertingGrid.py" />
+    <Compile Include="Project\Components\Stimulus\SinglePass.py" />
+    <Compile Include="Project\Components\Stimulus\Video.py" />
+    <Compile Include="Project\Components\Stimulus\Generic.py" />
+    <Compile Include="Project\Components\Temporal\CellLti7.py" />
+    <Compile Include="Project\Components\Temporal\CellLti3.py" />
+    <Compile Include="Project\Components\Temporal\ExponentialLti.py" />
+    <Compile Include="Project\Components\Temporal\Hamming.py" />
+    <Compile Include="Project\Components\Temporal\Hann.py" />
+    <Compile Include="Project\Components\Temporal\RandomLti7.py" />
+    <Compile Include="Project\Components\Temporal\Rectangular.py" />
+    <Compile Include="Project\Components\Temporal\Triangular.py" />
+    <Compile Include="Project\Components\Tone\Erf.py" />
+    <Compile Include="Project\Components\Tone\HistogramEqualized.py" />
+    <Compile Include="Project\Components\Tone\UiConfigured.py" />
+    <Compile Include="Project\Components\Tone\Linear.py" />
+    <Compile Include="Project\Components\Tone\__init__.py" />
+    <Compile Include="Project\Components\Warp\Base.py" />
+    <Compile Include="Project\Components\Warp\FishEye.py" />
+    <Compile Include="Project\Components\Warp\Mobius.py" />
+    <Compile Include="Project\Components\Warp\Hammer.py" />
+    <Compile Include="Project\Components\Warp\Mercator.py" />
+    <Compile Include="Project\Components\Warp\MercatorOblique.py" />
+    <Compile Include="Project\Components\Warp\Orthographic.py" />
+    <Compile Include="Project\Components\Warp\PinchWhirl.py" />
+    <Compile Include="Project\Components\Warp\GeometricInversion.py" />
+    <Compile Include="Project\Components\Warp\Polarize.py" />
+    <Compile Include="Project\Components\Warp\Clamp.py" />
+    <Compile Include="Project\Sequences\1_Spots\1_VaryingSize\__init__.py" />
+    <Compile Include="Project\Sequences\4_MovingShapes\5_Scan\config.py" />
+    <Compile Include="Project\Sequences\5_Randoms\1_FullFields\1_Binary\config.py" />
+    <Compile Include="Project\Sequences\5_Randoms\1_FullFields\2_GreyScale\config.py" />
+    <Compile Include="Project\Sequences\5_Randoms\1_FullFields\3_Color\config.py" />
+    <Compile Include="Project\Sequences\5_Randoms\2_Checkerboards\1_Binary\config.py" />
+    <Compile Include="Project\Sequences\5_Randoms\2_Checkerboards\2_GreyScale\config.py" />
+    <Compile Include="Project\Sequences\5_Randoms\2_Checkerboards\3_Color\config.py" />
+    <Compile Include="Project\Sequences\5_Randoms\2_Checkerboards\config.py" />
+    <Compile Include="Project\Sequences\5_Randoms\config.py" />
+    <Compile Include="Project\Sequences\9_Miscellaneous\6_Polychrome\BlackoutWithPolychromePreparationStimulus.py" />
+    <Compile Include="Project\Sequences\9_Miscellaneous\6_Polychrome\PolychromeExperiment.py" />
+    <Compile Include="Project\Sequences\9_Miscellaneous\6_Polychrome\PolychromeStimulus.py" />
+    <Compile Include="Project\Sequences\config.py" />
+    <Compile Include="Project\Sequences\DefaultSequence.py" />
+    <Compile Include="Project\Sequences\stock.py" />
+    <Compile Include="QsciStrictAPIs.py" />
+    <Compile Include="Calltip.py" />
+    <Compile Include="Editor.py" />
+    <Compile Include="LauncherWindow.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gears.pyw" />
+    <Compile Include="Project\Components\Component.py" />
+    <Compile Include="Project\Components\argProcessors.py" />
+    <Compile Include="Project\Components\Forward\Forest.py" />
+    <Compile Include="Project\Components\Forward\Labyrinth.py" />
+    <Compile Include="Project\Components\Forward\Flyby.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Forward\Nop.py" />
+    <Compile Include="Project\Components\Forward\__init__.py" />
+    <Compile Include="Project\Components\Gamma\Exponential.py" />
+    <Compile Include="Project\Components\Gamma\Factory.py" />
+    <Compile Include="Project\Components\Gamma\Linear.py" />
+    <Compile Include="Project\Components\Gamma\Measured.py" />
+    <Compile Include="Project\Components\Gamma\__init__.py" />
+    <Compile Include="Project\Components\Modulation\Cosine.py" />
+    <Compile Include="Project\Components\Modulation\Linear.py" />
+    <Compile Include="Project\Components\Modulation\__init__.py" />
+    <Compile Include="Project\Components\Motion\Crossing.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Motion\Shake.py" />
+    <Compile Include="Project\Components\Motion\Linear.py" />
+    <Compile Include="Project\Components\Motion\__init__.py" />
+    <Compile Include="Project\Components\Prng\Nop.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Prng\CellShift.py" />
+    <Compile Include="Project\Components\Prng\XorShift128.py" />
+    <Compile Include="Project\Components\Prng\__init__.py" />
+    <Compile Include="Project\Components\Signal\FlatWithTicks.py" />
+    <Compile Include="Project\Components\Signal\NoTicks.py" />
+    <Compile Include="Project\Components\Signal\__init__.py" />
+    <Compile Include="Project\Components\Spatial\BigDog.py" />
+    <Compile Include="Project\Components\Spatial\IdealLowpass2.py" />
+    <Compile Include="Project\Components\Spatial\IdealLowpass.py" />
+    <Compile Include="Project\Components\Spatial\SdBox.py" />
+    <Compile Include="Project\Components\Spatial\FftBox.py" />
+    <Compile Include="Project\Components\Spatial\Nop.py" />
+    <Compile Include="Project\Components\Spatial\SmallDog.py" />
+    <Compile Include="Project\Components\Spatial\__init__.py" />
+    <Compile Include="Project\Components\Stimulus\Blank.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Stimulus\ExtApollonian.py" />
+    <Compile Include="Project\Components\Stimulus\ExtInversionMachine.py" />
+    <Compile Include="Project\Components\Stimulus\ExtCartoon.py" />
+    <Compile Include="Project\Components\Stimulus\ExtCloudyTerrain.py" />
+    <Compile Include="Project\Components\Stimulus\ExtCanyon.py" />
+    <Compile Include="Project\Components\Stimulus\ExtVolcanic.py" />
+    <Compile Include="Project\Components\Stimulus\MovingGrid.py" />
+    <Compile Include="Project\Components\Stimulus\Fade.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Stimulus\ImageFadeShake.py" />
+    <Compile Include="Project\Components\Stimulus\ImageFade.py" />
+    <Compile Include="Project\Components\Stimulus\ShiftingBarcode.py" />
+    <Compile Include="Project\Components\Stimulus\SaturatedColorRandomGrid.py" />
+    <Compile Include="Project\Components\Stimulus\CampbellRobertson.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Stimulus\CrossingRect.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Stimulus\Fullfield.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Stimulus\FullfieldGradient.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Stimulus\FullfieldLinearModulation.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Stimulus\FullfieldOscillation.py" />
+    <Compile Include="Project\Components\Stimulus\SpotOscillation.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Stimulus\SingleShape.py" />
+    <Compile Include="Project\Components\Stimulus\ColorRandomGrid.py" />
+    <Compile Include="Project\Components\Stimulus\GreyscaleRandomGrid.py" />
+    <Compile Include="Project\Components\Stimulus\Image.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Stimulus\RandomGrid.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Stimulus\ScanRect.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Stimulus\Spot.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Stimulus\SpotGrid.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Stimulus\__init__.py" />
+    <Compile Include="Project\Components\Temporal\Filter.py" />
+    <Compile Include="Project\Components\Temporal\Exponential.py" />
+    <Compile Include="Project\Components\Temporal\Cell.py" />
+    <Compile Include="Project\Components\Temporal\Nop.py" />
+    <Compile Include="Project\Components\Temporal\__init__.py" />
+    <Compile Include="Project\Components\Warp\Nop.py" />
+    <Compile Include="Project\Components\Warp\OnElectrodes.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project\Components\Warp\Repeat.py" />
+    <Compile Include="Project\Components\Warp\__init__.py" />
+    <Compile Include="Project\Components\__init__.py" />
+    <Compile Include="SequenceError.py" />
+    <Compile Include="SequenceLoader.py" />
+    <Compile Include="SequenceTimeline.py" />
+    <Compile Include="SequenceWarning.py" />
+    <Compile Include="SpatialKernelPlot.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SpatialProfilePlot.py" />
+    <Compile Include="TemporalKernelPlot.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StimulusTimeline.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StimulusWindow.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MediaWindow.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ophtho\Ophtho.vcxproj">
+      <Name>Ophtho</Name>
+      <Project>{db828387-d70c-4af0-a1a0-ef12fcee8cb7}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Project\" />
+    <Folder Include="Project\Components\" />
+    <Folder Include="Project\Components\Gamma\" />
+    <Folder Include="Project\Components\Interactive\" />
+    <Folder Include="Project\Components\Modulation\" />
+    <Folder Include="Project\Components\Motion\" />
+    <Folder Include="Project\Components\Forward\" />
+    <Folder Include="Project\Components\Pif\" />
+    <Folder Include="Project\Components\Composition\" />
+    <Folder Include="Project\Components\ParticleSystem\" />
+    <Folder Include="Project\Components\Pass\" />
+    <Folder Include="Project\Components\Pass\__pycache__\" />
+    <Folder Include="Project\Components\Prng\" />
+    <Folder Include="Project\Components\Response\" />
+    <Folder Include="Project\Components\Signal\" />
+    <Folder Include="Project\Components\Spatial\" />
+    <Folder Include="Project\Components\Spatial\__pycache__\" />
+    <Folder Include="Project\Components\Stimulus\" />
+    <Folder Include="Project\Components\Temporal\" />
+    <Folder Include="Project\Components\Temporal\__pycache__\" />
+    <Folder Include="Project\Components\Tone\" />
+    <Folder Include="Project\Components\Warp\" />
+    <Folder Include="Project\Sequences\" />
+    <Folder Include="Project\Sequences\0_Utility\" />
+    <Folder Include="Project\Sequences\0_Utility\1_Spots\" />
+    <Folder Include="Project\Sequences\0_Utility\2_FullField\" />
+    <Folder Include="Project\Sequences\1_Spots\" />
+    <Folder Include="Project\Sequences\1_Spots\1_VaryingSize\" />
+    <Folder Include="Project\Sequences\1_Spots\2_ElectrodeTargeted\" />
+    <Folder Include="Project\Sequences\1_Spots\3_Oscillations\" />
+    <Folder Include="Project\Sequences\1_Spots\3_SineChirp\" />
+    <Folder Include="Project\Sequences\1_Spots\4_SampleFilteres\" />
+    <Folder Include="Project\Sequences\1_Spots\4_SampleFilteres\1_Spatial\" />
+    <Folder Include="Project\Sequences\1_Spots\4_SampleFilteres\2_Temporal\" />
+    <Folder Include="Project\Sequences\2_FullFields\" />
+    <Folder Include="Project\Sequences\2_FullFields\1_Plain\" />
+    <Folder Include="Project\Sequences\2_FullFields\2_Oscillations\" />
+    <Folder Include="Project\Sequences\2_FullFields\3_Contrast\" />
+    <Folder Include="Project\Sequences\2_FullFields\4_SinChirp\" />
+    <Folder Include="Project\Sequences\2_FullFields\5_SquareChirp\" />
+    <Folder Include="Project\Sequences\3_Patterns\" />
+    <Folder Include="Project\Sequences\3_Patterns\1_Gratings\" />
+    <Folder Include="Project\Sequences\3_Patterns\2_MovingGrids\" />
+    <Folder Include="Project\Sequences\3_Patterns\8_Other\" />
+    <Folder Include="Project\Sequences\4_MovingShapes\" />
+    <Folder Include="Project\Sequences\4_MovingShapes\1_Bars\" />
+    <Folder Include="Project\Sequences\4_MovingShapes\2_Rects\" />
+    <Folder Include="Project\Sequences\4_MovingShapes\3_Spots\" />
+    <Folder Include="Project\Sequences\4_MovingShapes\4_Interactive\" />
+    <Folder Include="Project\Sequences\4_MovingShapes\5_Scan\" />
+    <Folder Include="Project\Sequences\4_MovingShapes\6_Complex\" />
+    <Folder Include="Project\Sequences\5_Randoms\" />
+    <Folder Include="Project\Sequences\5_Randoms\1_FullFields\" />
+    <Folder Include="Project\Sequences\5_Randoms\1_FullFields\1_Binary\" />
+    <Folder Include="Project\Sequences\5_Randoms\1_FullFields\2_GreyScale\" />
+    <Folder Include="Project\Sequences\5_Randoms\1_FullFields\3_Color\" />
+    <Folder Include="Project\Sequences\5_Randoms\2_Checkerboards\" />
+    <Folder Include="Project\Sequences\5_Randoms\2_Checkerboards\1_Binary\" />
+    <Folder Include="Project\Sequences\5_Randoms\2_Checkerboards\2_GreyScale\" />
+    <Folder Include="Project\Sequences\5_Randoms\2_Checkerboards\3_Color\" />
+    <Folder Include="Project\Sequences\5_Randoms\2_Checkerboards\4_Masked\" />
+    <Folder Include="Project\Sequences\5_Randoms\3_Bullseye\" />
+    <Folder Include="Project\Sequences\5_Randoms\4_Barcode\" />
+    <Folder Include="Project\Sequences\6_Video\" />
+    <Folder Include="Project\Sequences\6_Video\__pycache__\" />
+    <Folder Include="Project\Sequences\7_VirtualEnvironments\" />
+    <Folder Include="Project\Sequences\7_VirtualEnvironments\1_Distortions\" />
+    <Folder Include="Project\Sequences\7_VirtualEnvironments\2_3DEnvironments\" />
+    <Folder Include="Project\Sequences\7_VirtualEnvironments\2_3DEnvironments\1_Forward\" />
+    <Folder Include="Project\Sequences\7_VirtualEnvironments\2_3DEnvironments\2_Raycast\" />
+    <Folder Include="Project\Sequences\8_Psychophysics\" />
+    <Folder Include="Project\Sequences\8_Psychophysics\1_Illusion\" />
+    <Folder Include="Project\Sequences\8_Psychophysics\2_ScaleFree\" />
+    <Folder Include="Project\Sequences\8_Psychophysics\3_Gabor\" />
+    <Folder Include="Project\Sequences\9_Miscellaneous\" />
+    <Folder Include="Project\Sequences\9_Miscellaneous\6_Polychrome\" />
+    <Folder Include="Project\Sequences\9_Miscellaneous\FilteredSpots\" />
+    <Folder Include="Project\Sequences\9_Miscellaneous\MovingSpots\" />
+    <Folder Include="Project\Sequences\G_VerificationMeasurements\" />
+    <Folder Include="Project\Shaders\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Project\Components\Pass\__pycache__\Base.cpython-34.pyc" />
+    <Content Include="Project\Components\Pass\__pycache__\ExtApollonian.cpython-34.pyc" />
+    <Content Include="Project\Components\Pass\__pycache__\ExtCanyon.cpython-34.pyc" />
+    <Content Include="Project\Components\Pass\__pycache__\ExtCartoon.cpython-34.pyc" />
+    <Content Include="Project\Components\Pass\__pycache__\ExtVolcanic.cpython-34.pyc" />
+    <Content Include="Project\Components\Pass\__pycache__\Fade.cpython-34.pyc" />
+    <Content Include="Project\Components\Pass\__pycache__\Generic.cpython-34.pyc" />
+    <Content Include="Project\Components\Pass\__pycache__\SingleShape.cpython-34.pyc" />
+    <Content Include="Project\Components\Pass\__pycache__\__init__.cpython-34.pyc" />
+    <Content Include="Project\Components\Spatial\__pycache__\BandPass.cpython-34.pyc" />
+    <Content Include="Project\Components\Spatial\__pycache__\BigDog.cpython-34.pyc" />
+    <Content Include="Project\Components\Spatial\__pycache__\DisplayStimFft.cpython-34.pyc" />
+    <Content Include="Project\Components\Spatial\__pycache__\DogFftFreqSpec.cpython-34.pyc" />
+    <Content Include="Project\Components\Spatial\__pycache__\DogFftSpatSpec.cpython-34.pyc" />
+    <Content Include="Project\Components\Spatial\__pycache__\FftBox.cpython-34.pyc" />
+    <Content Include="Project\Components\Spatial\__pycache__\IdealLowpass.cpython-34.pyc" />
+    <Content Include="Project\Components\Spatial\__pycache__\IdealLowpass2.cpython-34.pyc" />
+    <Content Include="Project\Components\Spatial\__pycache__\LowPass.cpython-34.pyc" />
+    <Content Include="Project\Components\Spatial\__pycache__\Nop.cpython-34.pyc" />
+    <Content Include="Project\Components\Spatial\__pycache__\SdBox.cpython-34.pyc" />
+    <Content Include="Project\Components\Spatial\__pycache__\SmallDog.cpython-34.pyc" />
+    <Content Include="Project\Components\Spatial\__pycache__\__init__.cpython-34.pyc" />
+    <Content Include="Project\Components\Temporal\__pycache__\Cell.cpython-34.pyc" />
+    <Content Include="Project\Components\Temporal\__pycache__\CellLti3.cpython-34.pyc" />
+    <Content Include="Project\Components\Temporal\__pycache__\CellLti7.cpython-34.pyc" />
+    <Content Include="Project\Components\Temporal\__pycache__\Exponential.cpython-34.pyc" />
+    <Content Include="Project\Components\Temporal\__pycache__\ExponentialLti.cpython-34.pyc" />
+    <Content Include="Project\Components\Temporal\__pycache__\Filter.cpython-34.pyc" />
+    <Content Include="Project\Components\Temporal\__pycache__\Hamming.cpython-34.pyc" />
+    <Content Include="Project\Components\Temporal\__pycache__\Hann.cpython-34.pyc" />
+    <Content Include="Project\Components\Temporal\__pycache__\Nop.cpython-34.pyc" />
+    <Content Include="Project\Components\Temporal\__pycache__\RandomLti7.cpython-34.pyc" />
+    <Content Include="Project\Components\Temporal\__pycache__\Rectangular.cpython-34.pyc" />
+    <Content Include="Project\Components\Temporal\__pycache__\Triangular.cpython-34.pyc" />
+    <Content Include="Project\Components\Temporal\__pycache__\__init__.cpython-34.pyc" />
+    <Content Include="Project\Sequences\0_Utility\1_Spots\3_interactive_red.pyx" />
+    <Content Include="Project\Sequences\0_Utility\1_Spots\7_tiny_red_short.pyx" />
+    <Content Include="Project\Sequences\0_Utility\1_Spots\1_tiny_red.pyx" />
+    <Content Include="Project\Sequences\0_Utility\1_Spots\2_big_red.pyx" />
+    <Content Include="Project\Sequences\0_Utility\1_Spots\8_electrodeGrid.pyx" />
+    <Content Include="Project\Sequences\0_Utility\2_FullField\1_long.pyx" />
+    <Content Include="Project\Sequences\0_Utility\2_FullField\3_wide_intensity_range_gradient_tone_test.pyx" />
+    <Content Include="Project\Sequences\0_Utility\2_FullField\2_wide_intensity_range_gradient.pyx" />
+    <Content Include="Project\Sequences\1_Spots\1_VaryingSize\1_spot_and_fullfield.pyx" />
+    <Content Include="Project\Sequences\1_Spots\1_VaryingSize\2_increasing_radii.pyx" />
+    <Content Include="Project\Sequences\1_Spots\1_VaryingSize\3_annuli_increasing_radii.pyx" />
+    <Content Include="Project\Sequences\1_Spots\2_ElectrodeTargeted\1_targeting_seqA.pyx" />
+    <Content Include="Project\Sequences\1_Spots\2_ElectrodeTargeted\2_targeting_seqB.pyx" />
+    <Content Include="Project\Sequences\1_Spots\2_ElectrodeTargeted\3_targeting_seqC.pyx" />
+    <Content Include="Project\Sequences\1_Spots\3_Oscillations\1_sine_increasing_freqs.pyx" />
+    <Content Include="Project\Sequences\1_Spots\3_SineChirp\1_spotchirp_freqmod_updown.pyx" />
+    <Content Include="Project\Sequences\1_Spots\3_SineChirp\2_spotchirp_freqmod_downup.pyx" />
+    <Content Include="Project\Sequences\1_Spots\3_SineChirp\3_spotchirp_ampmod_3Hz.pyx" />
+    <Content Include="Project\Sequences\1_Spots\3_SineChirp\4_spotchirp_ampmod_6Hz.pyx" />
+    <Content Include="Project\Sequences\1_Spots\3_SineChirp\5_spotchirp_ampmod_9Hz.pyx" />
+    <Content Include="Project\Sequences\1_Spots\4_SampleFilteres\1_Spatial\test.pyx" />
+    <Content Include="Project\Sequences\1_Spots\4_SampleFilteres\1_Spatial\0_compare.pyx" />
+    <Content Include="Project\Sequences\1_Spots\4_SampleFilteres\2_Temporal\1_exponential.pyx" />
+    <Content Include="Project\Sequences\1_Spots\4_SampleFilteres\2_Temporal\2_cell.pyx" />
+    <Content Include="Project\Sequences\1_Spots\4_SampleFilteres\2_Temporal\3_exponentialLti.pyx" />
+    <Content Include="Project\Sequences\1_Spots\4_SampleFilteres\2_Temporal\4_cellLti3.pyx" />
+    <Content Include="Project\Sequences\1_Spots\4_SampleFilteres\2_Temporal\5_cellLti7.pyx" />
+    <Content Include="Project\Sequences\1_Spots\4_SampleFilteres\2_Temporal\6_cellLti3Color.pyx" />
+    <Content Include="Project\Sequences\1_Spots\4_SampleFilteres\2_Temporal\7_cellLti7Color.pyx" />
+    <Content Include="Project\Sequences\1_Spots\4_SampleFilteres\2_Temporal\8_explicitLti7Color.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\1_Plain\1_fullfield_whites.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\1_Plain\2_fullfield_with_short_blacks.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\1_Plain\3_offhunter.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\1_Plain\4_melaparam.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\2_Oscillations\1_square_oscillation.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\2_Oscillations\2_sine_oscillation.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\2_Oscillations\3_mulifreq_synthesis.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\2_Oscillations\4_mulifreq_floating.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\3_Contrast\1_linear_descreasing.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\3_Contrast\2_linear_increasing.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\3_Contrast\3_rep2_n6_.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\3_Contrast\4_rep2_n6_05_1_0.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\4_SinChirp\g_chirp_lin_freqmod_updown.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\4_SinChirp\1_chirp_freqmod_updown.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\4_SinChirp\2_chirp_freqmod_downup.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\4_SinChirp\3_chirp_ampmod_3Hz.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\4_SinChirp\4_chirp_ampmod_6Hz.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\4_SinChirp\5_chirp_ampmod_9Hz.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\4_SinChirp\9_15sec_chirp_freqmod_updown.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\5_SquareChirp\1_squarechirp_freqmod_updown.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\5_SquareChirp\2_squarechirp_freqmod_downup.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\5_SquareChirp\3_squarechirp_ampmod_3Hz.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\5_SquareChirp\4_squarechirp_ampmod_6Hz.pyx" />
+    <Content Include="Project\Sequences\2_FullFields\5_SquareChirp\5_squarechirp_ampmod_9Hz.pyx" />
+    <Content Include="Project\Sequences\3_Patterns\1_Gratings\1_sine.pyx" />
+    <Content Include="Project\Sequences\3_Patterns\1_Gratings\2_wheel.pyx" />
+    <Content Include="Project\Sequences\3_Patterns\1_Gratings\3_dual.pyx" />
+    <Content Include="Project\Sequences\3_Patterns\1_Gratings\4_two_gratings.pyx" />
+    <Content Include="Project\Sequences\3_Patterns\2_MovingGrids\1_sin.pyx" />
+    <Content Include="Project\Sequences\3_Patterns\2_MovingGrids\2_square.pyx" />
+    <Content Include="Project\Sequences\3_Patterns\2_MovingGrids\3_sinPhaseInvert.pyx" />
+    <Content Include="Project\Sequences\3_Patterns\8_Other\1_classicCampbellRobertson.pyx" />
+    <Content Include="Project\Sequences\3_Patterns\8_Other\2_constCampbellRobertson.pyx" />
+    <Content Include="Project\Sequences\3_Patterns\8_Other\3_mandelbrot.pyx" />
+    <Content Include="Project\Sequences\3_Patterns\8_Other\4_gradients.pyx" />
+    <Content Include="Project\Sequences\3_Patterns\8_Other\5_edges.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\01_velocity50.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\02_velocity100.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\03_velocity200.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\04_velocity400.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\05_velocity800.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\06_velocity1200.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\08_velocity1200limitedModifiedComponents.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\07_velocity1200limited.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\11_300um_velocity50.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\12_300um_velocity100.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\13_300um_velocity200.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\14_300um_velocity400.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\15_300um_velocity800.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\16_300um_velocity1200.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\1_Bars\21_temp_filter_test.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\2_Rects\01_monkey_velocity120.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\2_Rects\02_monkey_velocity200.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\2_Rects\03_monkey_velocity400.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\2_Rects\04_monkey_velocity1200.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\2_Rects\05_monkey_velocity1600.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\2_Rects\11_monkey_scan_velocity120_rep3.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\2_Rects\12_monkey_scan_velocity1200_rep6.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\2_Rects\21_dozer_velocity120_rep3.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\2_Rects\22_dozer_velocity200_rep3.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\2_Rects\23_dozer_velocity1200_rep6.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\2_Rects\31_comb_velocity120_rep3.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\2_Rects\32_comb_velocity1200_rep3.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\3_Spots\1_tempocell.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\3_Spots\9_quads.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\4_Interactive\1_mouseAdjustable.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\4_Interactive\2_mouseAdjustableBulldozer.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\4_Interactive\t_mouseResizableRectPair.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\4_Interactive\3_mouseResizableRect.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\4_Interactive\4_mouseResizableFilter.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\4_Interactive\5_mouseColor.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\5_Scan\1_scanTinySquares.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\5_Scan\2_scanTinySquaresShuffled.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\6_Complex\1_brownian.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\6_Complex\5_showoff.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\6_Complex\6_showoffScale.pyx" />
+    <Content Include="Project\Sequences\4_MovingShapes\6_Complex\7_showoffChaos.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\1_FullFields\1_Binary\1_ff_60Hz.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\1_FullFields\1_Binary\2_ff_30Hz.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\1_FullFields\1_Binary\3_ff_20Hz.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\1_FullFields\1_Binary\4_ff_60Hz_25-75.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\1_FullFields\1_Binary\5_ff_30Hz_25-75.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\1_FullFields\1_Binary\6_ff_20Hz_25-75.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\1_FullFields\2_GreyScale\1_ff_60Hz.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\1_FullFields\3_Color\1_color_60Hz.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\1_FullFields\3_Color\1_sat_color_60Hz.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\2_Checkerboards\1_Binary\1_chess_60Hz.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\2_Checkerboards\1_Binary\2_chess_30Hz.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\2_Checkerboards\1_Binary\3_chess_20Hz.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\2_Checkerboards\1_Binary\4_chess_60Hz_25-75.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\2_Checkerboards\1_Binary\5_chess_30Hz_25-75.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\2_Checkerboards\1_Binary\6_chess_20Hz_25-75.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\2_Checkerboards\1_Binary\8_chess_pinch.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\2_Checkerboards\1_Binary\9_chess_hires.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\2_Checkerboards\2_GreyScale\1_soft_60Hz.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\2_Checkerboards\2_GreyScale\2_soft_60Hz_big_dog.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\2_Checkerboards\2_GreyScale\small_dog_test_001.todo" />
+    <Content Include="Project\Sequences\5_Randoms\2_Checkerboards\3_Color\1_color_60Hz.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\2_Checkerboards\3_Color\1_sat_color_60Hz.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\2_Checkerboards\4_Masked\1_chess_annulus.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\3_Bullseye\1_chess_polar_spot.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\3_Bullseye\2_chess_polar_annulus.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\3_Bullseye\3_chess_polar_geometricInverse.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\4_Barcode\1_barcode.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\4_Barcode\2_barcodeGrey.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\4_Barcode\3_barcodeSatColor.pyx" />
+    <Content Include="Project\Sequences\5_Randoms\4_Barcode\4_barcodeColor.pyx" />
+    <Content Include="Project\Sequences\6_Video\1_video.pyx" />
+    <Content Include="Project\Sequences\6_Video\2_videoDog.pyx" />
+    <Content Include="Project\Sequences\6_Video\3_natvideo.pyx" />
+    <Content Include="Project\Sequences\6_Video\7_natvideoCell.pyx" />
+    <Content Include="Project\Sequences\6_Video\6_natvideoInteractiveDog.pyx" />
+    <Content Include="Project\Sequences\6_Video\5_natvideoDog.pyx" />
+    <Content Include="Project\Sequences\6_Video\8_natvideoExpLti.pyx" />
+    <Content Include="Project\Sequences\6_Video\__pycache__\1_video.cpython-34.pyc" />
+    <Content Include="Project\Sequences\6_Video\__pycache__\2_videoDog.cpython-34.pyc" />
+    <Content Include="Project\Sequences\6_Video\__pycache__\3_natvideo.cpython-34.pyc" />
+    <Content Include="Project\Sequences\6_Video\__pycache__\4_natvideoCell.cpython-34.pyc" />
+    <Content Include="Project\Sequences\6_Video\__pycache__\5_natvideoDog.cpython-34.pyc" />
+    <Content Include="Project\Sequences\6_Video\__pycache__\VideoExperiment.cpython-34.pyc" />
+    <Content Include="Project\Sequences\6_Video\__pycache__\VideoStimulus.cpython-34.pyc" />
+    <Content Include="Project\Sequences\7_VirtualEnvironments\1_Distortions\1_hammer.pyx" />
+    <Content Include="Project\Sequences\7_VirtualEnvironments\1_Distortions\1_inversion.pyx" />
+    <Content Include="Project\Sequences\7_VirtualEnvironments\1_Distortions\2_mercator.pyx" />
+    <Content Include="Project\Sequences\7_VirtualEnvironments\1_Distortions\3_ortographic.pyx" />
+    <Content Include="Project\Sequences\7_VirtualEnvironments\1_Distortions\4_ortographic_with_shapes.pyx" />
+    <Content Include="Project\Sequences\7_VirtualEnvironments\2_3DEnvironments\1_Forward\1_flyby.pyx" />
+    <Content Include="Project\Sequences\7_VirtualEnvironments\2_3DEnvironments\1_Forward\2_labyrinth.pyx" />
+    <Content Include="Project\Sequences\7_VirtualEnvironments\2_3DEnvironments\2_Raycast\1_cloudyTerrain.pyx" />
+    <Content Include="Project\Sequences\7_VirtualEnvironments\2_3DEnvironments\2_Raycast\2_volcanic.pyx" />
+    <Content Include="Project\Sequences\7_VirtualEnvironments\2_3DEnvironments\2_Raycast\7_landscape.pyx" />
+    <Content Include="Project\Sequences\7_VirtualEnvironments\2_3DEnvironments\2_Raycast\3_canyon.pyx" />
+    <Content Include="Project\Sequences\7_VirtualEnvironments\2_3DEnvironments\2_Raycast\4_cartoon.pyx" />
+    <Content Include="Project\Sequences\7_VirtualEnvironments\2_3DEnvironments\2_Raycast\5_inversionMachine.pyx" />
+    <Content Include="Project\Sequences\7_VirtualEnvironments\2_3DEnvironments\2_Raycast\6_apollonian.pyx" />
+    <Content Include="Project\Sequences\8_Psychophysics\1_Illusion\1_fade.pyx" />
+    <Content Include="Project\Sequences\8_Psychophysics\1_Illusion\2_fade_shake.pyx" />
+    <Content Include="Project\Sequences\8_Psychophysics\1_Illusion\3_rotating_snake.pyx" />
+    <Content Include="Project\Sequences\8_Psychophysics\1_Illusion\4_AMP.pyx" />
+    <Content Include="Project\Sequences\8_Psychophysics\1_Illusion\5_rubin.pyx" />
+    <Content Include="Project\Sequences\8_Psychophysics\2_ScaleFree\1_escher.pyx" />
+    <Content Include="Project\Sequences\8_Psychophysics\2_ScaleFree\2_ising.pyx" />
+    <Content Include="Project\Sequences\8_Psychophysics\2_ScaleFree\3_ising.pyx" />
+    <Content Include="Project\Sequences\8_Psychophysics\3_Gabor\3_verticalLines.pyx" />
+    <Content Include="Project\Sequences\9_Miscellaneous\2_random.pyx" />
+    <Content Include="Project\Sequences\9_Miscellaneous\6_Polychrome\0010_prototype.pyx" />
+    <Content Include="Project\Sequences\9_Miscellaneous\FilteredSpots\1_box_red_spot_test.pyx" />
+    <Content Include="Project\Sequences\9_Miscellaneous\FilteredSpots\1_TODO_MoreSpotsBimo.todo" />
+    <Content Include="Project\Sequences\9_Miscellaneous\FilteredSpots\2_monkey_red_spot_test.pyx" />
+    <Content Include="Project\Sequences\9_Miscellaneous\FilteredSpots\3_box_red_spot_small.pyx" />
+    <Content Include="Project\Sequences\9_Miscellaneous\FilteredSpots\4_ghost.pyx" />
+    <Content Include="Project\Sequences\9_Miscellaneous\FilteredSpots\5_compare.pyx" />
+    <Content Include="Project\Sequences\9_Miscellaneous\MovingSpots\2_multitest.pyx" />
+    <Content Include="Project\Sequences\9_Miscellaneous\MovingSpots\9_poly.pyx" />
+    <Content Include="Project\Sequences\G_VerificationMeasurements\1_spots_increasing_radii.pyx" />
+    <Content Include="Project\Sequences\G_VerificationMeasurements\5_natvideo.pyx" />
+    <Content Include="Project\Sequences\G_VerificationMeasurements\4_spots_increasing_radii_edge_enhance_10um.pyx" />
+    <Content Include="Project\Sequences\G_VerificationMeasurements\3_spots_increasing_radii_edge_enhance_20um.pyx" />
+    <Content Include="Project\Sequences\G_VerificationMeasurements\2_spots_increasing_radii_edge_enhance_30um.pyx" />
+    <Content Include="Project\Sequences\G_VerificationMeasurements\6_natvideoCell.pyx" />
+    <Content Include="Project\Sequences\G_VerificationMeasurements\7_natvideoBlur.pyx" />
+    <Content Include="Project\Sequences\G_VerificationMeasurements\8_natvideoEdgeEnhance.pyx" />
+    <Content Include="Project\Sequences\G_VerificationMeasurements\F_mouseResizableFilterFreq.pyx" />
+    <Content Include="Project\Sequences\G_VerificationMeasurements\R_mouseResizableFilter.pyx" />
+    <Content Include="Project\Sequences\G_VerificationMeasurements\T_testSpatial.pyx" />
+    <Content Include="Project\Shaders\rgbToU.frag" />
+    <Content Include="Project\Shaders\rgbToV.frag" />
+    <Content Include="Project\Shaders\rgbToY.frag" />
+    <Content Include="Project\Shaders\clearHistogram.frag" />
+    <Content Include="Project\Shaders\computeHistogram.geom" />
+    <Content Include="Project\Shaders\computeHistogram.frag" />
+    <Content Include="Project\Shaders\computeHistogram.vert" />
+    <Content Include="Project\Shaders\quad.vert" />
+    <Content Include="Project\Shaders\halfHistogram.frag" />
+    <Content Include="Project\Shaders\showHistogram.frag" />
+    <Content Include="Project\Shaders\showTexture.frag" />
+    <Content Include="Project\Shaders\text.frag" />
+    <Content Include="Project\Shaders\text.vert" />
+    <Content Include="Project\Shaders\tris.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\3.4" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <Import Condition="Exists($(PtvsTargetsFile))" Project="$(PtvsTargetsFile)" />
+  <Import Condition="!Exists($(PtvsTargetsFile))" Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>

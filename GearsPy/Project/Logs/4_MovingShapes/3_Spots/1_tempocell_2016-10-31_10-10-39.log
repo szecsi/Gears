@@ -1,0 +1,19 @@
+#Sequence launch at 2016-10-31_10-10-39
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2, 'temporalFilter': Cell{}, 'color': 0.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'motion': Crossing{'direction': 'east', 'velocity': 1000}, 'temporalFilter': Cell{}, 'color': 0.75, 'radius': 525, 'background': 0.5, 'innerRadius': 200}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5, 'temporalFilter': Cell{}, 'color': 0.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

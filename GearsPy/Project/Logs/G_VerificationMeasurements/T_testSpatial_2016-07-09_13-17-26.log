@@ -1,0 +1,25 @@
+#Sequence launch at 2016-07-09_13-17-26
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': DogFftFreqSpec{'sigma1': 0.001, 'weight2': 0, 'weight1': -1}, 'color': 0.25, 'duration_s': 2, 'radius': 125, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': DogFftFreqSpec{'sigma1': 0.001, 'weight2': 0, 'weight1': -1}, 'color': 0.25, 'duration_s': 2, 'radius': 125, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': DogFftFreqSpec{'sigma1': 0.001, 'weight2': 0, 'weight1': -1}, 'color': 0.25, 'duration_s': 2, 'radius': 125, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': DogFftFreqSpec{'sigma1': 0.001, 'weight2': 0, 'weight1': -1}, 'color': 0.25, 'duration_s': 2, 'radius': 125, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': DogFftFreqSpec{'sigma1': 0.001, 'weight2': 0, 'weight1': -1}, 'color': 0.25, 'duration_s': 2, 'radius': 125, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.5}

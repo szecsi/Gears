@@ -1,0 +1,13 @@
+#Sequence launch at 2016-09-18_16-03-58
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Video
+ args = {'duration_s': 20, 'videoPath': './Project/Media/small.mp4'}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

@@ -1,0 +1,19 @@
+#Sequence launch at 2016-07-07_07-55-22
+----------------------EXPERIMENT-----------------------
+TargetingSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+SpotGrid
+ args = {'color': 'red', 'duration_s': 2000}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}

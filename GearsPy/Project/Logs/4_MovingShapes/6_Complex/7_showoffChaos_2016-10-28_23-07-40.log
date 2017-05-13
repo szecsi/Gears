@@ -1,0 +1,16 @@
+#Sequence launch at 2016-10-28_23-07-40
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {'frameRateDivisor': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.2}
+----------------------STIMULUS-----------------------
+SinglePass
+ args = {'spass': <Project.Components.Pass.Generic.Generic object at 0x06184870>, 'duration_s': 20}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

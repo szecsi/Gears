@@ -1,0 +1,16 @@
+#Sequence launch at 2016-07-07_07-58-58
+----------------------EXPERIMENT-----------------------
+ImageSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+SinglePass
+ args = {'duration_s': 20, 'spass': <Project.Components.Pass.Generic.Generic object at 0x0C828600>}
+----------------------STIMULUS-----------------------
+SinglePass
+ args = {'duration_s': 20, 'spass': <Project.Components.Pass.Generic.Generic object at 0x0C8421B0>}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

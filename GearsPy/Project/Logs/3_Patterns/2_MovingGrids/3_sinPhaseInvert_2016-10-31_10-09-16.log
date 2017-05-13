@@ -1,0 +1,22 @@
+#Sequence launch at 2016-10-31_10-09-16
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 20, 'color': 0.5}
+----------------------STIMULUS-----------------------
+PhaseInvertingGrid
+ args = {'direction': 'east', 'duration_s': 4}
+----------------------STIMULUS-----------------------
+PhaseInvertingGrid
+ args = {'direction': 'north', 'duration_s': 4}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2, 'color': 0.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

@@ -1,0 +1,49 @@
+#Sequence launch at 2016-10-30_22-38-54
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+SpotOscillation
+ args = {'duration_s': 6, 'radius': 125, 'wavelength_s': 2.002002002002002}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+SpotOscillation
+ args = {'duration_s': 6, 'radius': 125, 'wavelength_s': 1.001001001001001}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+SpotOscillation
+ args = {'duration_s': 6, 'radius': 125, 'wavelength_s': 0.33366700033366703}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+SpotOscillation
+ args = {'duration_s': 6, 'radius': 125, 'wavelength_s': 0.16683350016683351}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+SpotOscillation
+ args = {'duration_s': 6, 'radius': 125, 'wavelength_s': 0.1001001001001001}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+SpotOscillation
+ args = {'duration_s': 6, 'radius': 125, 'wavelength_s': 0.06673340006673341}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

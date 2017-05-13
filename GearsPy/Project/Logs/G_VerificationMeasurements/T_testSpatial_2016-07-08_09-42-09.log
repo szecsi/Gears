@@ -1,0 +1,43 @@
+#Sequence launch at 2016-07-08_09-42-09
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'color': 0.25, 'duration_s': 2, 'spatialFilter': BigDog{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'color': 0.25, 'duration_s': 2, 'spatialFilter': IdealLowpass{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'color': 0.25, 'duration_s': 2, 'spatialFilter': BigDog{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'color': 0.25, 'duration_s': 2, 'spatialFilter': IdealLowpass{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'color': 0.25, 'duration_s': 2, 'spatialFilter': BigDog{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'color': 0.25, 'duration_s': 2, 'spatialFilter': IdealLowpass{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'color': 0.25, 'duration_s': 2, 'spatialFilter': BigDog{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'color': 0.25, 'duration_s': 2, 'spatialFilter': IdealLowpass{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'color': 0.25, 'duration_s': 2, 'spatialFilter': BigDog{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 125, 'color': 0.25, 'duration_s': 2, 'spatialFilter': IdealLowpass{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

@@ -1,0 +1,25 @@
+#Sequence launch at 2016-10-28_12-48-23
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {'frameRateDivisor': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 300, 'position': (0, 0), 'color': 'white', 'duration_s': 1}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 300, 'position': (0, 0), 'spatialFilter': BigDog{}, 'color': 'white', 'duration_s': 2}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 300, 'position': (0, 0), 'spatialFilter': SmallDog{}, 'color': 'white', 'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}

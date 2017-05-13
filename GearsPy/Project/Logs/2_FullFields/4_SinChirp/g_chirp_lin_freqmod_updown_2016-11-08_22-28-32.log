@@ -1,0 +1,19 @@
+#Sequence launch at 2016-11-08_22-28-32
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldOscillation2
+ args = {'duration_s': 6, 'phase': 1.57075, 'endWavelength_s': 1, 'wavelength_s': 1}
+----------------------STIMULUS-----------------------
+FullfieldOscillation2
+ args = {'duration_s': 6, 'phase': 1.57075, 'endWavelength_s': 1, 'wavelength_s': 1}
+----------------------STIMULUS-----------------------
+FullfieldOscillation2
+ args = {'duration_s': 6, 'phase': 1.57075, 'endWavelength_s': 1, 'wavelength_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

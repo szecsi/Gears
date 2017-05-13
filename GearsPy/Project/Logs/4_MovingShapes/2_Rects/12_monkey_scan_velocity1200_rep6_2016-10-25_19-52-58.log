@@ -1,0 +1,1216 @@
+#Sequence launch at 2016-10-25_19-52-58
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'east', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'west', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'south', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -1000.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': -333.33333333333337}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 0.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 333.33333333333326}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 666.6666666666667}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'north', 'offset_um': 1000.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southeast', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northwest', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'southwest', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -1250.0}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -892.8571428571429}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -535.7142857142857}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': -178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 178.57142857142867}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 535.7142857142858}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 892.8571428571427}
+----------------------STIMULUS-----------------------
+Cross
+ args = {'direction': 'northeast', 'offset_um': 1250.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

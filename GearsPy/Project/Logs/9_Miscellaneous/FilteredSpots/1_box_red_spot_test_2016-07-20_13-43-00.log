@@ -1,0 +1,28 @@
+#Sequence launch at 2016-07-20_13-43-00
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {'frameRateDivisor': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'color': 'red', 'radius': 64, 'spatialFilter': FftBox{}}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'color': 'red', 'radius': 128, 'spatialFilter': FftBox{}}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'color': 'red', 'radius': 256, 'spatialFilter': FftBox{}}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 20, 'color': 'red', 'radius': 512, 'spatialFilter': FftBox{}}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}

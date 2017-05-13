@@ -1,0 +1,58 @@
+#Sequence launch at 2016-07-18_10-25-59
+----------------------EXPERIMENT-----------------------
+FullfieldSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 45, 'color': 0.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2, 'color': 0.5}
+----------------------STIMULUS-----------------------
+FullfieldOscillation
+ args = {'amplitude': 0, 'endAmplitude': 0.5, 'wavelength_s': 0.333, 'duration_s': 40}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5, 'color': 0.5}
+----------------------STIMULUS-----------------------
+FullfieldOscillation
+ args = {'amplitude': 0.5, 'endAmplitude': 0, 'wavelength_s': 0.333, 'duration_s': 40}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5, 'color': 0.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2, 'color': 0.5}
+----------------------STIMULUS-----------------------
+FullfieldOscillation
+ args = {'amplitude': 0, 'endAmplitude': 0.5, 'wavelength_s': 0.333, 'duration_s': 40}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5, 'color': 0.5}
+----------------------STIMULUS-----------------------
+FullfieldOscillation
+ args = {'amplitude': 0.5, 'endAmplitude': 0, 'wavelength_s': 0.333, 'duration_s': 40}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5, 'color': 0.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2, 'color': 0.5}
+----------------------STIMULUS-----------------------
+FullfieldOscillation
+ args = {'amplitude': 0, 'endAmplitude': 0.5, 'wavelength_s': 0.333, 'duration_s': 40}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5, 'color': 0.5}
+----------------------STIMULUS-----------------------
+FullfieldOscillation
+ args = {'amplitude': 0.5, 'endAmplitude': 0, 'wavelength_s': 0.333, 'duration_s': 40}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5, 'color': 0.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

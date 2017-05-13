@@ -1,0 +1,16 @@
+#Sequence launch at 2016-10-31_10-17-21
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {'frameRateDivisor': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+SingleShape
+ args = {'duration_s': 4, 'shape': Warp{'warp': Polarize{}, 'pif': RandomGrid{}}, 'prng': XorShift128{'randomSeed': 35436546}}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

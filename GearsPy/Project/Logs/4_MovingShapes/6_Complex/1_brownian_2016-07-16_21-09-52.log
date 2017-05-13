@@ -1,0 +1,13 @@
+#Sequence launch at 2016-07-16_21-09-52
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+SinglePass
+ args = {'particleSystem': Brownian{'particleGridSize': (64, 64)}, 'duration_s': 10, 'prng': XorShift128{'randomGridSize': (64, 64)}, 'spass': <Project.Components.Pass.Generic.Generic object at 0x0EFA99C0>}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

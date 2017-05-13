@@ -1,0 +1,160 @@
+#Sequence launch at 2016-10-25_01-23-15
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 16}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 8}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 4}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 0.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 0.25}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 0.125}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 16}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 8}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 4}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 0.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 0.25}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldLinearModulation
+ args = {'intensitySlope': 'down', 'duration_s': 0.125}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

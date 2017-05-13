@@ -1,0 +1,16 @@
+#Sequence launch at 2016-10-31_10-12-24
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+SingleShape
+ args = {'duration_s': 100, 'shape': MouseRect{'size_um': <Project.Components.Interactive.MouseMotion.MouseMotion object at 0x0E508D70>}, 'shapeMotion': MouseCrossing{}}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

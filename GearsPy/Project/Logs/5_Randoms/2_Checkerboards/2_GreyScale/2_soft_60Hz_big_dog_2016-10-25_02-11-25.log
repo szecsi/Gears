@@ -1,0 +1,16 @@
+#Sequence launch at 2016-10-25_02-11-25
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {'frameRateDivisor': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+GreyscaleRandomGrid
+ args = {'duration_s': 10, 'randomSeed': 35436546, 'spatialFilter': BigDog{}}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

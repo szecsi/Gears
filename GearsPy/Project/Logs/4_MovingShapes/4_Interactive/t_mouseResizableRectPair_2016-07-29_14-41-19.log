@@ -1,0 +1,19 @@
+#Sequence launch at 2016-07-29_14-41-19
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+SingleShape
+ args = {'duration_s': 60, 'shape': Rect{'size_um': (<Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0A911D50>, <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0A911930>)}}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}

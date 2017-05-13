@@ -1,0 +1,13 @@
+#Sequence launch at 2016-09-23_22-34-59
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Video
+ args = {'toneMapping': Linear{'dynamic': True}, 'videoPath': './Project/Media/small.mp4', 'duration_s': 20}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

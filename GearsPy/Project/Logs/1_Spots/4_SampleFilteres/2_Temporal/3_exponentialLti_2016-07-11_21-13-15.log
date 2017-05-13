@@ -1,0 +1,28 @@
+#Sequence launch at 2016-07-11_21-13-15
+----------------------EXPERIMENT-----------------------
+SpotSequence
+ args = {'frameRateDivisor': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'temporalFilter': ExponentialLti{}, 'duration_s': 1.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'temporalFilter': ExponentialLti{}, 'duration_s': 2.0}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'temporalFilter': ExponentialLti{}, 'color': 'white', 'radius': 128, 'duration_s': 2}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'temporalFilter': ExponentialLti{}, 'color': (0.5, 0.5, 0.5), 'radius': 128, 'duration_s': 2}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'temporalFilter': ExponentialLti{}, 'color': 'white', 'radius': 128, 'duration_s': 2}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'temporalFilter': ExponentialLti{}, 'color': (0.5, 0.5, 0.5), 'radius': 128, 'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'temporalFilter': ExponentialLti{}, 'duration_s': 2.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'temporalFilter': ExponentialLti{}, 'duration_s': 1.0}

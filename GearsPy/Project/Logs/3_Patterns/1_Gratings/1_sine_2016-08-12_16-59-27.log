@@ -1,0 +1,13 @@
+#Sequence launch at 2016-08-12_16-59-27
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+SingleShape
+ args = {'duration_s': 30, 'pattern': SineGrating{'wavelength': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0C15C790>, 'color2': <Project.Components.Interactive.MouseColor.MouseColor object at 0x0C15C630>, 'direction': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0C15C670>}}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

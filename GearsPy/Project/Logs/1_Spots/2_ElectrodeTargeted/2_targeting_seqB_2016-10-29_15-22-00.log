@@ -1,0 +1,109 @@
+#Sequence launch at 2016-10-29_15-22-00
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 3}
+----------------------STIMULUS-----------------------
+Fullfield
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Fullfield
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'position': ('R', 14), 'duration_s': 2, 'radius': 150}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'position': ('D', 11), 'duration_s': 2, 'radius': 150}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'position': ('I', 7), 'duration_s': 2, 'radius': 150}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'position': ('O', 10), 'duration_s': 2, 'radius': 150}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'position': ('R', 14), 'duration_s': 2, 'radius': 150}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'position': ('D', 11), 'duration_s': 2, 'radius': 150}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'position': ('I', 7), 'duration_s': 2, 'radius': 150}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'position': ('O', 10), 'duration_s': 2, 'radius': 150}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'position': ('R', 14), 'duration_s': 2, 'radius': 150}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'position': ('D', 11), 'duration_s': 2, 'radius': 150}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'position': ('I', 7), 'duration_s': 2, 'radius': 150}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'position': ('O', 10), 'duration_s': 2, 'radius': 150}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Fullfield
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Fullfield
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 6.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

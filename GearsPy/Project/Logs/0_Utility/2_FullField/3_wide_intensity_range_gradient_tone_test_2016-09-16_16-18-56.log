@@ -1,0 +1,13 @@
+#Sequence launch at 2016-09-16_16-18-56
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+FullfieldGradient
+ args = {'direction': 0, 'toneMapping': Linear{'toneRangeMax': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0BD06E10>, 'toneRangeMin': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0D669CF0>}, 'color2': 2, 'color1': -1, 'duration_s': 100}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'color': 0.0, 'duration_s': 1}

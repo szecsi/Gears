@@ -1,0 +1,73 @@
+#Sequence launch at 2016-07-19_23-14-06
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'color': 0.5, 'duration_s': 20}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 1, 'direction': 'east'}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 18, 'direction': 'east', 'velocity': 1200}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 1, 'direction': 'east'}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 18, 'direction': 'east', 'velocity': -1200}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 1, 'direction': 'east'}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 1, 'direction': 'north'}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 18, 'direction': 'north', 'velocity': 1200}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 1, 'direction': 'north'}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 18, 'direction': 'north', 'velocity': -1200}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 1, 'direction': 'north'}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 1, 'direction': 'southeast'}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 18, 'direction': 'southeast', 'velocity': 1200}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 1, 'direction': 'southeast'}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 18, 'direction': 'southeast', 'velocity': -1200}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 1, 'direction': 'southeast'}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 1, 'direction': 'southwest'}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 18, 'direction': 'southwest', 'velocity': 1200}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 1, 'direction': 'southwest'}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 18, 'direction': 'southwest', 'velocity': -1200}
+----------------------STIMULUS-----------------------
+MovingGrid
+ args = {'sineExponent': 0, 'duration_s': 1, 'direction': 'southwest'}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

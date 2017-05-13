@@ -1,0 +1,19 @@
+#Sequence launch at 2016-08-10_17-53-38
+----------------------EXPERIMENT-----------------------
+BarcodeSequence
+ args = {'frameRateDivisor': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+ShiftingBarcode
+ args = {'shape': ColorRandomGrid{}, 'initialValue': 'random', 'randomSeed': 35436546, 'duration_s': 3}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

@@ -1,0 +1,13 @@
+#Sequence launch at 2016-09-24_23-01-39
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+FullfieldGradient
+ args = {'color2': 2, 'toneMapping': HistogramEqualized{'dynamic': True}, 'duration_s': 100, 'direction': 0, 'color1': -1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'color': 0.0, 'duration_s': 1}

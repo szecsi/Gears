@@ -1,0 +1,73 @@
+General: reference problem./ 
+
+Abstrast: 
+no remark that the software was tested and validated in the retina. Put one. 
+
+Introduction
+line 27 Details of similar existing packages are discussed later in detail. 
+Not clear what is the problem, why a new software is needed. Detail, advantage, shorcomings. 
+
+line 57 section 2 should be noted, Check reference accuracy. 
+Mention the validation results, eventually in the Conclusions (5?).
+Sec 5 finally concludes, this should be the last. Not further results at the end. 
+
+65: write that will be discussed, as well as their applications, later. 
+Hhy do they appear here. 
+TENSION, SOMETHING MISSING HERE or put it later, to around 120 ***
+79 In the following, we present....
+
+120 ...to our knowledge, outstanding. (not unique).
+Existing light-stimulus solutions.... for TITLE, not only solutions. 
+
+figure 4 explain in detail, reference in text needed. 
+137 shader: reference or better explain. 
+more references are need to the computational part
+
+168-169
+Rephrase or delete speculative senmtence. 
+Negatively phrased ... this library can unlimitedly be broaden. 
+
+195 prerequisite is forgotten and not realized what is ist. See fig 1 or sg like this. 
+Explain, reference to the figure. Simirlar 201, core drawing. 
+
+
+202: what is "figure", not the best name for it. 
+
+240 not chessboard, checkerboard. change generically. 
+
+FIGURE2 hanging out here. Put it where we discuss its feature. 
+
+fig 4 should be explained, referred in the text. 
+
+USING GEARS a new modified title would be needed, .... software sg. 
+
+fig5 should be explained. Suggesting one horizontal frame incl. user role frame. 
+Fig. 5. does not appear in the text. this should be done. 
+
+
+4.5
+538, 539 too much detail the RGC. Not to restrict to retina. MUCH BROADER. 
+rec fields retina, lgn,. cortex, everything center-surround structure. 
+Probe mecican hat, use simple stim, among others. 
+Maybe start with a psychophys system.
+
+
+4.5.2. Moving shapes and oriented shapes is a better title. 
+
+626: xor shift better: "just novel pseudo...."
+Victor-shapely papaer, which features. refer. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,19 @@
+#Sequence launch at 2016-10-28_12-43-00
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+SingleShape
+ args = {'pattern': Solid{'color': 'green'}, 'duration_s': 60, 'shape': Rect{'size_um': <Project.Components.Interactive.MouseMotion.MouseMotion object at 0x064CCFB0>}}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}

@@ -1,0 +1,7 @@
+
+__pycache__
+Logs
+PatternYard
+Randoms
+OutputVideos
+.zip

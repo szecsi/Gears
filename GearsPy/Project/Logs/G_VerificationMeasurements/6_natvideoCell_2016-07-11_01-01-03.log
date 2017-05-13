@@ -1,0 +1,13 @@
+#Sequence launch at 2016-07-11_01-01-03
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Video
+ args = {'temporalFilter': Cell{}, 'videoPath': './Project/Media/Birds_7.mp4', 'duration_s': 20}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

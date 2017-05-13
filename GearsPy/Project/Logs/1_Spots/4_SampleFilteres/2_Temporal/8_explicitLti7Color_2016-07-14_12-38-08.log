@@ -1,0 +1,28 @@
+#Sequence launch at 2016-07-14_12-38-08
+----------------------EXPERIMENT-----------------------
+SpotSequence
+ args = {'frameRateDivisor': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'temporalFilter': RandomLti7{}, 'duration_s': 1.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'temporalFilter': RandomLti7{}, 'duration_s': 2.0}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': (1.0, 0.0, 1.0), 'temporalFilter': RandomLti7{}, 'radius': 128, 'duration_s': 4}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': (0.0, 0.5, 0.5), 'temporalFilter': RandomLti7{}, 'radius': 128, 'duration_s': 2}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': 'yellow', 'temporalFilter': RandomLti7{}, 'radius': 128, 'duration_s': 2}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': (0.5, 0.0, 0.5), 'temporalFilter': RandomLti7{}, 'radius': 128, 'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'temporalFilter': RandomLti7{}, 'duration_s': 2.0}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'temporalFilter': RandomLti7{}, 'duration_s': 1.0}

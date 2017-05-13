@@ -1,0 +1,64 @@
+#Sequence launch at 2016-10-30_12-27-15
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x05C1FF90>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x05C1FEB0>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x05C1FFD0>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x05C1FF50>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x05C1FF70>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0A4BA350>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0A4D2CB0>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0A4E7F70>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0AE68F90>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x05C1C050>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x05C1C110>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x05C1C130>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x05C1C530>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x05C1C4D0>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x05C1C550>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x05C1CAF0>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x05C1CB10>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0AEAF0F0>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Video
+ args = {'spatialFilter': DogFftSpatSpec{'weight2': 0, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0AEAF3D0>, 'weight1': 10}, 'duration_s': 8, 'videoPath': './Project/Media/Birds_7.mp4'}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

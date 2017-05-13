@@ -1,0 +1,28 @@
+#Sequence launch at 2016-08-10_17-51-31
+----------------------EXPERIMENT-----------------------
+BarcodeSequence
+ args = {'frameRateDivisor': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+ShiftingBarcode
+ args = {'randomSeed': 35436546, 'initialValue': 'random', 'duration_s': 3}
+----------------------STIMULUS-----------------------
+ShiftingBarcode
+ args = {'step': (1, 0), 'randomSeed': 35436546, 'initialValue': 'keep', 'duration_s': 3}
+----------------------STIMULUS-----------------------
+ShiftingBarcode
+ args = {'step': (0, -1), 'randomSeed': 35436546, 'initialValue': 'random', 'randomGridSize': (1, 0), 'duration_s': 3}
+----------------------STIMULUS-----------------------
+ShiftingBarcode
+ args = {'step': (0, 1), 'randomSeed': 35436546, 'initialValue': 'keep', 'randomGridSize': (1, 0), 'duration_s': 3}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

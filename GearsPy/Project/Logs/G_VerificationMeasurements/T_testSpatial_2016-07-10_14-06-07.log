@@ -1,0 +1,40 @@
+#Sequence launch at 2016-07-10_14-06-07
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': 0.25, 'background': 0.75, 'radius': 125, 'spatialFilter': DogFftFreqSpec{'weight2': 50, 'weight1': -50, 'sigma1': 32.59485612426789, 'sigma2': 16.297428062133946}, 'duration_s': 2, 'position': (0, 0)}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': 0.25, 'background': 0.75, 'radius': 125, 'spatialFilter': DogFftSpatSpec{'weight2': -500, 'weight1': 500, 'sigma1': 5, 'sigma2': 10}, 'duration_s': 2, 'position': (0, 0)}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': 0.25, 'background': 0.75, 'radius': 125, 'spatialFilter': DogFftFreqSpec{'weight2': 50, 'weight1': -50, 'sigma1': 32.59485612426789, 'sigma2': 16.297428062133946}, 'duration_s': 2, 'position': (0, 0)}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': 0.25, 'background': 0.75, 'radius': 125, 'spatialFilter': DogFftSpatSpec{'weight2': -500, 'weight1': 500, 'sigma1': 5, 'sigma2': 10}, 'duration_s': 2, 'position': (0, 0)}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': 0.25, 'background': 0.75, 'radius': 125, 'spatialFilter': DogFftFreqSpec{'weight2': 50, 'weight1': -50, 'sigma1': 32.59485612426789, 'sigma2': 16.297428062133946}, 'duration_s': 2, 'position': (0, 0)}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': 0.25, 'background': 0.75, 'radius': 125, 'spatialFilter': DogFftSpatSpec{'weight2': -500, 'weight1': 500, 'sigma1': 5, 'sigma2': 10}, 'duration_s': 2, 'position': (0, 0)}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': 0.25, 'background': 0.75, 'radius': 125, 'spatialFilter': DogFftFreqSpec{'weight2': 50, 'weight1': -50, 'sigma1': 32.59485612426789, 'sigma2': 16.297428062133946}, 'duration_s': 2, 'position': (0, 0)}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': 0.25, 'background': 0.75, 'radius': 125, 'spatialFilter': DogFftSpatSpec{'weight2': -500, 'weight1': 500, 'sigma1': 5, 'sigma2': 10}, 'duration_s': 2, 'position': (0, 0)}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': 0.25, 'background': 0.75, 'radius': 125, 'spatialFilter': DogFftFreqSpec{'weight2': 50, 'weight1': -50, 'sigma1': 32.59485612426789, 'sigma2': 16.297428062133946}, 'duration_s': 2, 'position': (0, 0)}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'color': 0.25, 'background': 0.75, 'radius': 125, 'spatialFilter': DogFftSpatSpec{'weight2': -500, 'weight1': 500, 'sigma1': 5, 'sigma2': 10}, 'duration_s': 2, 'position': (0, 0)}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.5}

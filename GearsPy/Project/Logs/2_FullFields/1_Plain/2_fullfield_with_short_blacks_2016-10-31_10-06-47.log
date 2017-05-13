@@ -1,0 +1,88 @@
+#Sequence launch at 2016-10-31_10-06-47
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Fullfield
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Fullfield
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Fullfield
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Fullfield
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Fullfield
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Fullfield
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Fullfield
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Fullfield
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.025}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

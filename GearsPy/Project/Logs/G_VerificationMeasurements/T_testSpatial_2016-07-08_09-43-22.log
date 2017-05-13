@@ -1,0 +1,40 @@
+#Sequence launch at 2016-07-08_09-43-22
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'radius': 125, 'color': 0.25, 'spatialFilter': BigDog{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'radius': 125, 'color': 0.25, 'spatialFilter': IdealLowpass{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'radius': 125, 'color': 0.25, 'spatialFilter': BigDog{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'radius': 125, 'color': 0.25, 'spatialFilter': IdealLowpass{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'radius': 125, 'color': 0.25, 'spatialFilter': BigDog{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'radius': 125, 'color': 0.25, 'spatialFilter': IdealLowpass{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'radius': 125, 'color': 0.25, 'spatialFilter': BigDog{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'radius': 125, 'color': 0.25, 'spatialFilter': IdealLowpass{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'radius': 125, 'color': 0.25, 'spatialFilter': BigDog{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'radius': 125, 'color': 0.25, 'spatialFilter': IdealLowpass{}, 'background': 0.75}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.5}

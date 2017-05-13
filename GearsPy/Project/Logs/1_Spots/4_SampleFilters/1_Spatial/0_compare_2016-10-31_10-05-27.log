@@ -1,0 +1,52 @@
+#Sequence launch at 2016-10-31_10-05-27
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {'frameRateDivisor': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'position': (0, 0), 'color': 'white', 'radius': 400, 'background': 0.5, 'innerRadius': 300}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 400, 'position': (0, 0), 'temporalFilter': Cell{}, 'color': 'white', 'spatialFilter': BigDog{}, 'background': 0.5, 'duration_s': 2, 'innerRadius': 300}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': SmallDog{}, 'radius': 64, 'position': (0, 0), 'duration_s': 2, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 128, 'duration_s': 1, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': SmallDog{}, 'radius': 128, 'duration_s': 2, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': BigDog{}, 'radius': 128, 'duration_s': 2, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 256, 'duration_s': 1, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': SmallDog{}, 'radius': 256, 'duration_s': 2, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': BigDog{}, 'radius': 256, 'duration_s': 2, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 512, 'duration_s': 1, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': SmallDog{}, 'radius': 512, 'duration_s': 2, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': BigDog{}, 'radius': 512, 'duration_s': 2, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}

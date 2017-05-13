@@ -1,0 +1,13 @@
+#Sequence launch at 2016-10-31_10-08-32
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+SingleShape
+ args = {'duration_s': 60, 'pattern': SineWheel{'direction': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0CE09590>, 'wavelength_radians': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0CE09910>}}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

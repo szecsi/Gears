@@ -1,0 +1,55 @@
+#Sequence launch at 2016-07-18_10-25-48
+----------------------EXPERIMENT-----------------------
+FullfieldSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldOscillation
+ args = {'endWavelength_s': 4, 'duration_s': 75, 'wavelength_s': 0.06666666666666667}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5}
+----------------------STIMULUS-----------------------
+FullfieldOscillation
+ args = {'endWavelength_s': 0.06666666666666667, 'duration_s': 75, 'wavelength_s': 4}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldOscillation
+ args = {'endWavelength_s': 4, 'duration_s': 75, 'wavelength_s': 0.06666666666666667}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5}
+----------------------STIMULUS-----------------------
+FullfieldOscillation
+ args = {'endWavelength_s': 0.06666666666666667, 'duration_s': 75, 'wavelength_s': 4}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+FullfieldOscillation
+ args = {'endWavelength_s': 4, 'duration_s': 75, 'wavelength_s': 0.06666666666666667}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5}
+----------------------STIMULUS-----------------------
+FullfieldOscillation
+ args = {'endWavelength_s': 0.06666666666666667, 'duration_s': 75, 'wavelength_s': 4}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 4.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

@@ -1,0 +1,28 @@
+#Sequence launch at 2016-10-31_10-06-19
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {'frameRateDivisor': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': SmallDog{}, 'radius': 128, 'position': (0, 0), 'duration_s': 2, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': BigDog{}, 'radius': 128, 'duration_s': 2, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': DogFftFreqSpec{}, 'radius': 128, 'duration_s': 2, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': DogFftSpatSpec{'weight1': 10.0, 'weight2': -10.0, 'sigma2': 5.0, 'sigma1': 10.0}, 'radius': 128, 'duration_s': 2, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}

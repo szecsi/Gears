@@ -1,0 +1,40 @@
+#Sequence launch at 2016-07-10_10-17-51
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'background': 0.75, 'radius': 125, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': DisplayStimFft{}, 'duration_s': 2, 'background': 0.75, 'radius': 125, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'background': 0.75, 'radius': 125, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': DisplayStimFft{}, 'duration_s': 2, 'background': 0.75, 'radius': 125, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'background': 0.75, 'radius': 125, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': DisplayStimFft{}, 'duration_s': 2, 'background': 0.75, 'radius': 125, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'background': 0.75, 'radius': 125, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': DisplayStimFft{}, 'duration_s': 2, 'background': 0.75, 'radius': 125, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'duration_s': 2, 'background': 0.75, 'radius': 125, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'spatialFilter': DisplayStimFft{}, 'duration_s': 2, 'background': 0.75, 'radius': 125, 'color': 0.25}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.5}

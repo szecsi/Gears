@@ -1,0 +1,19 @@
+#Experiment launch at 2016-06-28_22-57-49
+----------------------EXPERIMENT-----------------------
+SpotExperiment
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.5}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 50, 'duration_s': 2000, 'color': 'red'}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.5}

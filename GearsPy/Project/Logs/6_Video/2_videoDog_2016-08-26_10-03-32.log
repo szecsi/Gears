@@ -1,0 +1,13 @@
+#Sequence launch at 2016-08-26_10-03-32
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Video
+ args = {'duration_s': 20, 'videoPath': './Project/Media/small.mp4', 'spatialFilter': BigDog{}}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

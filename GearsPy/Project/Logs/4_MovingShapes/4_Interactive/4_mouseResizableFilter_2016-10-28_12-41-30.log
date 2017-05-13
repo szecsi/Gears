@@ -1,0 +1,19 @@
+#Sequence launch at 2016-10-28_12-41-30
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+SingleShape
+ args = {'duration_s': 60, 'pattern': Solid{'color': 'green'}, 'shape': Rect{'size_um': <Project.Components.Interactive.MouseMotion.MouseMotion object at 0x065DCFB0>}, 'spatialFilter': DogFftFreqSpec{'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x065DCEF0>, 'weight1': 100, 'sigma2': 5.0, 'weight2': 0}}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 0.1}

@@ -1,0 +1,25 @@
+#Sequence launch at 2016-10-28_23-35-08
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {'frameRateDivisor': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 500, 'duration_s': 5, 'color': 'white'}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Spot
+ args = {'radius': 500, 'duration_s': 5, 'color': 'red'}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 5}
+----------------------STIMULUS-----------------------
+Blank
+ args = {}

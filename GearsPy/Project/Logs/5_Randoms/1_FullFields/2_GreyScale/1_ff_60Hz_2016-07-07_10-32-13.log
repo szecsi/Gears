@@ -1,0 +1,16 @@
+#Sequence launch at 2016-07-07_10-32-13
+----------------------EXPERIMENT-----------------------
+GreyscaleRandomGridSequence
+ args = {'frameRateDivisor': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}
+----------------------STIMULUS-----------------------
+GreyscaleRandomGrid
+ args = {'duration_s': 480, 'randomGridSize': (1, 1), 'randomSeed': 35436546}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 2}

@@ -1,0 +1,385 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{0615ef5a-012b-4078-9c10-365ec2be7b26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{c3b26e05-6b48-4adf-afd7-b0f1acf0d9dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\fft">
+      <UniqueIdentifier>{26ecb09d-3cd5-46ce-a8f1-65e55f6d1b5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\gpu">
+      <UniqueIdentifier>{2705328f-35d5-4c3e-b1bb-5376fd189c15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\math">
+      <UniqueIdentifier>{38b00319-f82f-4a4b-b796-6dc8a0364de5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\font">
+      <UniqueIdentifier>{a74a9b37-7cdb-4a62-971b-c83222666a01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\event">
+      <UniqueIdentifier>{e4790c1f-103a-4ef7-b710-1cf922430a31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\video">
+      <UniqueIdentifier>{606abaef-72b3-4ab2-8365-06337bf8cb9d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+    <Text Include="src\core\StimulusWindowLinux.cpp">
+      <Filter>src\core</Filter>
+    </Text>
+    <Text Include="src\core\PortHandlerLinux.cpp">
+      <Filter>src\core</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\dllmain.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stdafx.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\KernelManager.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\ShaderManager.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\SpatialFilter.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\SpatialFilterRenderer.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Stimulus.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\StimulusRenderer.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fft\FFT.cpp">
+      <Filter>src\fft</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fft\load_shaders.cpp">
+      <Filter>src\fft</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gpu\Framebuffer.cpp">
+      <Filter>src\gpu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gpu\Pointgrid.cpp">
+      <Filter>src\gpu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gpu\Quad.cpp">
+      <Filter>src\gpu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gpu\RandomSequenceBuffer.cpp">
+      <Filter>src\gpu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gpu\Shader.cpp">
+      <Filter>src\gpu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gpu\StimulusGrid.cpp">
+      <Filter>src\gpu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gpu\Texture.cpp">
+      <Filter>src\gpu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gpu\TextureQueue.cpp">
+      <Filter>src\gpu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\constants.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gpu\Nothing.cpp">
+      <Filter>src\gpu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Ticker.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gears.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\font\FontManager.cpp">
+      <Filter>src\font</Filter>
+    </ClCompile>
+    <ClCompile Include="src\font\TexFont.cpp">
+      <Filter>src\font</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event\events.cpp">
+      <Filter>src\event</Filter>
+    </ClCompile>
+    <ClCompile Include="src\video\FrameRenderer.cpp">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="src\video\MovieDecoder.cpp">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="src\video\VideoFrame.cpp">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Pass.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\PassRenderer.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Sequence.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Response.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\PortHandlerWin32.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\StimulusWindowWin32.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\SequenceRenderer.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\stdafx.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\targetver.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\KernelManager.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\ShaderManager.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Signal.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\SpatialFilter.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\SpatialFilterRenderer.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Stimulus.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\StimulusRenderer.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\TextureManager.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\wglext.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fft\FFT.h">
+      <Filter>src\fft</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fft\load_shaders.h">
+      <Filter>src\fft</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gpu\Framebuffer.hpp">
+      <Filter>src\gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gpu\Pointgrid.hpp">
+      <Filter>src\gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gpu\Quad.hpp">
+      <Filter>src\gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gpu\RandomSequenceBuffer.hpp">
+      <Filter>src\gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gpu\Shader.hpp">
+      <Filter>src\gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gpu\StimulusGrid.hpp">
+      <Filter>src\gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gpu\Texture.hpp">
+      <Filter>src\gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gpu\TextureQueue.hpp">
+      <Filter>src\gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\bool1.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\bool2.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\bool3.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\bool4.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\boolswizzle.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\dualquat.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\float1.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\float2.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\float2swizzle.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\float3.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\float3swizzle.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\float4.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\float4swizzle.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\float4x4.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\floatswizzle.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\int1.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\int2.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\int3.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\int4.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\intswizzle.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\math.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\uint1.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\uint2.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\uint3.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\uint4.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\uintswizzle.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\PythonDict.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gpu\Nothing.hpp">
+      <Filter>src\gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Ticker.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\font\FontManager.h">
+      <Filter>src\font</Filter>
+    </ClInclude>
+    <ClInclude Include="src\font\TexFont.h">
+      <Filter>src\font</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\StimulusWindow.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\Base.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\KeyPressed.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\KeyReleased.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\MouseMove.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\Wheel.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\events.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\Frame.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\StimulusEnd.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\StimulusStart.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\MousePressedLeft.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\MousePressedMiddle.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\MousePressedRight.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\MouseReleasedLeft.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\MouseReleasedMiddle.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\MouseReleasedRight.h">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\pythonerr.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\video\FrameRenderer.h">
+      <Filter>src\video</Filter>
+    </ClInclude>
+    <ClInclude Include="src\video\MovieDecoder.h">
+      <Filter>src\video</Filter>
+    </ClInclude>
+    <ClInclude Include="src\video\VideoFrame.h">
+      <Filter>src\video</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Pass.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\PassRenderer.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Sequence.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\SequenceRenderer.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Response.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\PortHandler.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

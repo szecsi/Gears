@@ -1,0 +1,13 @@
+#Sequence launch at 2016-08-10_15-22-41
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Video
+ args = {'videoPath': './Project/OutputVideos/7_VirtualEnvironments/2_3DEnvironments/2_Raycast/2_volcanic.mpg', 'duration_s': 20}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

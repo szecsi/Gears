@@ -1,0 +1,19 @@
+#Sequence launch at 2016-08-05_18-03-27
+----------------------EXPERIMENT-----------------------
+ImageSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Image
+ args = {'duration_s': 40, 'imagePath': './Project/Media/esher-pegasi-seamless.jpg', 'velocity': (200, 200)}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

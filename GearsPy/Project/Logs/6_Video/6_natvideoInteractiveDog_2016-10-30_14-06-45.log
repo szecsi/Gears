@@ -1,0 +1,10 @@
+#Sequence launch at 2016-10-30_14-06-45
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {}
+----------------------STIMULUS-----------------------
+Video
+ args = {'videoPath': './Project/Media/Birds_7.mp4', 'spatialFilter': DogFftSpatSpec{'weight1': 10, 'sigma1': <Project.Components.Interactive.MouseWheel.MouseWheel object at 0x0B287FD0>, 'weight2': 0}, 'duration_s': 360}
+----------------------STIMULUS-----------------------
+Blank
+ args = {'duration_s': 1}

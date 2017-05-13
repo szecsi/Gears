@@ -1,0 +1,7 @@
+#Sequence launch at 2016-10-25_01-50-35
+----------------------EXPERIMENT-----------------------
+DefaultSequence
+ args = {'frameRateDivisor': 1}
+----------------------STIMULUS-----------------------
+SaturatedColorRandomGrid
+ args = {'duration_s': 10, 'randomSeed': 35436546}
