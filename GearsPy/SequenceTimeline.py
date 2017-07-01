@@ -144,8 +144,9 @@ class SequenceTimeline(QGLWidget):
         self.launcher.pan(e.x() - self.prevMouseX)
         self.prevMouseX = e.x()
 
-    def minimumSizeHint(self):
-        return QSize(1024, 750)
+    # def minimumSizeHint(self):
+    # Fullsize not working on linux because of this function
+    #     return QSize(1024, 750)
 
     def wheelEvent(self, e):
         self.launcher.zoom(e)

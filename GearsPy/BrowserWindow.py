@@ -366,7 +366,8 @@ class BrowserWindow(QWidget):
         self.setWindowTitle('O\u0398\u03a6O')
 #        self.setWindowIcon(QIcon('web.png'))        
         self.showFullScreen()
-        self.setFixedSize(self.size())
+        #Full size window not working on linux because of this line
+        #self.setFixedSize(self.size())
         self.tree.setCurrentIndex( self.tree.model().index(0, 0))
 
     def keyPressEvent(self, e):
