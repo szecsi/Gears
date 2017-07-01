@@ -142,18 +142,7 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 
 	XStoreName( display, wnd, "GL 3.0 Window" );
 
-	Atom atoms[2] = { XInternAtom(display, "_NET_WM_STATE_FULLSCREEN", False), None };
-	XChangeProperty(
-		display, 
-		wnd, 
-		XInternAtom(display, "_NET_WM_STATE", False),
-		XA_ATOM, 32, PropModeReplace, (unsigned char *)atoms, 1
-	);
-
 	XSelectInput(display, wnd, eventMask);
-
-	std::cout << "Mapping window" << std::endl;
-	XMapWindow( display, wnd );
 
 
 	//////////////////////////////////////////////
@@ -176,12 +165,11 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 	// of a process use the same error handler, so be sure to guard against other
 	// threads issuing X commands while this code is running.
 	ctxErrorOccurred = false;
-	int (*oldHandler)(Display*, XErrorEvent*) =
-	XSetErrorHandler(&ctxErrorHandler);
+	int (*oldHandler)(Display*, XErrorEvent*) = XSetErrorHandler(&ctxErrorHandler);
 
 	// Check for the GLX_ARB_create_context extension string and the function.
 	// If either is not present, use GLX 1.3 context creation method.
-	if ( !isExtensionSupported( glxExts, "GLX_ARB_create_context" ) ||
+	if (!isExtensionSupported(glxExts, "GLX_ARB_create_context") ||
 		!glXCreateContextAttribsARB )
 	{
 		//printf( "glXCreateContextAttribsARB() not found"
@@ -235,22 +223,22 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 
 	if ( ctxErrorOccurred || !ctx )
 	{
-	  //printf( "Failed to create an OpenGL context\n" );
+	  std::cout << "Failed to create an OpenGL context\n" << std::endl;
 	  return;
 	}
 
 	// Verifying that context is a direct context
 	if ( ! glXIsDirect ( display, ctx ) )
 	{
-	  //printf( "Indirect GLX rendering context obtained\n" );
+	  std::cout << "Indirect GLX rendering context obtained\n" << std::endl;
 	}
 	else
 	{
-	  //printf( "Direct GLX rendering context obtained\n" );
+	  std::cout << "Direct GLX rendering context obtained\n" << std::endl;
 	}
 
 	//printf( "Making context current\n" );
-	glXMakeCurrent( display, wnd, ctx );
+	makeCurrent();
 
 	///////////////////////////////////////////////
 
@@ -272,15 +260,8 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 		specs << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
 		specs << "Version: " << glGetString(GL_VERSION) << std::endl;
 		specs << "GLSL: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-		specs << "GLEW_VERSION_3_3: " << glGetString(GLEW_VERSION_1_1) << std::endl;
 
 		std::cout << specs.str() << std::endl;
-	
-		/*if(!GLEW_VERSION_3_3)
-		{
-			PyErr_SetString(PyExc_RuntimeError, "OpenGL 3.3 not supported. Verify your HW specs and update your drivers.");
-			boost::python::throw_error_already_set();
-		}*/
 	}
 	err = glGetError();
 	if(err == GL_NO_ERROR)
@@ -294,37 +275,64 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 
 void StimulusWindow::run()
 {
-	srand (time(NULL));
-	typedef std::chrono::high_resolution_clock Clock;
-	typedef std::chrono::duration<float> Fsec;
-	auto lastFrame = Clock::now();
-	glClearColor( 0, 0.5, 0, 1 );
-	glClear( GL_COLOR_BUFFER_BIT );
-	glXSwapBuffers ( display, wnd );
+	Atom atoms[2] = { XInternAtom(display, "_NET_WM_STATE_FULLSCREEN", False), None };
+	XChangeProperty(
+		display, 
+		wnd, 
+		XInternAtom(display, "_NET_WM_STATE", False),
+		XA_ATOM, 32, PropModeReplace, (unsigned char *)atoms, 1
+	);
+	XMapWindow(display, wnd);
+
+	glViewport(0, 0, screenw, screenh);
+
+	if(sequenceRenderer->getSequence()->getUsesBusyWaitingThreadForSingals())
+		ticker = sequenceRenderer->startTicker();
+
+	quit = false;
 	XEvent e;
-	while(1)
+	while(!quit)
 	{
 		if( XCheckMaskEvent(display, eventMask, &e) )
 		{
 			/* exit on key press */
 			if(e.type==KeyPress)
 			{
-				break;
+				quit = true;
 			}
 		}
-		auto now = Clock::now();
-		Fsec elapsedSinceLastFrame = now - lastFrame;
-		if(elapsedSinceLastFrame.count() > 1)
-		{
-			float i = rand() % 101 * 0.01;
-			glClearColor( 0, 0.5, i, 1 );
-			glClear( GL_COLOR_BUFFER_BIT );
-			glXSwapBuffers ( display, wnd );
-			lastFrame = now;
-		}
 
-		usleep(100);
+		makeCurrent();
+		glViewport(0, 0, screenw, screenh);
+
+		glClearColor(0.5, 0.1, 0.2, 1);
+		glClear(GL_COLOR_BUFFER_BIT);
+		if(sequenceRenderer->exporting())
+			setSwapInterval( 0 );
+		else
+		{
+			setSwapInterval( sequenceRenderer->getSequence()->frameRateDivisor );
+		}
+		sequenceRenderer->setScreenResolution(screenw, screenh);
+		if(! sequenceRenderer->renderFrame(0) )
+			quit = true;
+			//TODO finished 
+
+		glXSwapBuffers ( display, wnd );
+		glFinish();
+		if(ticker)
+			ticker->onBufferSwap();
+
+		//if(GetAsyncKeyState(VK_ESCAPE))
+		//{
+		//	quit = true;
+		//}
 	}
+	if(sequenceRenderer->getSequence()->getUsesBusyWaitingThreadForSingals())
+		ticker->stop();
+	ticker.reset();
+	sequenceRenderer->reset();
+	XUnmapWindow(display, wnd);
 }
 
 void StimulusWindow::closeWindow()
@@ -339,9 +347,20 @@ void StimulusWindow::setGLFormat(void)
 	//TODO: Make implementation in Linux
 }
 
-void StimulusWindow::makeCurrent()
+int StimulusWindow::setSwapInterval(int swapInterval)
 {
 	//TODO: Make implementation in Linux
+}
+
+void StimulusWindow::makeCurrent()
+{
+	if((glXMakeCurrent(display, wnd, ctx)) == false)
+	{
+		//TODO error
+		//MessageBox(hwnd, "Failed to make OpenGL Rendering Context current",
+		//					 "OpenGL Rendering Context Error", MB_OK);
+		closeWindow();
+	}
 }
 
 void StimulusWindow::shareCurrent()

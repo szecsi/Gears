@@ -88,9 +88,9 @@ class StimulusWindow
 	int screenh;		// ...are stored in these variables
 	int vscreenw;		// when window is resized, the new dimensions...
 	int vscreenh;		// ...are stored in these variables
+	bool quit;			// indicates the state of application
 #ifdef _WIN32
 	bool fullscreen;
-	bool quit;			// indicates the state of application
 	int indexPixelFormat;	// number of available pixel formats
 
 	HCURSOR arrowCursor;
@@ -107,9 +107,9 @@ class StimulusWindow
 	SequenceRenderer::P	sequenceRenderer;
 	Ticker::P ticker;
 	StimulusWindow();
-#ifdef _WIN32
-	boost::python::object onHideCallback;
 
+	boost::python::object onHideCallback;
+#ifdef _WIN32
 	struct Monitor{
 		HMONITOR hMonitor;
 		HDC      hdcMonitor;
@@ -149,12 +149,12 @@ public:
 	{
 		this->sequenceRenderer = sequenceRenderer;
 	}
-#ifdef _WIN32
+
 	void onHide(boost::python::object onHide)
 	{
 		onHideCallback = onHide;
 	}
-
+#ifdef _WIN32
 	void addMonitor(
 	  HMONITOR hMonitor,
 	  HDC      hdcMonitor,
