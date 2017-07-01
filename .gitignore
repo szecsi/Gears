@@ -1,0 +1,11 @@
+*\.suo
+Gears\.VC\.db
+UpgradeLog\.htm
+Build/
+Bin/
+GearsPy/__pycache__/
+GearsPy/*/*/__pycache__/
+GearsPy/*/*/*/__pycache__/
+GearsPy/*/*/*/*/__pycache__/
+ipch/
+GearsPy/Project/Logs
