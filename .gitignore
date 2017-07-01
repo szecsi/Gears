@@ -9,3 +9,6 @@ GearsPy/*/*/*/__pycache__/
 GearsPy/*/*/*/*/__pycache__/
 ipch/
 GearsPy/Project/Logs
+
+Gears/obj
+Gears/bin
