@@ -320,7 +320,7 @@ class BrowserWindow(QWidget):
         rootPath = "./Project/Sequences"
         emptyDirs = find_empty_dirs(rootPath)
         for (path, dirs, files) in os.walk(rootPath):
-            for subdir in dirs:
+            for subdir in sorted(dirs):
                 if subdir != "__pycache__":
                     fullPath = os.path.join(path, subdir)
                     #if(rootPath == path):
@@ -335,7 +335,7 @@ class BrowserWindow(QWidget):
                     if fullPath in emptyDirs:
                         item1.setText(1, "gears_folder_not_holding_any_sequence_scripts")
                         item1.setHidden(True)
-            for item in files:
+            for item in sorted(files):
                 if item.endswith('.pyx'):
                     #if(rootPath == path):
                     #    item0 = QTreeWidgetItem(tree)
