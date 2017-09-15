@@ -52,7 +52,6 @@ std::string createStimulusWindow()
 	shaderManager  = ShaderManager::create();
 	textureManager = TextureManager::create();
 	kernelManager = KernelManager::create(sequenceRenderer, shaderManager);
-
 	return stimulusWindow->getSpecs();
 }
 

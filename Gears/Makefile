@@ -1,9 +1,9 @@
 CPP_FILES 	:= $(filter-out src/core/Experiment.cpp src/core/Event.cpp src/video/FrameRenderer.cpp, src/stdafx.cpp src/Gears.cpp $(wildcard src/core/*.cpp) $(wildcard src/event/*.cpp) $(wildcard src/video/*.cpp) $(wildcard src/gpu/*.cpp) $(wildcard src/math/*.cpp) $(wildcard src/fft/*.cpp))
 OBJ_FILES 	:= $(addprefix obj/, $(CPP_FILES:src/%.cpp=%.o))
 LD_FLAGS 	:= -shared -Wl,--export-dynamic -Wl,--no-undefined
-LINK_LIBS	:= -lX11 -lGL -lGLU -lGLEW -lpthread -lboost_python-py34 -lboost_filesystem -lboost_system -lpython3.4m -lavcodec -lavfilter -lavformat -lavdevice -lavutil -lswscale -lIL -lILU
+LINK_LIBS	:= -lX11 -lGL -lGLU -lGLEW -lpthread -lboost_python-py34 -lboost_filesystem -lboost_system -lpython3.4m -lavcodec -lavfilter -lavformat -lavdevice -lavutil -lswscale -lIL -lILU -L/home/gears/Qt5.7.0/5.7/gcc_64/lib -lQt5Core -lQt5Gui -lQt5OpenGL
 CC_FLAGS 	:= -fPIC --std=c++11
-INC		 	:= -I/usr/include/python3.4 -I/usr/include/qt5 -I/usr/include/boost -Isrc -Isrc/core -Isrc/gpu -Isrc/fft -Isrc/font -Isrc/video -I/usr/include/IL -I/usr/include/libavcodec -I../libs/eigen-eigen-07105f7124f9
+INC		 	:= -I/usr/include/python3.4 -I/home/gears/Qt5.7.0/5.7/gcc_64/include -I/usr/include/boost -Isrc -Isrc/core -Isrc/gpu -Isrc/fft -Isrc/font -Isrc/video -I/usr/include/IL -I/usr/include/libavcodec -I../libs/eigen-eigen-07105f7124f9
 COMPILE_OPT := -w
 
 default: dirs bin/linux/Gears.so

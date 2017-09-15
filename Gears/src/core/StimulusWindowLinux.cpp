@@ -9,12 +9,38 @@
 #include <ctime>
 #include <unistd.h>
 
+#include "SequenceRenderer.h"
+
+#include <QtCore/QVariant>
+#include <QtGui/QOpenGLContext>
+#include <QtOpenGL/QGLContext>
+#include <QtPlatformHeaders/QGLXNativeContext>
+
 #include "StimulusWindow.h"
+
+class AlmaPaprika : public QGLContext
+{
+public:
+	void setValidMost(bool asd)
+	{
+		QGLContext::setValid(asd);
+	}
+};
 
 StimulusWindow::StimulusWindow()
 {
 	display = nullptr;
 	ctx = nullptr;
+	asd = nullptr;
+	qwe = nullptr;
+}
+
+StimulusWindow::~StimulusWindow()
+{
+	if(asd)
+		delete reinterpret_cast<QGLContext*>(asd);
+	if(qwe)
+		delete reinterpret_cast<QOpenGLContext*>(asd);
 }
 
 void StimulusWindow::createWindow(bool windowed, uint width, uint height)
@@ -275,6 +301,7 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 
 void StimulusWindow::run()
 {
+	std::cout << "run" << std::endl;
 	Atom atoms[2] = { XInternAtom(display, "_NET_WM_STATE_FULLSCREEN", False), None };
 	XChangeProperty(
 		display, 
@@ -354,6 +381,7 @@ int StimulusWindow::setSwapInterval(int swapInterval)
 
 void StimulusWindow::makeCurrent()
 {
+	std::cout << "-----------makeCurrent-----------" << std::endl;
 	if((glXMakeCurrent(display, wnd, ctx)) == false)
 	{
 		//TODO error
@@ -361,11 +389,47 @@ void StimulusWindow::makeCurrent()
 		//					 "OpenGL Rendering Context Error", MB_OK);
 		closeWindow();
 	}
+	if(glXGetCurrentContext() != ctx) std::cout << "wat?" << std::endl;
+	std::cout << "---------------------------------" << std::endl;
 }
 
 void StimulusWindow::shareCurrent()
 {
+	std::cout << "----------shareCurrent-----------" << std::endl;
+	GLXContext current = glXGetCurrentContext();
+	if(current != ctx)
+		std::cout << "other" << std::endl;
+	else
+		std::cout << "same" << std::endl;
+	if(!asd)
+	{
+		glXMakeCurrent(0, 0, 0);
+		qwe = new QOpenGLContext();
+		reinterpret_cast<QOpenGLContext*>(qwe)->setNativeHandle(QVariant::fromValue(QGLXNativeContext(ctx, display, wnd)));
+
+		if(!reinterpret_cast<QOpenGLContext*>(qwe)->isValid())
+			std::cout << "OPENGL OK" << std::endl;
+		else
+			std::cout << "OPENGL NOT OK" << std::endl;
+
+		asd = reinterpret_cast<void*>(QGLContext::fromOpenGLContext(reinterpret_cast<QOpenGLContext*>(qwe)));
+		reinterpret_cast<AlmaPaprika*>(asd)->setValidMost(true);
+		std::cout << "valid: " << reinterpret_cast<QGLContext*>(asd)->isValid() << std::endl;
+		reinterpret_cast<QGLContext*>(asd)->makeCurrent();
+		if(!reinterpret_cast<QGLContext*>(asd)->create())
+			std::cout << "cannot create" << std::endl;
+		else
+			std::cout << "could not create" << std::endl;
+		std::cout << "valid: " << reinterpret_cast<QGLContext*>(asd)->isValid() << std::endl;
+		//reinterpret_cast<QGLContext*>(asd)->makeCurrent();
+		
+	}
+	reinterpret_cast<QGLContext*>(asd)->makeCurrent();
+	if(QGLContext::currentContext != NULL)
+		std::cout << "van" << std::endl;
 	//TODO: Make implementation in Linux
+
+	std::cout << "--------------------------------" << std::endl;
 }
 
 void StimulusWindow::setCursorPos()

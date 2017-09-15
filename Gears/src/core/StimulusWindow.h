@@ -17,7 +17,7 @@
 #include <list>
 #include <set>
 #include <vector>
-#include "SequenceRenderer.h"
+
 #ifdef _WIN32
 #	include "wglext.h"
 #elif __linux__
@@ -83,6 +83,8 @@ class StimulusWindow
 	Window wnd;
 	GLXContext ctx;
 	Colormap cmap;
+	void* asd;
+	void* qwe;
 #endif
 	int screenw;		// when window is resized, the new dimensions...
 	int screenh;		// ...are stored in these variables
@@ -127,6 +129,7 @@ public:
 	void createWindow(bool windowed, uint width, uint height);
 	void run();
 	void closeWindow();
+	~StimulusWindow();
 #ifdef _WIN32
 	static LRESULT CALLBACK WindowProc(
 	  _In_ HWND   hwnd,

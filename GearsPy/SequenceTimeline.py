@@ -5,10 +5,11 @@ import os
 from PyQt5.QtCore import (Qt, QCoreApplication, QTimer, QSize)
 from PyQt5.QtWidgets import (QWidget, QToolTip, QPushButton, QMessageBox, QApplication, QTreeWidget, QTreeWidgetItem, QGridLayout)
 from PyQt5.QtGui import (QFont, QPalette, QFontMetrics, QOpenGLContext, QPainter )
-from PyQt5.QtOpenGL import (QGLWidget, QGLFormat)
+from PyQt5.QtOpenGL import (QGLWidget, QGLFormat, QGLContext)
 try:
   from OpenGL.GL import *
   from OpenGL.GLU import *
+  from OpenGL.GLX import *
 except:
   print ('ERROR: PyOpenGL not installed properly.')
 
@@ -24,16 +25,101 @@ class SequenceTimeline(QGLWidget):
     margin = 80
 
     def __init__(self, parent, launcher):
+        #---------------------------------original---------------------------------
+        #format = QGLFormat()
+        
+        #format.setSwapInterval(1)
+        #super().__init__(format, parent)
+
+        #self.makeCurrent()
+        #gears.shareCurrent()
+        ##super().__init__(parent)
+        #self.launcher = launcher
+        #self.fontMetrics = QFontMetrics(self.font())
+        ##print('sharing: ', self.isSharing())
+        ##print('valid: ', self.isValid())
+        #--------------------------------/original---------------------------------
+        '''
+            qglplatformcontext lekérni a current-öt, és azt átadni a super ctor-nak
+        '''
+
+        #---------------------------------some trying---------------------------------
+        #gears.makeCurrent() # ehelyett fromPlatformGLContext
+        #asd  = QOpenGLContext()
+        #gears.makeCurrent() # ehelyett fromPlatformGLContext
+        #handle = asd.currentContext()
+        #ctx = self.context().currentContext()
+        #self.makeCurrent()
+        #print(handle)
+        #print(ctx)
+        #handle = asd.currentContext()
+        #print(handle)
+        #gears.makeCurrent()
+        #print(asd.currentContext())
+        #---------------------------------/some trying---------------------------------
+
+        '''
+            Lekérni cpp oldalon az aktuális contextet és megváltoztatni azt
+        '''
+
         format = QGLFormat()
+        print("timeline init")
         format.setSwapInterval(1)
-        super().__init__(format, parent)
-        self.makeCurrent()
+
+        print(QGLContext.currentContext())
+        zamat = QGLContext(format)
+        if zamat.create():
+            print("created")
+        else:
+            print("not created")
+
+
+
+        
+        #gears.makeCurrent()
+        asd = glXGetCurrentContext()
+        print(asd)
         gears.shareCurrent()
-        #super().__init__(parent)
+        super().__init__(format, parent)
+        print(QGLContext.currentContext())
+
+        self.makeCurrent()
+        ctx = self.context()
+        print("widget makeCurrent()")
+        print(QGLContext.currentContext())
+        self.context().doneCurrent()
+        print("doneCurrent()")
+        print(QGLContext.currentContext())
+        zamat = QGLContext(self.context().format())
+        if zamat.create():
+            print("created")
+        else:
+            print("not created")
+        print("isValid? " + str(zamat.isValid()))
+        zamat.makeCurrent()
+        print("zamat makeCurrent()")
+        almactx = QGLContext.currentContext()
+        if almactx == ctx:
+            print("ctx")
+        elif almactx == zamat:
+            print("zamat")
+        else:
+            print("WAT?")
+        gears.makeCurrent()
+#gears.shareCurrent()
+        almactx = QGLContext.currentContext()
+        if almactx == ctx:
+            print("ctx")
+        elif almactx == zamat:
+            print("zamat")
+        else:
+            print("WAT?")
+
+
+        self.makeCurrent()
         self.launcher = launcher
         self.fontMetrics = QFontMetrics(self.font())
-        #print('sharing: ', self.isSharing())
-        #print('valid: ', self.isValid())
+        
 
     def initializeGL(self):
         err = glGetError()
@@ -42,11 +128,13 @@ class SequenceTimeline(QGLWidget):
             print("OpenGL error code: " + str(err))
 
     def resizeGL(self, w, h):
-        #print('+valid: ', self.isValid())
-        #print(glGetError())
+        self.makeCurrent()
+        print('w: ' + str(w) + ', h: ' + str(h))
+        print('+valid: ', self.isValid())
+        print(glGetError())
         self.width = w
         self.height = h
-        glViewport(0, 0, w, h)
+        glViewport(0, 0, 32, 32)
         self.fontMetrics = QFontMetrics(self.font())
 
     #def renderText(self, x, y, text, font=None):
