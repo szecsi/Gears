@@ -83,8 +83,7 @@ class StimulusWindow
 	Window wnd;
 	GLXContext ctx;
 	Colormap cmap;
-	void* asd;
-	void* qwe;
+	GLXFBConfig bestFbc;
 #endif
 	int screenw;		// when window is resized, the new dimensions...
 	int screenh;		// ...are stored in these variables
@@ -129,7 +128,7 @@ public:
 	void createWindow(bool windowed, uint width, uint height);
 	void run();
 	void closeWindow();
-	~StimulusWindow();
+	~StimulusWindow(){}
 #ifdef _WIN32
 	static LRESULT CALLBACK WindowProc(
 	  _In_ HWND   hwnd,

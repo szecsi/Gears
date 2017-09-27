@@ -5,7 +5,7 @@ import os
 from PyQt5.QtCore import (Qt, QCoreApplication, QTimer, QSize)
 from PyQt5.QtWidgets import (QWidget, QToolTip, QPushButton, QMessageBox, QApplication, QTreeWidget, QTreeWidgetItem, QGridLayout, QSizePolicy)
 from PyQt5.QtGui import (QFont, QPalette, QFontMetrics, QOpenGLContext, QPainter )
-from PyQt5.QtOpenGL import (QGLWidget, QGLFormat)
+from PyQt5.QtOpenGL import (QGLWidget, QGLFormat, QGLContext)
 try:
   from OpenGL.GL import *
   from OpenGL.GLU import *
@@ -18,9 +18,10 @@ class Preview(QGLWidget):
     def __init__(self, parent, editor):
         format = QGLFormat()
         format.setSwapInterval(1)
-        super().__init__(format, parent)
-        self.makeCurrent()
         gears.shareCurrent()
+        super().__init__(QGLContext.currentContext(), parent)
+        #super().__init__(format, parent)
+        self.makeCurrent()
         self.sFrame = 0
         self.editor = editor
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)

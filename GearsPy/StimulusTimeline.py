@@ -5,7 +5,7 @@ import os
 from PyQt5.QtCore import (Qt, QCoreApplication, QTimer, QSize)
 from PyQt5.QtWidgets import (QWidget, QToolTip, QPushButton, QMessageBox, QApplication, QTreeWidget, QTreeWidgetItem, QGridLayout)
 from PyQt5.QtGui import (QFont, QPalette, QFontMetrics, QOpenGLContext, QPainter )
-from PyQt5.QtOpenGL import (QGLWidget, QGLFormat)
+from PyQt5.QtOpenGL import (QGLWidget, QGLFormat, QGLContext)
 try:
   from OpenGL.GL import *
   from OpenGL.GLU import *
@@ -25,9 +25,11 @@ class StimulusTimeline(QGLWidget):
     def __init__(self, parent, launcher):
         format = QGLFormat()
         format.setSwapInterval(1)
-        super().__init__(format, parent)
-        self.makeCurrent()
         gears.shareCurrent()
+        super().__init__(QGLContext.currentContext(), parent)
+        #super().__init__(format, parent)
+        self.makeCurrent()
+        #gears.shareCurrent()
         #super().__init__(parent)
         self.launcher = launcher
         self.fontMetrics = QFontMetrics(self.font())

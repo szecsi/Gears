@@ -267,6 +267,7 @@ class LauncherWindow(QWidget):
         #self.sequenceTimelineBox.setFont(font)
 
         self.sequenceTimeline = SequenceTimeline(self.sequenceTimelineBox, self)
+        print(int(self.winId()))
         grid.addWidget(self.sequenceTimelineBox, 1, 1, 2, 8)
         etlbgl = QGridLayout()
         etlbgl.addWidget(self.sequenceTimeline, 1, 1, 1, 10)

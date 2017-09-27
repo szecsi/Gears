@@ -2,7 +2,7 @@ import sys
 import Gears as gears
 import importlib.machinery
 import os
-from PyQt5.QtCore import (Qt, QCoreApplication, QTimer, QSize)
+from PyQt5.QtCore import (Qt, QCoreApplication, QTimer, QSize, QThread)
 from PyQt5.QtWidgets import (QWidget, QToolTip, QPushButton, QMessageBox, QApplication, QTreeWidget, QTreeWidgetItem, QGridLayout)
 from PyQt5.QtGui import (QFont, QPalette, QFontMetrics, QOpenGLContext, QPainter )
 from PyQt5.QtOpenGL import (QGLWidget, QGLFormat, QGLContext)
@@ -25,110 +25,34 @@ class SequenceTimeline(QGLWidget):
     margin = 80
 
     def __init__(self, parent, launcher):
-        #---------------------------------original---------------------------------
-        #format = QGLFormat()
-        
-        #format.setSwapInterval(1)
-        #super().__init__(format, parent)
-
-        #self.makeCurrent()
-        #gears.shareCurrent()
-        ##super().__init__(parent)
-        #self.launcher = launcher
-        #self.fontMetrics = QFontMetrics(self.font())
-        ##print('sharing: ', self.isSharing())
-        ##print('valid: ', self.isValid())
-        #--------------------------------/original---------------------------------
-        '''
-            qglplatformcontext lekérni a current-öt, és azt átadni a super ctor-nak
-        '''
-
-        #---------------------------------some trying---------------------------------
-        #gears.makeCurrent() # ehelyett fromPlatformGLContext
-        #asd  = QOpenGLContext()
-        #gears.makeCurrent() # ehelyett fromPlatformGLContext
-        #handle = asd.currentContext()
-        #ctx = self.context().currentContext()
-        #self.makeCurrent()
-        #print(handle)
-        #print(ctx)
-        #handle = asd.currentContext()
-        #print(handle)
-        #gears.makeCurrent()
-        #print(asd.currentContext())
-        #---------------------------------/some trying---------------------------------
-
-        '''
-            Lekérni cpp oldalon az aktuális contextet és megváltoztatni azt
-        '''
-
         format = QGLFormat()
-        print("timeline init")
         format.setSwapInterval(1)
-
-        print(QGLContext.currentContext())
-        zamat = QGLContext(format)
-        if zamat.create():
-            print("created")
-        else:
-            print("not created")
-
-
-
-        
-        #gears.makeCurrent()
-        asd = glXGetCurrentContext()
-        print(asd)
+        #print( "Current Thread: " + str(int(QThread.currentThreadId())) )
         gears.shareCurrent()
-        super().__init__(format, parent)
-        print(QGLContext.currentContext())
+        #print( "Current QOpenGLContext: " + str(QOpenGLContext.currentContext()) )
+        #print( "Current Thread: " + str(int(QThread.currentThreadId())) )
+        super().__init__(QGLContext.currentContext(), parent)
+        #print( "Current QGLContext: " + str(QGLContext.currentContext()) )
 
+        print( "Current QGLContext: " + str(QGLContext.currentContext()) )
         self.makeCurrent()
-        ctx = self.context()
-        print("widget makeCurrent()")
-        print(QGLContext.currentContext())
-        self.context().doneCurrent()
-        print("doneCurrent()")
-        print(QGLContext.currentContext())
-        zamat = QGLContext(self.context().format())
-        if zamat.create():
-            print("created")
-        else:
-            print("not created")
-        print("isValid? " + str(zamat.isValid()))
-        zamat.makeCurrent()
-        print("zamat makeCurrent()")
-        almactx = QGLContext.currentContext()
-        if almactx == ctx:
-            print("ctx")
-        elif almactx == zamat:
-            print("zamat")
-        else:
-            print("WAT?")
-        gears.makeCurrent()
-#gears.shareCurrent()
-        almactx = QGLContext.currentContext()
-        if almactx == ctx:
-            print("ctx")
-        elif almactx == zamat:
-            print("zamat")
-        else:
-            print("WAT?")
-
-
-        self.makeCurrent()
+        print( "Current QGLContext: " + str(QGLContext.currentContext()) )
         self.launcher = launcher
         self.fontMetrics = QFontMetrics(self.font())
         
 
     def initializeGL(self):
+        print(int(self.winId()))
+        print("initilalize")
         err = glGetError()
         if(err):
             print("An OpenGL error occcured in PyQt. A known cause for this is a driver problem with Intel HD graphics chipsets. Try updating your driver, manually if necessary.")
             print("OpenGL error code: " + str(err))
 
     def resizeGL(self, w, h):
+        print( "Current QGLContext: " + str(QGLContext.currentContext()) )
         self.makeCurrent()
+        print( "Current QGLContext: " + str(QGLContext.currentContext()) )
         print('w: ' + str(w) + ', h: ' + str(h))
         print('+valid: ', self.isValid())
         print(glGetError())
@@ -136,6 +60,7 @@ class SequenceTimeline(QGLWidget):
         self.height = h
         glViewport(0, 0, 32, 32)
         self.fontMetrics = QFontMetrics(self.font())
+        print("resize")
 
     #def renderText(self, x, y, text, font=None):
     #    if font == None :
