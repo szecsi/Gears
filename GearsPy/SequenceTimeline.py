@@ -24,43 +24,38 @@ class SequenceTimeline(QGLWidget):
     prevMouseX = 0
     margin = 80
 
-    def __init__(self, parent, launcher):
+    def __init__(self, parent, launcher, winId):
         format = QGLFormat()
         format.setSwapInterval(1)
         #print( "Current Thread: " + str(int(QThread.currentThreadId())) )
-        gears.shareCurrent()
+        gears.shareCurrent( int(winId) )
         #print( "Current QOpenGLContext: " + str(QOpenGLContext.currentContext()) )
         #print( "Current Thread: " + str(int(QThread.currentThreadId())) )
         super().__init__(QGLContext.currentContext(), parent)
         #print( "Current QGLContext: " + str(QGLContext.currentContext()) )
 
-        print( "Current QGLContext: " + str(QGLContext.currentContext()) )
+        #print( "Current QGLContext: " + str(QGLContext.currentContext()) )
         self.makeCurrent()
-        print( "Current QGLContext: " + str(QGLContext.currentContext()) )
+        #print( "Current QGLContext: " + str(QGLContext.currentContext()) )
         self.launcher = launcher
         self.fontMetrics = QFontMetrics(self.font())
         
 
     def initializeGL(self):
-        print(int(self.winId()))
-        print("initilalize")
         err = glGetError()
         if(err):
             print("An OpenGL error occcured in PyQt. A known cause for this is a driver problem with Intel HD graphics chipsets. Try updating your driver, manually if necessary.")
             print("OpenGL error code: " + str(err))
 
     def resizeGL(self, w, h):
-        print( "Current QGLContext: " + str(QGLContext.currentContext()) )
-        self.makeCurrent()
-        print( "Current QGLContext: " + str(QGLContext.currentContext()) )
-        print('w: ' + str(w) + ', h: ' + str(h))
-        print('+valid: ', self.isValid())
-        print(glGetError())
+        #print("resize")
+        #print('w: ' + str(w) + ', h: ' + str(h))
+        #print('+valid: ', self.isValid())
+       # print(glGetError())
         self.width = w
         self.height = h
-        glViewport(0, 0, 32, 32)
+        glViewport(0, 0, w, h)
         self.fontMetrics = QFontMetrics(self.font())
-        print("resize")
 
     #def renderText(self, x, y, text, font=None):
     #    if font == None :

@@ -17,10 +17,10 @@ class TemporalKernelPlot(QGLWidget):
     width = 128
     height = 128
 
-    def __init__(self, parent, launcher):
+    def __init__(self, parent, launcher, winId):
         format = QGLFormat()
         format.setSwapInterval(1)
-        gears.shareCurrent()
+        gears.shareCurrent( int(winId) )
         super().__init__(QGLContext.currentContext(), parent)
         #super().__init__(format, parent)
         self.makeCurrent()

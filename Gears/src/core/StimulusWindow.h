@@ -67,7 +67,12 @@ static bool isExtensionSupported(const char *extList, const char *extension)
 static bool ctxErrorOccurred = false;
 static int ctxErrorHandler( Display *dpy, XErrorEvent *ev )
 {
-    ctxErrorOccurred = true;
+	ctxErrorOccurred = true;
+
+	char errorstring[128];
+	XGetErrorText(dpy, ev->error_code, errorstring, 128);
+   
+	std::cout << "ack!fatal: X error--" << errorstring << std::endl;
     return 0;
 }
 #endif // __linux__
@@ -144,7 +149,7 @@ public:
 
 	int setSwapInterval(int swapInterval);
 	void makeCurrent();
-	void shareCurrent();
+	void shareCurrent( unsigned int winId );
 	void setCursorPos();
 
 	void setSequenceRenderer(SequenceRenderer::P	sequenceRenderer)

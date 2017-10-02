@@ -266,8 +266,7 @@ class LauncherWindow(QWidget):
         #font.setPointSizeF(font.pointSizeF() * 2)
         #self.sequenceTimelineBox.setFont(font)
 
-        self.sequenceTimeline = SequenceTimeline(self.sequenceTimelineBox, self)
-        print(int(self.winId()))
+        self.sequenceTimeline = SequenceTimeline(self.sequenceTimelineBox, self, self.winId())
         grid.addWidget(self.sequenceTimelineBox, 1, 1, 2, 8)
         etlbgl = QGridLayout()
         etlbgl.addWidget(self.sequenceTimeline, 1, 1, 1, 10)
@@ -293,7 +292,7 @@ class LauncherWindow(QWidget):
         self.optionsTabber = QTabWidget(self)
         self.mainPanel = QWidget()
         ##self.stimulusTimelineBox = QGroupBox('Click in sequence timeline to select stimulus', self)
-        self.stimulusTimeline = StimulusTimeline(self.mainPanel, self)
+        self.stimulusTimeline = StimulusTimeline(self.mainPanel, self, self.winId())
         self.stimulusLabel = QLabel('Click in sequence timeline to select stimulus!', self.mainPanel)
         mly = QGridLayout()
         mly.addWidget(self.stimulusTimeline, 1, 1, 1, 10)
@@ -309,8 +308,8 @@ class LauncherWindow(QWidget):
         self.optionsTabber.addTab(self.mainPanel, 'Timeline')
 
         self.spatialPanel = QWidget()
-        self.spatialKernelPlot = SpatialKernelPlot(self.spatialPanel, self)
-        self.spatialProfilePlot =  SpatialProfilePlot(self.spatialPanel, self)
+        self.spatialKernelPlot = SpatialKernelPlot(self.spatialPanel, self, self.winId())
+        self.spatialProfilePlot =  SpatialProfilePlot(self.spatialPanel, self, self.winId())
         spapag = QGridLayout()
         spapag.addWidget(self.spatialKernelPlot, 1, 1, 3, 4)
         spapag.addWidget(self.spatialProfilePlot, 1, 7, 3, 4)
@@ -409,7 +408,7 @@ class LauncherWindow(QWidget):
         self.managePanel.setLayout(mpapag)
 
         self.temporalPanel = QWidget()
-        self.temporalKernelPlot = TemporalKernelPlot(self.temporalPanel, self)
+        self.temporalKernelPlot = TemporalKernelPlot(self.temporalPanel, self, self.winId())
         tpapag = QGridLayout()
         tpapag.addWidget(self.temporalKernelPlot, 1, 1)
         self.temporalPanel.setLayout(tpapag)

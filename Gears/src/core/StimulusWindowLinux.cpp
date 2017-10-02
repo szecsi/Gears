@@ -58,12 +58,12 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 		GLX_RED_SIZE        , 8,
 		GLX_GREEN_SIZE      , 8,
 		GLX_BLUE_SIZE       , 8,
-		GLX_ALPHA_SIZE      , 8,
+		//GLX_ALPHA_SIZE      , 8,
 		GLX_DEPTH_SIZE      , 24,
 		GLX_STENCIL_SIZE    , 8,
 		GLX_DOUBLEBUFFER    , True,
 		//GLX_SAMPLE_BUFFERS  , 1,
-		//GLX_SAMPLES         , 4,
+		//GLX_SAMPLES         , 2,
 		None
 	};
 
@@ -150,7 +150,7 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 	// Done with the visual info data
 	XFree( vi );
 
-	XStoreName( display, wnd, "GL 3.0 Window" );
+	XStoreName( display, wnd, "GearsStimulusWindow" );
 
 	XSelectInput(display, wnd, eventMask);
 
@@ -285,7 +285,6 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 
 void StimulusWindow::run()
 {
-	std::cout << "run" << std::endl;
 	Atom atoms[2] = { XInternAtom(display, "_NET_WM_STATE_FULLSCREEN", False), None };
 	XChangeProperty(
 		display, 
@@ -365,7 +364,6 @@ int StimulusWindow::setSwapInterval(int swapInterval)
 
 void StimulusWindow::makeCurrent()
 {
-	//std::cout << "-----------makeCurrent-----------" << std::endl;
 	if((glXMakeCurrent(display, wnd, ctx)) == false)
 	{
 		//TODO error
@@ -373,59 +371,89 @@ void StimulusWindow::makeCurrent()
 		//					 "OpenGL Rendering Context Error", MB_OK);
 		closeWindow();
 	}
-	if(glXGetCurrentContext() != ctx) std::cout << "wat?" << std::endl;
-	//std::cout << "---------------------------------" << std::endl;
 }
 
-void StimulusWindow::shareCurrent()
+void StimulusWindow::shareCurrent( unsigned int winId )
 {
 	//std::cout << "----------shareCurrent-----------" << std::endl;
-	GLXContext current = glXGetCurrentContext();
+	//std::cout << "winId: " << winId << std::endl;
 
-	GLXContext sharedCtx = glXCreateNewContext( display, bestFbc, GLX_RGBA_TYPE, ctx, True );
+	ctxErrorOccurred = false;
+	int (*oldHandler)(Display*, XErrorEvent*) = XSetErrorHandler(&ctxErrorHandler);
+
+	// XWindowAttributes window_attributes_return;
+	// XWindowAttributes window_attributes_return1;
+	// XGetWindowAttributes(display, winId, &window_attributes_return);
+	// XGetWindowAttributes(display, wnd, &window_attributes_return1);
+	// std::cout << "--------------------------------------------- attributes --------------------------------------------" << std::endl;
+	// std::cout << "x:                    " << window_attributes_return.x                      << "\t\t\t\t" << window_attributes_return1.x                     << std::endl;
+	// std::cout << "y:                    " << window_attributes_return.y                      << "\t\t\t\t" << window_attributes_return1.y                     << std::endl;
+	// std::cout << "width:                " << window_attributes_return.width                  << "\t\t\t" << window_attributes_return1.width                   << std::endl;
+	// std::cout << "hegiht:               " << window_attributes_return.height                 << "\t\t\t" << window_attributes_return1.height                  << std::endl;
+	// std::cout << "depth:                " << window_attributes_return.depth                  << "\t\t\t" << window_attributes_return1.depth                   << std::endl;
+	// std::cout << "visual:               " << window_attributes_return.visual->visualid       << "\t\t\t" << window_attributes_return1.visual->visualid        << std::endl;
+	// std::cout << "visual class:         " << window_attributes_return.visual->c_class        << "\t\t\t\t" << window_attributes_return1.visual->c_class       << std::endl;
+	// std::cout << "root:                 " << window_attributes_return.root                   << "\t\t\t" << window_attributes_return1.root                    << std::endl;
+	// std::cout << "c_class:              " << window_attributes_return.c_class                << "\t\t\t\t" << window_attributes_return1.c_class               << std::endl;
+	// std::cout << "bit_gravity:          " << window_attributes_return.bit_gravity            << "\t\t\t\t" << window_attributes_return1.bit_gravity           << std::endl;
+	// std::cout << "win_gravity:          " << window_attributes_return.win_gravity            << "\t\t\t\t" << window_attributes_return1.win_gravity           << std::endl;
+	// std::cout << "backing_store:        " << window_attributes_return.backing_store          << "\t\t\t\t" << window_attributes_return1.backing_store         << std::endl;
+	// std::cout << "backing_planes:       " << window_attributes_return.backing_planes         << "\t\t" << window_attributes_return1.backing_planes            << std::endl;
+	// std::cout << "backing_pixel:        " << window_attributes_return.backing_pixel          << "\t\t\t\t" << window_attributes_return1.backing_pixel         << std::endl;
+	// std::cout << "save_under:           " << window_attributes_return.save_under             << "\t\t\t\t" << window_attributes_return1.save_under            << std::endl;
+	// std::cout << "colormap:             " << window_attributes_return.colormap               << "\t\t\t" << window_attributes_return1.colormap                << std::endl;
+	// std::cout << "map_installed:        " << window_attributes_return.map_installed          << "\t\t\t\t" << window_attributes_return1.map_installed         << std::endl;
+	// std::cout << "map_state:            " << window_attributes_return.map_state              << "\t\t\t\t" << window_attributes_return1.map_state             << std::endl;
+	// std::cout << "all_event_masks:      " << window_attributes_return.all_event_masks        << "\t\t\t" << window_attributes_return1.all_event_masks         << std::endl;
+	// std::cout << "your_event_mask:      " << window_attributes_return.your_event_mask        << "\t\t\t\t" << window_attributes_return1.your_event_mask       << std::endl;
+	// std::cout << "do_not_propagate_mask:" << window_attributes_return.do_not_propagate_mask  << "\t\t\t\t" << window_attributes_return1.do_not_propagate_mask << std::endl;
+	// std::cout << "override_redirect:    " << window_attributes_return.override_redirect      << "\t\t\t\t" << window_attributes_return1.override_redirect     << std::endl;
+	// std::cout << "screen:               " << window_attributes_return.screen                 << "\t\t\t" << window_attributes_return1.screen                  << std::endl;
+	// std::cout << "-----------------------------------------------------------------------------------------------------" << std::endl;
+
+
+	GLXContext sharedCtx = glXCreateNewContext( display, bestFbc, GLX_RGBA_TYPE, ctx, true );
+
+	if( !glXMakeCurrent(display, winId, sharedCtx) )
+		std::cout << "Error: glXMakeCurrent returns false!" << std::endl;
+
+
+	XSetErrorHandler( oldHandler );
+	if ( ctxErrorOccurred || !sharedCtx )
+	{
+		std::cout << "Failed to make current the shared context!" << std::endl;
+	}
 
 	QOpenGLContext* sharedGLContext = new QOpenGLContext();
-	QGLXNativeContext GLXNativeCtx = QGLXNativeContext(sharedCtx, display, wnd);
+	QGLXNativeContext GLXNativeCtx = QGLXNativeContext(sharedCtx, display, winId);
 	if ( !GLXNativeCtx.context() ) {
-		std::cout << "native context not valid" << std::endl;
+		std::cout << "Error: GLXNativeContext is not valid!" << std::endl;
 		return;
 	}
+	
 	sharedGLContext->setNativeHandle( QVariant::fromValue( GLXNativeCtx ) );
-	sharedGLContext->create();
-	if(sharedGLContext->isValid())
-		std::cout << "OPENGL OK" << std::endl;
-	else
-		std::cout << "OPENGL NOT OK" << std::endl;
 
-	QWindow *nativeWindow = QWindow::fromWinId( (WId)wnd );
+
+	if( !sharedGLContext->create() )
+		std::cout << "Error: Couldn't create shared QOpenGLContext!" << std::endl;
+	if( !sharedGLContext->isValid() )
+		std::cout << "Error: QOpenGLContext is not valid!" << std::endl;
+
+	QWindow *nativeWindow = QWindow::fromWinId( (WId)winId );
 	nativeWindow->setSurfaceType( QSurface::OpenGLSurface );
-	if( nativeWindow->surfaceType() == QSurface::OpenGLSurface )
-		std::cout << "surface type OK" << std::endl;
 	QSurface *surface = static_cast<QSurface*>( nativeWindow );
-	if( !surface )
-		std::cout << "no surface :(" << std::endl;
-	else
+	
+	if( !sharedGLContext->makeCurrent(surface) )
 	{
-		if( !surface->surfaceHandle() )
-			std::cout << "no surface handle :(" << std::endl;
-		if ( !surface->supportsOpenGL() )
-			std::cout << "not support opengl" << std::endl;
+		std::cout << "Error: Couldn't make current the shared QOpenGLContext!" << std::endl;
 	}
-
-	if( sharedGLContext->makeCurrent(surface) )
-	{
-		std::cout << "QOpenGLContext made current" << std::endl;
-	}
-	else
-		std::cout << "no made current" << std::endl;
-
-	//TODO: Make implementation in Linux
+	//std::cout << "----------------------------------" << std::endl;
 }
 
 void StimulusWindow::setCursorPos()
   {
     uint screenw = DefaultScreenOfDisplay(display)->width;
-		uint screenh = DefaultScreenOfDisplay(display)->height;
+	uint screenh = DefaultScreenOfDisplay(display)->height;
     XWarpPointer(display, None, wnd, 0, 0, 0, 0, screenw, screenh);
 
     XFlush(display);

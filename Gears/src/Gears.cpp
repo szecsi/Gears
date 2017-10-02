@@ -302,11 +302,11 @@ void makeCurrent()
 	stimulusWindow->makeCurrent();
 }
 
-void shareCurrent()
+void shareCurrent( unsigned int winId )
 {
 	if(!stimulusWindow)
 		return;
-	stimulusWindow->shareCurrent();
+	stimulusWindow->shareCurrent( winId );
 }
 
 void run()
