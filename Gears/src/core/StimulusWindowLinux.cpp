@@ -277,6 +277,8 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 		std::cerr << "OpenGL error: " << glewGetErrorString(err) << "\n";
 	}
 
+	glSpecs = specs.str();
+
 }
 
 void StimulusWindow::run()

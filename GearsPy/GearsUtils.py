@@ -12,7 +12,7 @@ def initQGLWidget(self, base, parent, winId):
         gears.shareCurrent()
     elif system() == 'Linux':
         gears.shareCurrent( int(winId) )
-        super().__init__(QGLContext.currentContext(), parent)
+        base.__init__(QGLContext.currentContext(), parent)
         self.makeCurrent()
     else:
         print("Not supported platform: " + system())

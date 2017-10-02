@@ -2,6 +2,7 @@ import sys
 import os
 import Gears as gears
 import subprocess
+from platform import system
 
 from PyQt5.QtCore import (Qt, QCoreApplication, QTimer, QSize)
 from PyQt5.QtWidgets import (QWidget, QMessageBox, QApplication, QTreeWidget, QTreeWidgetItem, QTreeWidgetItemIterator, QGridLayout, QLabel, QSpacerItem, QSizePolicy, QMenu, QAction)
@@ -122,10 +123,10 @@ class BrowserTree(QTreeWidget):
             #    a = QAction("Hide empty folders", menu)
             #    a.triggered.connect( lambda action: self.hideEmptyFolders(True))
             #    menu.addAction(a)
-
-            a = QAction("Explore folder", menu)
-            a.triggered.connect( lambda action: subprocess.Popen(r'explorer "' + os.path.abspath(self.pathFromItem(item)) + '"'))
-            menu.addAction(a)
+            if system() == 'Windows':
+                a = QAction("Explore folder", menu)
+                a.triggered.connect( lambda action: subprocess.Popen(r'explorer "' + os.path.abspath(self.pathFromItem(item)) + '"'))
+                menu.addAction(a)
 
             action = menu.exec(globalPos)
 
