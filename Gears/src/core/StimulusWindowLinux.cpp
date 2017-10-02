@@ -20,6 +20,8 @@
 
 #include "StimulusWindow.h"
 
+PFNGLXSWAPINTERVALEXTPROC         StimulusWindow::glXSwapIntervalEXT;
+
 StimulusWindow::StimulusWindow()
 {
 	display = nullptr;
@@ -273,6 +275,13 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 
 	glSpecs = specs.str();
 
+	glXSwapIntervalEXT = (PFNGLXSWAPINTERVALEXTPROC)glXGetProcAddress( (const GLubyte*)"glXSwapIntervalEXT");
+	if( glXSwapIntervalEXT == nullptr )
+	{
+		std::cerr << "OpenGL extension glXSwapIntervalEXT not supported.\n";
+		PyErr_SetString(PyExc_RuntimeError, "OpenGL extension glXSwapIntervalEXT not supported.");
+		boost::python::throw_error_already_set();
+	}
 }
 
 void StimulusWindow::run()
@@ -347,14 +356,12 @@ void StimulusWindow::closeWindow()
 	XCloseDisplay( display );
 }
 
-void StimulusWindow::setGLFormat(void)
-{
-	//TODO: Make implementation in Linux
-}
-
 int StimulusWindow::setSwapInterval(int swapInterval)
 {
-	//TODO: Make implementation in Linux
+	glXSwapIntervalEXT(display, wnd, swapInterval);
+	unsigned int swap;
+	glXQueryDrawable(display, wnd, GLX_SWAP_INTERVAL_EXT, &swap);
+	return swap;
 }
 
 void StimulusWindow::makeCurrent()

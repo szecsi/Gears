@@ -19,12 +19,12 @@
 #include <vector>
 
 #ifdef _WIN32
-#include "SequenceRenderer.h"
+#	include "SequenceRenderer.h"
 #	include "wglext.h"
 #elif __linux__
 #	include <GL/gl.h> //OS x libs
-#	include <GL/glu.h>
 #	include <GL/glx.h>
+#	include <GL/glxext.h>
 
 #	include <unistd.h>
 
@@ -108,6 +108,8 @@ class StimulusWindow
 
 	static PFNWGLSWAPINTERVALEXTPROC       wglSwapIntervalEXT;
 	static PFNWGLGETSWAPINTERVALEXTPROC    wglGetSwapIntervalEXT;
+#elif __linux__
+	static PFNGLXSWAPINTERVALEXTPROC       glXSwapIntervalEXT;
 #endif
 
 	std::string glSpecs;
@@ -145,10 +147,10 @@ public:
 	LRESULT winProc(HWND   hwnd, UINT   uMsg, WPARAM wParam, LPARAM lParam);
 	static void registerClass();
 	void shareCurrent();
+	void setGLFormat (void);
 #elif __linux__
 	void shareCurrent(unsigned int winId);
 #endif
-	void setGLFormat (void);
 	std::string getSpecs(){return glSpecs;}
 
 	int setSwapInterval(int swapInterval);
