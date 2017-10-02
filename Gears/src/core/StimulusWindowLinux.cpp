@@ -77,7 +77,7 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 		return;
 	}
 
-	std::cout <<  "Getting matching framebuffer configs" << std::endl;;
+	//std::cout <<  "Getting matching framebuffer configs" << std::endl;;
 	int fbcount;
 	GLXFBConfig* fbc = glXChooseFBConfig(display, DefaultScreen(display), visual_attribs, &fbcount);
 	if (!fbc)
@@ -85,10 +85,10 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 		//printf( "Failed to retrieve a framebuffer config\n" );
 		return;
 	}
-	std::cout << "Found" << fbcount << "matching FB configs." << std::endl;
+	//std::cout << "Found" << fbcount << "matching FB configs." << std::endl;
 
 	// Pick the FB config/visual with the most samples per pixel
-	std::cout << "Getting XVisualInfos" << std::endl;
+	//std::cout << "Getting XVisualInfos" << std::endl;
 	int best_fbc = -1, worst_fbc = -1, best_num_samp = -1, worst_num_samp = 999;
 
 	for (size_t i = 0; i < fbcount; ++i)
@@ -100,7 +100,7 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 			glXGetFBConfigAttrib( display, fbc[i], GLX_SAMPLE_BUFFERS, &samp_buf );
 			glXGetFBConfigAttrib( display, fbc[i], GLX_SAMPLES       , &samples  );
       
-			std::cout << "  Matching fbconfig" << i << ", visual ID 0x" << vi->visualid << ": SAMPLE_BUFFERS = " << samp_buf << ", SAMPLES = " << samples << std::endl;
+			//std::cout << "  Matching fbconfig" << i << ", visual ID 0x" << vi->visualid << ": SAMPLE_BUFFERS = " << samp_buf << ", SAMPLES = " << samples << std::endl;
 
 			if ( best_fbc < 0 || samp_buf && samples > best_num_samp )
 				best_fbc = i, best_num_samp = samples;
@@ -117,9 +117,9 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 
 	// Get a visual
 	XVisualInfo *vi = glXGetVisualFromFBConfig( display, bestFbc );
-	std::cout << "Chosen visual ID = 0x" << vi->visualid << std::endl;
+	//std::cout << "Chosen visual ID = 0x" << vi->visualid << std::endl;
 
-	std::cout << "Creating colormap" << std::endl;
+	//std::cout << "Creating colormap" << std::endl;
 	XSetWindowAttributes swa;
 	swa.colormap = cmap = XCreateColormap( display,
 		RootWindow( display, vi->screen ), 
@@ -204,9 +204,7 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 
 		// Sync to ensure any errors generated are processed.
 		XSync( display, False );
-		if ( !ctxErrorOccurred && ctx )
-			std::cout << "Created GL 3.0 context" << std::endl;
-		else
+		if ( ctxErrorOccurred || !ctx )
 		{
 			// Couldn't create GL 3.0 context.  Fall back to old-style 2.x context.
 			// When a context version below 3.0 is requested, implementations will
@@ -238,14 +236,14 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 	}
 
 	// Verifying that context is a direct context
-	if ( ! glXIsDirect ( display, ctx ) )
-	{
-	  std::cout << "Indirect GLX rendering context obtained\n" << std::endl;
-	}
-	else
-	{
-	  std::cout << "Direct GLX rendering context obtained\n" << std::endl;
-	}
+	// if ( ! glXIsDirect ( display, ctx ) )
+	// {
+	//   std::cout << "Indirect GLX rendering context obtained\n" << std::endl;
+	// }
+	// else
+	// {
+	//   std::cout << "Direct GLX rendering context obtained\n" << std::endl;
+	// }
 	makeCurrent();
 
 	GLenum err = glGetError();
@@ -266,13 +264,9 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 		specs << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
 		specs << "Version: " << glGetString(GL_VERSION) << std::endl;
 		specs << "GLSL: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-
-		std::cout << specs.str() << std::endl;
 	}
 	err = glGetError();
-	if(err == GL_NO_ERROR)
-		std::cout << "GLEW initialized.\n";
-	else
+	if(err != GL_NO_ERROR)
 	{
 		std::cerr << "OpenGL error: " << glewGetErrorString(err) << "\n";
 	}
