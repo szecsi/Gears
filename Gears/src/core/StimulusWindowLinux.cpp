@@ -246,11 +246,7 @@ void StimulusWindow::createWindow(bool windowed, uint width, uint height)
 	{
 	  std::cout << "Direct GLX rendering context obtained\n" << std::endl;
 	}
-
-	//printf( "Making context current\n" );
 	makeCurrent();
-
-	///////////////////////////////////////////////
 
 	GLenum err = glGetError();
 	err = glewInit();
@@ -342,6 +338,9 @@ void StimulusWindow::run()
 		ticker->stop();
 	ticker.reset();
 	sequenceRenderer->reset();
+
+	if(onHideCallback)
+		onHideCallback();
 	XUnmapWindow(display, wnd);
 }
 
@@ -432,7 +431,6 @@ void StimulusWindow::shareCurrent( unsigned int winId )
 	}
 	
 	sharedGLContext->setNativeHandle( QVariant::fromValue( GLXNativeCtx ) );
-
 
 	if( !sharedGLContext->create() )
 		std::cout << "Error: Couldn't create shared QOpenGLContext!" << std::endl;

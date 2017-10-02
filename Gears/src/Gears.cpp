@@ -57,13 +57,10 @@ std::string createStimulusWindow()
 
 void onHideStimulusWindow(boost::python::object onHideCallback)
 {
-#ifdef _WIN32
 	if(stimulusWindow)
 	{
 		stimulusWindow->onHide(onHideCallback);
 	}
-	// TODO: linux implementation
-#endif
 }
 
 void showText(){
