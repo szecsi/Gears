@@ -17,8 +17,9 @@
 #include <list>
 #include <set>
 #include <vector>
-#include "SequenceRenderer.h"
+
 #ifdef _WIN32
+#include "SequenceRenderer.h"
 #	include "wglext.h"
 #elif __linux__
 #	include <GL/gl.h> //OS x libs
@@ -67,7 +68,12 @@ static bool isExtensionSupported(const char *extList, const char *extension)
 static bool ctxErrorOccurred = false;
 static int ctxErrorHandler( Display *dpy, XErrorEvent *ev )
 {
-    ctxErrorOccurred = true;
+	ctxErrorOccurred = true;
+
+	char errorstring[128];
+	XGetErrorText(dpy, ev->error_code, errorstring, 128);
+   
+	std::cout << "ack!fatal: X error--" << errorstring << std::endl;
     return 0;
 }
 #endif // __linux__
@@ -83,6 +89,7 @@ class StimulusWindow
 	Window wnd;
 	GLXContext ctx;
 	Colormap cmap;
+	GLXFBConfig bestFbc;
 #endif
 	int screenw;		// when window is resized, the new dimensions...
 	int screenh;		// ...are stored in these variables
@@ -127,6 +134,7 @@ public:
 	void createWindow(bool windowed, uint width, uint height);
 	void run();
 	void closeWindow();
+	~StimulusWindow(){}
 #ifdef _WIN32
 	static LRESULT CALLBACK WindowProc(
 	  _In_ HWND   hwnd,
@@ -136,13 +144,15 @@ public:
 	);
 	LRESULT winProc(HWND   hwnd, UINT   uMsg, WPARAM wParam, LPARAM lParam);
 	static void registerClass();
+	void shareCurrent();
+#elif __linux__
+	void shareCurrent(unsigned int winId);
 #endif
 	void setGLFormat (void);
 	std::string getSpecs(){return glSpecs;}
 
 	int setSwapInterval(int swapInterval);
 	void makeCurrent();
-	void shareCurrent();
 	void setCursorPos();
 
 	void setSequenceRenderer(SequenceRenderer::P	sequenceRenderer)

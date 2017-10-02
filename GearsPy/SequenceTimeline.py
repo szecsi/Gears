@@ -2,16 +2,17 @@ import sys
 import Gears as gears
 import importlib.machinery
 import os
-from PyQt5.QtCore import (Qt, QCoreApplication, QTimer, QSize)
+import GearsUtils as utils
+from PyQt5.QtCore import (Qt, QCoreApplication, QTimer, QSize, QThread)
 from PyQt5.QtWidgets import (QWidget, QToolTip, QPushButton, QMessageBox, QApplication, QTreeWidget, QTreeWidgetItem, QGridLayout)
 from PyQt5.QtGui import (QFont, QPalette, QFontMetrics, QOpenGLContext, QPainter )
-from PyQt5.QtOpenGL import (QGLWidget, QGLFormat)
+from PyQt5.QtOpenGL import (QGLWidget, QGLFormat, QGLContext)
 try:
   from OpenGL.GL import *
   from OpenGL.GLU import *
+  from OpenGL.GLX import *
 except:
   print ('ERROR: PyOpenGL not installed properly.')
-
 
 class SequenceTimeline(QGLWidget):
     width = 128
@@ -23,17 +24,11 @@ class SequenceTimeline(QGLWidget):
     prevMouseX = 0
     margin = 80
 
-    def __init__(self, parent, launcher):
-        format = QGLFormat()
-        format.setSwapInterval(1)
-        super().__init__(format, parent)
-        self.makeCurrent()
-        gears.shareCurrent()
-        #super().__init__(parent)
+    def __init__(self, parent, launcher, winId):
+        utils.initQGLWidget(self, super(), parent, winId)
         self.launcher = launcher
         self.fontMetrics = QFontMetrics(self.font())
-        #print('sharing: ', self.isSharing())
-        #print('valid: ', self.isValid())
+        
 
     def initializeGL(self):
         err = glGetError()
@@ -42,8 +37,10 @@ class SequenceTimeline(QGLWidget):
             print("OpenGL error code: " + str(err))
 
     def resizeGL(self, w, h):
+        #print("resize")
+        #print('w: ' + str(w) + ', h: ' + str(h))
         #print('+valid: ', self.isValid())
-        #print(glGetError())
+       # print(glGetError())
         self.width = w
         self.height = h
         glViewport(0, 0, w, h)

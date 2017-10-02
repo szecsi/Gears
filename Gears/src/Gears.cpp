@@ -52,19 +52,15 @@ std::string createStimulusWindow()
 	shaderManager  = ShaderManager::create();
 	textureManager = TextureManager::create();
 	kernelManager = KernelManager::create(sequenceRenderer, shaderManager);
-
 	return stimulusWindow->getSpecs();
 }
 
 void onHideStimulusWindow(boost::python::object onHideCallback)
 {
-#ifdef _WIN32
 	if(stimulusWindow)
 	{
 		stimulusWindow->onHide(onHideCallback);
 	}
-	// TODO: linux implementation
-#endif
 }
 
 void showText(){
@@ -303,12 +299,21 @@ void makeCurrent()
 	stimulusWindow->makeCurrent();
 }
 
+#ifdef _WIN32
 void shareCurrent()
 {
 	if(!stimulusWindow)
 		return;
 	stimulusWindow->shareCurrent();
 }
+#elif __linux__
+void shareCurrent(unsigned int winId)
+{
+	if (!stimulusWindow)
+		return;
+	stimulusWindow->shareCurrent(winId);
+}
+#endif
 
 void run()
 {

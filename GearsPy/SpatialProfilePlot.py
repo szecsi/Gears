@@ -2,10 +2,11 @@ import sys
 import Gears as gears
 import importlib.machinery
 import os
+import GearsUtils as utils
 from PyQt5.QtCore import (Qt, QCoreApplication, QTimer, QSize)
 from PyQt5.QtWidgets import (QWidget, QToolTip, QPushButton, QMessageBox, QApplication, QTreeWidget, QTreeWidgetItem, QGridLayout)
 from PyQt5.QtGui import (QFont, QPalette )
-from PyQt5.QtOpenGL import (QGLWidget, QGLFormat)
+from PyQt5.QtOpenGL import (QGLWidget, QGLFormat, QGLContext)
 try:
   from OpenGL.GL import *
   from OpenGL.GLU import *
@@ -16,13 +17,8 @@ except:
 class SpatialProfilePlot(QGLWidget):
 
 
-    def __init__(self, parent, launcher):
-        format = QGLFormat()
-        format.setSwapInterval(1)
-        super().__init__(format, parent)
-        self.makeCurrent()
-        gears.shareCurrent()
-        #super().__init__(parent)
+    def __init__(self, parent, launcher, winId):
+        utils.initQGLWidget(self, super(), parent, winId)
         self.launcher = launcher
 
     def initializeGL(self):

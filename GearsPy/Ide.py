@@ -33,7 +33,7 @@ class Ide(QWidget):
         self.discardButton.clicked.connect(self.discard)
         grid.addWidget(self.discardButton, 5, 2, 1, 8)
 
-        self.preview = Preview(self.rpanel, self.editor)
+        self.preview = Preview(self.rpanel, self.editor, self.winId())
         grid.addWidget(self.preview, 2, 2, 1, 8)
 
         self.seeker = QSlider(Qt.Horizontal, self.rpanel)
