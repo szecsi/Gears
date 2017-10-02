@@ -2,6 +2,7 @@ import sys
 import Gears as gears
 import importlib.machinery
 import os
+import GearsUtils as utils
 from PyQt5.QtCore import (Qt, QCoreApplication, QTimer, QSize)
 from PyQt5.QtWidgets import (QWidget, QToolTip, QPushButton, QMessageBox, QApplication, QTreeWidget, QTreeWidgetItem, QGridLayout, QSizePolicy)
 from PyQt5.QtGui import (QFont, QPalette, QFontMetrics, QOpenGLContext, QPainter )
@@ -16,12 +17,7 @@ except:
 class Preview(QGLWidget):
 
     def __init__(self, parent, editor, winId):
-        format = QGLFormat()
-        format.setSwapInterval(1)
-        gears.shareCurrent( int(winId) )
-        super().__init__(QGLContext.currentContext(), parent)
-        #super().__init__(format, parent)
-        self.makeCurrent()
+        utils.initQGLWidget(self, super(), parent, winId)
         self.sFrame = 0
         self.editor = editor
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)

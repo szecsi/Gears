@@ -19,6 +19,7 @@
 #include <vector>
 
 #ifdef _WIN32
+#include "SequenceRenderer.h"
 #	include "wglext.h"
 #elif __linux__
 #	include <GL/gl.h> //OS x libs
@@ -143,13 +144,15 @@ public:
 	);
 	LRESULT winProc(HWND   hwnd, UINT   uMsg, WPARAM wParam, LPARAM lParam);
 	static void registerClass();
+	void shareCurrent();
+#elif __linux__
+	void shareCurrent(unsigned int winId);
 #endif
 	void setGLFormat (void);
 	std::string getSpecs(){return glSpecs;}
 
 	int setSwapInterval(int swapInterval);
 	void makeCurrent();
-	void shareCurrent( unsigned int winId );
 	void setCursorPos();
 
 	void setSequenceRenderer(SequenceRenderer::P	sequenceRenderer)

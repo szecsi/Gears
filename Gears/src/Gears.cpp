@@ -299,12 +299,21 @@ void makeCurrent()
 	stimulusWindow->makeCurrent();
 }
 
-void shareCurrent( unsigned int winId )
+#ifdef _WIN32
+void shareCurrent()
 {
 	if(!stimulusWindow)
 		return;
-	stimulusWindow->shareCurrent( winId );
+	stimulusWindow->shareCurrent();
 }
+#elif __linux__
+void shareCurrent(unsigned int winId)
+{
+	if (!stimulusWindow)
+		return;
+	stimulusWindow->shareCurrent(winId);
+}
+#endif
 
 void run()
 {

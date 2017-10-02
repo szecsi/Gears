@@ -13,3 +13,7 @@ GearsPy/Project/Logs
 Gears/obj
 Gears/bin
 Gears/\.vscode/
+
+*.vcxproj
+
+*.pyproj

@@ -5,7 +5,7 @@
 #pragma region OpenGL
 #include <GL/glew.h>
 #pragma endregion includes for GLEW, and WGL
-
+ 
 #include <boost/python.hpp>
 #include <iostream>
 #include <sstream>

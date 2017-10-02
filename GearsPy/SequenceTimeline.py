@@ -2,6 +2,7 @@ import sys
 import Gears as gears
 import importlib.machinery
 import os
+import GearsUtils as utils
 from PyQt5.QtCore import (Qt, QCoreApplication, QTimer, QSize, QThread)
 from PyQt5.QtWidgets import (QWidget, QToolTip, QPushButton, QMessageBox, QApplication, QTreeWidget, QTreeWidgetItem, QGridLayout)
 from PyQt5.QtGui import (QFont, QPalette, QFontMetrics, QOpenGLContext, QPainter )
@@ -12,7 +13,6 @@ try:
   from OpenGL.GLX import *
 except:
   print ('ERROR: PyOpenGL not installed properly.')
-
 
 class SequenceTimeline(QGLWidget):
     width = 128
@@ -25,18 +25,7 @@ class SequenceTimeline(QGLWidget):
     margin = 80
 
     def __init__(self, parent, launcher, winId):
-        format = QGLFormat()
-        format.setSwapInterval(1)
-        #print( "Current Thread: " + str(int(QThread.currentThreadId())) )
-        gears.shareCurrent( int(winId) )
-        #print( "Current QOpenGLContext: " + str(QOpenGLContext.currentContext()) )
-        #print( "Current Thread: " + str(int(QThread.currentThreadId())) )
-        super().__init__(QGLContext.currentContext(), parent)
-        #print( "Current QGLContext: " + str(QGLContext.currentContext()) )
-
-        #print( "Current QGLContext: " + str(QGLContext.currentContext()) )
-        self.makeCurrent()
-        #print( "Current QGLContext: " + str(QGLContext.currentContext()) )
+        utils.initQGLWidget(self, super(), parent, winId)
         self.launcher = launcher
         self.fontMetrics = QFontMetrics(self.font())
         
