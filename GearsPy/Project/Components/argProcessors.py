@@ -23,10 +23,6 @@ def processDirection(direction, tb) :
     return direction
 
 def processColor(color, tb) :
-    # más megadásokat tudjon konvertálni rgb-be
-    # nem triplet, hanem object vagy dict(hsv, ...)
-    # tranformációs mátrix a kül hullámhosszok különböző receptorokat hogyan ingerlik
-    # pszeudo inverz mtx -> nem onvertálható mtx
     if(color == 'red') :
         return (1, 0, 0)
     elif(color == 'green') :
