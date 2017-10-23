@@ -17,3 +17,5 @@ Gears/\.vscode/
 *.vcxproj
 
 *.pyproj
+
+Gears\.VC\.VC\.opendb
