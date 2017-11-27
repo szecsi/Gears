@@ -14,8 +14,6 @@ Gears/obj
 Gears/bin
 Gears/\.vscode/
 
-*.vcxproj
-
 *.pyproj
 
 Gears\.VC\.VC\.opendb
