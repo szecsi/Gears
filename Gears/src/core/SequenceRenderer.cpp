@@ -169,15 +169,23 @@ void SequenceRenderer::apply(Sequence::P sequence, ShaderManager::P shaderManage
 	}
 	selectedStimulusRenderer = stimulusRenderers.end();
 
-	if(sequence->hasFft)
+	if ( sequence->hasFft )
 	{
-		fft2FrequencyDomain[0] = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
-		fft2SpatialDomain[0] = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px, 0, true/*, true*/);
-		if(!sequence->isMonochrome())
+		if ( clFFT() )
 		{
-			fft2FrequencyDomain[1] = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
-			fft2SpatialDomain[1] = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px, 0, true/*, true*/);
+			fft2FrequencyDomain[0] = new OPENCLFFT( sequence->fftWidth_px, sequence->fftHeight_px );
 		}
+		else
+		{
+			fft2FrequencyDomain[0] = new GLFFT( sequence->fftWidth_px, sequence->fftHeight_px );
+			fft2SpatialDomain[0] = new GLFFT( sequence->fftWidth_px, sequence->fftHeight_px, 0, true, true );
+			if ( !sequence->isMonochrome() )
+			{
+				fft2FrequencyDomain[1] = new GLFFT( sequence->fftWidth_px, sequence->fftHeight_px );
+				fft2SpatialDomain[1] = new GLFFT( sequence->fftWidth_px, sequence->fftHeight_px, 0, true, true );
+			}
+		}
+		
 	}
 	if(sequence->hasSpatialDomainConvolution)
 	{

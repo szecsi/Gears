@@ -16,7 +16,7 @@ uint KernelManager::getKernel(SpatialFilter::CP spatialFilter)
 	if (i != kernels.end())
 	{
 		if(i->second.fft)
-			return i->second.fft->get_output();
+			return i->second.fft->get_fullTex();
 		if(i->second.buff)
 			return i->second.buff->getColorBuffer(0);
 	}
@@ -28,7 +28,11 @@ uint KernelManager::getKernel(SpatialFilter::CP spatialFilter)
 
 	if(spatialFilter->useFft)
 	{
-		FFT* fft = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
+		FFT* fft;
+		if(sequenceRenderer->clFFT())
+			fft = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
+		else
+			fft = new GLFFT( sequence->fftWidth_px, sequence->fftHeight_px );
 		kernels[slongid] = Kernel{fft, nullptr, kernelShader};
 	}
 	else
@@ -124,7 +128,7 @@ uint KernelManager::update(SpatialFilter::CP spatialFilter)
 		fft->redraw_input();
 		if(!spatialFilter->kernelGivenInFrequencyDomain)
 			fft->do_fft();
-		return fft->get_output();
+		return fft->get_fullTex();
 	}
 	else
 	{

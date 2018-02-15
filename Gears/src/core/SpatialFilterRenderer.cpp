@@ -92,7 +92,7 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 			sequenceRenderer->fft2FrequencyDomain[0]->do_fft();
 
 		unsigned int freqTexId[2];
-		freqTexId[0] = sequenceRenderer->fft2FrequencyDomain[0]->get_output();
+		freqTexId[0] = sequenceRenderer->fft2FrequencyDomain[0]->get_fullTex();
 
 		sequenceRenderer->fft2SpatialDomain[0]->set_input( [&] () {
 			convolutionShader->enable();
@@ -106,7 +106,7 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 			convolutionShader->disable();
 			});
 
-		if(!sequenceRenderer->getSequence()->isMonochrome())
+		if( !sequenceRenderer->clFFT() && !sequenceRenderer->getSequence()->isMonochrome() )
 		{
 			spatialFilter->fftSwizzleMask = 0x00000406;
 			sequenceRenderer->fft2FrequencyDomain[1]->set_input( renderStimulus );
@@ -114,7 +114,7 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 			if(!spatialFilter->stimulusGivenInFrequencyDomain)
 				sequenceRenderer->fft2FrequencyDomain[1]->do_fft();
 
-			freqTexId[1] = sequenceRenderer->fft2FrequencyDomain[1]->get_output();
+			freqTexId[1] = sequenceRenderer->fft2FrequencyDomain[1]->get_fullTex();
 
 			sequenceRenderer->fft2SpatialDomain[1]->set_input( [&] () {
 				convolutionShader->enable();
@@ -134,15 +134,23 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 		glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		sequenceRenderer->fft2SpatialDomain[0]->redraw_input();
-		if(!spatialFilter->showFft)
-			sequenceRenderer->fft2SpatialDomain[0]->do_fft();
-
-		if(!sequenceRenderer->getSequence()->isMonochrome())
+		if ( sequenceRenderer->clFFT() )
 		{
-			sequenceRenderer->fft2SpatialDomain[1]->redraw_input();
-			if(!spatialFilter->showFft)
-				sequenceRenderer->fft2SpatialDomain[1]->do_fft();
+			if ( !spatialFilter->showFft )
+				static_cast<OPENCLFFT*>(sequenceRenderer->fft2FrequencyDomain[0])->do_inverse_fft();
+		}
+		else
+		{
+			sequenceRenderer->fft2SpatialDomain[0]->redraw_input();
+			if ( !spatialFilter->showFft )
+				sequenceRenderer->fft2SpatialDomain[0]->do_fft();
+
+			if ( !sequenceRenderer->getSequence()->isMonochrome() )
+			{
+				sequenceRenderer->fft2SpatialDomain[1]->redraw_input();
+				if ( !spatialFilter->showFft )
+					sequenceRenderer->fft2SpatialDomain[1]->do_fft();
+			}
 		}
 
 		if(sequenceRenderer->sequence->getMaxTemporalProcessingStateCount() > 0)
@@ -196,15 +204,21 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 			(double)sequenceRenderer->sequence->fftHeight_px * sequenceRenderer->sequence->fieldHeight_um
 			/ (sequenceRenderer->sequence->getSpatialFilteredFieldHeight_um() * sequenceRenderer->sequence->fieldHeight_px);
 		copyShader->bindUniformFloat2("pixelRatio", 
-			(double)sequenceRenderer->sequence->fftWidth_px * sequenceRenderer->sequence->fieldWidth_um / 
+			(float)sequenceRenderer->sequence->fftWidth_px * sequenceRenderer->sequence->fieldWidth_um / 
 			(sequenceRenderer->sequence->fieldWidth_px * sequenceRenderer->sequence->getSpatialFilteredFieldWidth_um()) ,
-			(double)sequenceRenderer->sequence->fftHeight_px * sequenceRenderer->sequence->fieldHeight_um
+			(float)sequenceRenderer->sequence->fftHeight_px * sequenceRenderer->sequence->fieldHeight_um
 			/ (sequenceRenderer->sequence->getSpatialFilteredFieldHeight_um() * sequenceRenderer->sequence->fieldHeight_px) );
 
-		copyShader->bindUniformTextureRect("srcrg", sequenceRenderer->fft2SpatialDomain[0]->get_output(), 0);
-		if(!sequenceRenderer->getSequence()->isMonochrome())
-			copyShader->bindUniformTextureRect("srcba", sequenceRenderer->fft2SpatialDomain[1]->get_output(), 1);
-
+		if ( sequenceRenderer->clFFT() )
+		{
+			copyShader->bindUniformTextureRect( "srcrg", sequenceRenderer->fft2FrequencyDomain[0]->get_fullTex(), 0 );
+		}
+		else
+		{
+			copyShader->bindUniformTextureRect( "srcrg", sequenceRenderer->fft2SpatialDomain[0]->get_fullTex(), 0 );
+			if ( !sequenceRenderer->getSequence()->isMonochrome() )
+				copyShader->bindUniformTextureRect( "srcba", sequenceRenderer->fft2SpatialDomain[1]->get_fullTex(), 1 );
+		}
 		glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
