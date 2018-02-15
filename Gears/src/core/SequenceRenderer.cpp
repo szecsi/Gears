@@ -168,12 +168,12 @@ void SequenceRenderer::apply(Sequence::P sequence, ShaderManager::P shaderManage
 
 	if(sequence->hasFft)
 	{
-		fft2FrequencyDomain[0] = new FFT(sequence->fftWidth_px, sequence->fftHeight_px);
-		fft2SpatialDomain[0] = new FFT(sequence->fftWidth_px, sequence->fftHeight_px, 0, true, true);
+		fft2FrequencyDomain[0] = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
+		fft2SpatialDomain[0] = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px, 0, true/*, true*/);
 		if(!sequence->isMonochrome())
 		{
-			fft2FrequencyDomain[1] = new FFT(sequence->fftWidth_px, sequence->fftHeight_px);
-			fft2SpatialDomain[1] = new FFT(sequence->fftWidth_px, sequence->fftHeight_px, 0, true, true);
+			fft2FrequencyDomain[1] = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
+			fft2SpatialDomain[1] = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px, 0, true/*, true*/);
 		}
 	}
 	if(sequence->hasSpatialDomainConvolution)

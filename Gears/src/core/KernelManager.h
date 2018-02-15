@@ -11,7 +11,8 @@
 
 #include "SpatialFilter.h"
 #include "ShaderManager.h"
-#include "FFT.h"
+#include "GLFFT.h"
+#include "OPENCLFFT.h"
 
 #include <string>
 #include <map>

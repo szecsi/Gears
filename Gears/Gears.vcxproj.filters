@@ -64,9 +64,6 @@
     <ClCompile Include="src\core\StimulusRenderer.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\fft\FFT.cpp">
-      <Filter>src\fft</Filter>
-    </ClCompile>
     <ClCompile Include="src\fft\load_shaders.cpp">
       <Filter>src\fft</Filter>
     </ClCompile>
@@ -144,6 +141,12 @@
     </ClCompile>
     <ClCompile Include="src\core\SequenceRenderer.cpp">
       <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fft\glFFT.cpp">
+      <Filter>src\fft</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fft\openCLFFT.cpp">
+      <Filter>src\fft</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -380,6 +383,12 @@
     </ClInclude>
     <ClInclude Include="src\core\PortHandler.h">
       <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fft\glFFT.h">
+      <Filter>src\fft</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fft\openCLFFT.h">
+      <Filter>src\fft</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

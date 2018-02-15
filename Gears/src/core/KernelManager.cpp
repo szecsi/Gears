@@ -28,7 +28,7 @@ uint KernelManager::getKernel(SpatialFilter::CP spatialFilter)
 
 	if(spatialFilter->useFft)
 	{
-		FFT* fft = new FFT(sequence->fftWidth_px, sequence->fftHeight_px);
+		FFT* fft = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
 		kernels[slongid] = Kernel{fft, nullptr, kernelShader};
 	}
 	else

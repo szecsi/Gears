@@ -12,7 +12,14 @@ GearsPy/Project/Logs
 
 Gears/obj
 Gears/bin
-Gears/\.vscode/
+
+GearsTest/*/*.obj
+GearsTest/*/*.pdb
+GearsTest/*/*.ilk
+GearsTest/*/*.log
+GearsTest/*/vc120.idb
+GearsTest/*/GearsTest.tlog
+GearsTest/GearsTest.vcxproj.user
 
 *.pyproj
 

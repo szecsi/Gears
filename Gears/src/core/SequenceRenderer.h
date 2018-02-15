@@ -23,7 +23,8 @@
 #include "KernelManager.h"
 #include "SpatialFilterRenderer.h"
 #include "Ticker.h"
-#include "FFT.h"
+#include "GLFFT.h"
+#include "OPENCLFFT.h"
 #ifdef _WIN32
 #	include "FontManager.h"
 #endif
