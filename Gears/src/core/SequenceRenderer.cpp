@@ -16,17 +16,20 @@
 #include <boost/filesystem.hpp>
 #include "core/pythonerr.h"
 
-
 extern "C" {
 #include <libavutil/opt.h>
 
 #include <libavcodec/avcodec.h>
 #include <libavutil/channel_layout.h>
+#pragma warning( push )  
+#pragma warning( disable : 4244 )  
 #include <libavutil/common.h>
+#pragma warning ( pop )
 #include <libavutil/imgutils.h>
 #include <libavutil/mathematics.h>
 #include <libavutil/samplefmt.h>
 }
+
 #ifdef _WIN32
 	extern PFNWGLSWAPINTERVALEXTPROC       wglSwapIntervalEXT;
 	extern PFNWGLGETSWAPINTERVALEXTPROC    wglGetSwapIntervalEXT;
@@ -103,10 +106,10 @@ SequenceRenderer::SequenceRenderer()
 	textVisible = false;
 	responseVisible = false;
 
-	measuredToneRangeMin = std::numeric_limits<double>::quiet_NaN();
-	measuredToneRangeMax = std::numeric_limits<double>::quiet_NaN();
-	measuredMean  = std::numeric_limits<double>::quiet_NaN();
-	measuredVariance  = std::numeric_limits<double>::quiet_NaN();
+	measuredToneRangeMin = std::numeric_limits<float>::quiet_NaN();
+	measuredToneRangeMax = std::numeric_limits<float>::quiet_NaN();
+	measuredMean  = std::numeric_limits<float>::quiet_NaN();
+	measuredVariance  = std::numeric_limits<float>::quiet_NaN();
 
 	isDrawingPreview = false;
 	forwardRenderedImage = nullptr;
@@ -315,7 +318,7 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer)
 			////auto  elapsedNano = std::chrono::duration_cast<std::chrono::nanoseconds>(now - firstFrameTimePoint);
 			////std::cout << elapsed.count() << " : " << elapsedNano.count() << '\n';
 			//std::cout << elapsedSinceLastFrame.count() << '\n';
-			int vSyncPeriodsSinceLastFrame = elapsedSinceLastFrame.count() / sequence->getFrameInterval_s() + 0.5f;
+			int vSyncPeriodsSinceLastFrame = (int)(elapsedSinceLastFrame.count() / sequence->getFrameInterval_s() + 0.5);
 			////int toFrame = elapsed.count() / sequence->getFrameInterval_s() + 1.5f;
 			////std::cout << elapsed.count() - (iFrame + frameOffset - 1.5f) * sequence->getFrameInterval_s() << '\n';
 			////toFrame -= frameOffset;
@@ -604,7 +607,7 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer)
 		glColor3d(0.6, 0.6, 0.6);
 		for(int i=0; i<=histogramMax-histogramMin; i++)
 		{
-			int v = i + histogramMin;
+			int v = i + (int)histogramMin;
 			float p = (v - histogramMin)/ (histogramMax-histogramMin) * 2.0f / 1.1f - 0.909f;
 			glPushMatrix();
 			glTranslated(p, 0, 0);
@@ -867,7 +870,7 @@ void SequenceRenderer::abort()
 
 void SequenceRenderer::pickStimulus(double x, double y)
 {
-	uint iPickedFrame = x * sequence->getDuration();
+	uint iPickedFrame = (int)(x * sequence->getDuration());
 	selectedStimulusRenderer = stimulusRenderers.lower_bound(iPickedFrame);
 	if(selectedStimulusRenderer == stimulusRenderers.end())
 		selectedStimulusRenderer = stimulusRenderers.begin();
@@ -1233,8 +1236,8 @@ void SequenceRenderer::endVideoExportFrame()
 		glBindTexture(GL_TEXTURE_2D, videoExportImageV->getColorBuffer(0));
 		glGetTexImage(GL_TEXTURE_2D, 0, GL_RED, GL_UNSIGNED_BYTE, (void*)frame->data[2]);
 
-		int y, x;
-	/*	for (y = 0; y<c->height; y++) {
+	/*	int y, x;
+		for (y = 0; y<c->height; y++) {
 			for (x = 0; x<c->width; x++) {
 				frame->data[0][y * frame->linesize[0] + x] = x + y + iFrame * 3;
 			}
@@ -1279,7 +1282,7 @@ void SequenceRenderer::endCalibrationFrame(Stimulus::CP stimulus)
 		histogramBuffer3->setRenderTarget();
 		histogramShader->enable();
 		histogramShader->bindUniformTexture("inputBuffer", calibrationImage->getColorBuffer(0), 0);
-		histogramShader->bindUniformFloat("histogramLevels", histogramResolution);
+		histogramShader->bindUniformFloat("histogramLevels", (float)histogramResolution);
 		histogramShader->bindUniformFloat("domainMin", histogramMin);
 		histogramShader->bindUniformFloat("domainMax", histogramMax);
 		histogramShader->bindUniformUint2("sampleCount", calibrationHorizontalSampleCount, calibrationVerticalSampleCount);
@@ -1300,7 +1303,7 @@ void SequenceRenderer::endCalibrationFrame(Stimulus::CP stimulus)
 		else
 		{
 			histogramHalferShader->bindUniformFloat("oldFramesWeight", stimulus->histogramMeasurementImpedance);
-			histogramHalferShader->bindUniformFloat("newFrameWeight", 1.0 - stimulus->histogramMeasurementImpedance);
+			histogramHalferShader->bindUniformFloat("newFrameWeight", 1.0f - stimulus->histogramMeasurementImpedance);
 		}
 		nothing->renderQuad();
 		histogramHalferShader->disable();
@@ -1437,31 +1440,31 @@ void SequenceRenderer::readCalibrationResults()
 
 	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_FLOAT, (void*)ohisti);
 
-	double runningVal=0;
-	for (int e = 0; e<histogramResolution; e++)
+	float runningVal=0.f;
+	for (uint e = 0; e<histogramResolution; e++)
 	{
-		double temp = ohisti[e*4] - runningVal;
+		float temp = ohisti[e*4] - runningVal;
 		runningVal = ohisti[e*4];
 		histi[e*4] = temp;
 	}
-	runningVal=0;
-	for (int e = 0; e<histogramResolution; e++)
+	runningVal=0.f;
+	for (uint e = 0; e<histogramResolution; e++)
 	{
-		double temp = ohisti[e*4+1] - runningVal;
+		float temp = ohisti[e*4+1] - runningVal;
 		runningVal = ohisti[e*4+1];
 		histi[e*4+1] = temp;
 	}
-	runningVal=0;
-	for (int e = 0; e<histogramResolution; e++)
+	runningVal=0.f;
+	for (uint e = 0; e<histogramResolution; e++)
 	{
-		double temp = ohisti[e*4+2] - runningVal;
+		float temp = ohisti[e*4+2] - runningVal;
 		runningVal = ohisti[e*4+2];
 		histi[e*4+2] = temp;
 	}
-	runningVal=0;
-	for (int e = 0; e<histogramResolution; e++)
+	runningVal=0.f;
+	for (uint e = 0; e<histogramResolution; e++)
 	{
-		double temp = ohisti[e*4+3] - runningVal;
+		float temp = ohisti[e*4+3] - runningVal;
 		runningVal = ohisti[e*4+3];
 		histi[e*4+3] = temp;
 	}
@@ -1469,25 +1472,25 @@ void SequenceRenderer::readCalibrationResults()
 	float histogramTop = 0;
 	double m = 0;
 	double w = 0;
-	for (int e = 0; e<histogramResolution; e++)
+	for (uint e = 0; e<histogramResolution; e++)
 	{
 		double y = histi[e * 4] + histi[e * 4 + 1] + histi[e * 4 + 2];
 		w += y;
 		m += y * (e / (float)histogramResolution * (histogramMax - histogramMin) + histogramMin);
 		histogramTop = std::max(histogramTop, histi[e * 4]);
 	}
-	measuredMean = m / w;
-	histogramScale = histogramTop / (float)(iFrame - calibrationStartingFrame) * 1000.4;
+	measuredMean = (float)(m / w);
+	histogramScale = histogramTop / (float)(iFrame - calibrationStartingFrame) * 1000.4f;
 
 	double vari2=0;
-	for (int e = 0; e<histogramResolution; e++)
+	for (uint e = 0; e<histogramResolution; e++)
 	{
 		double d = e / (float)histogramResolution * (histogramMax - histogramMin) + histogramMin - measuredMean;
 		vari2 += (histi[e * 4] + histi[e * 4 + 1] + histi[e * 4 + 2]) * d*d;
 	}
-	measuredVariance = sqrt(vari2 / w);
+	measuredVariance = (float)sqrt(vari2 / w);
 
-	for (int e = 0; e<histogramResolution; e++)
+	for (uint e = 0; e<histogramResolution; e++)
 	{
 		if (histi[e * 4] + histi[e * 4 + 1] + histi[e * 4 + 2] > 10.5)
 		{
@@ -1495,7 +1498,7 @@ void SequenceRenderer::readCalibrationResults()
 			break;
 		}
 	}
-	for (int e = 0; e<histogramResolution-1; e++)
+	for (uint e = 0; e<histogramResolution-1; e++)
 	{
 		if (histi[(histogramResolution - 1 - e) * 4] + histi[(histogramResolution - 1 - e) * 4 + 1] + histi[(histogramResolution - 1 - e) * 4 + 2] > 10.5)
 		{

@@ -74,8 +74,8 @@ uint KernelManager::update(SpatialFilter::CP spatialFilter)
 //							512 * 512 * 1.4 * 3.1415926535897932384626433832795 / sequence->getSpatialFilteredFieldHeight_um()
 							);
 						kernelShader->bindUniformFloat2("texelSize_um", 
-							sequence->fftWidth_px / 3.1415926535897932384626433832795 / sequence->getSpatialFilteredFieldWidth_um() / 2000000,
-							sequence->fftHeight_px / 3.1415926535897932384626433832795 / sequence->getSpatialFilteredFieldHeight_um() / 200000);
+							(float)(sequence->fftWidth_px / 3.1415926535897932384626433832795 / sequence->getSpatialFilteredFieldWidth_um() / 2000000),
+							(float)(sequence->fftHeight_px / 3.1415926535897932384626433832795 / sequence->getSpatialFilteredFieldHeight_um() / 200000));
 					}
 					else
 					{

@@ -1,5 +1,6 @@
 #pragma once
 
+#ifndef DEFINE_INTSWIZZLE_ASSIGNMENT_OPERATOR
 #define DEFINE_INTSWIZZLE_ASSIGNMENT_OPERATOR(INTSWIZZLE_OPERATOR)		\
 	inline uintswizzle& operator INTSWIZZLE_OPERATOR (const T& o)		\
 	{	\
@@ -9,6 +10,7 @@
 		if(3 < nBase) v[ s3 ] INTSWIZZLE_OPERATOR o[3];	\
 		return *this;	\
 	}
+#endif
 
 #define DEFINE_INTSWIZZLE_MONADIC_OPERATOR(INTSWIZZLE_OPERATOR, T)		\
 	T operator INTSWIZZLE_OPERATOR () const	\

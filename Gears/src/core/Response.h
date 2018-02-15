@@ -33,8 +33,8 @@ public:
 		bool visible;
 	};
 	std::vector<Button> buttons;
-	int duration; //frames
-	int startingFrame;
+	unsigned int duration; //frames
+	unsigned int startingFrame;
 
 	boost::shared_ptr<Sequence> sequence;		//< Part of this sequence.
 

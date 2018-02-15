@@ -12,7 +12,7 @@ OPENCLFFT::OPENCLFFT( unsigned int width, unsigned int height, unsigned int inpu
 	FFT( width, height ), fullTex( input_tex ), getChannelsProgramSize( strlen( getChannelsProgram ) ), getFullImageProgramSize( strlen( getFullImageProgram ) ),
 	full_img_size( size[0] * size[1] * 4 ), channel_img_size( size[1] * (size[0] + 2) ), transformed( false ), ownsChannels(true)
 {
-	has_input_tex = (bool) glIsTexture( input_tex );
+	has_input_tex = glIsTexture( input_tex );
 	init_framebuffer();
 	img = new GLfloat[full_img_size];
 	props[0] = CL_CONTEXT_PLATFORM;

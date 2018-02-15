@@ -29,27 +29,27 @@ Stimulus::Stimulus():
 	particleGridWidth(0),
 	particleGridHeight(0),
 	gammaSamplesCount(2),
-	toneRangeMin(0),
-	toneRangeMax(1),
-	toneRangeMean(0.5),
-	toneRangeVar(-0.25),
+	toneRangeMin(0.f),
+	toneRangeMax(1.f),
+	toneRangeMean(0.5f),
+	toneRangeVar(-0.25f),
 	toneMappingMode(ToneMappingMode::LINEAR),
 	usesForwardRendering(false),
 	fullScreenTemporalFiltering(false),
 	mono(true),
 	doesToneMappingInStimulusGenerator(true),
 	requiresClearing(false),
-	clearColor(0.5, 0.5, 0.5),
+	clearColor(0.5f, 0.5f, 0.5f),
 	doesDynamicToneMapping(false),
 	computesFullAverageForHistogram(true),
-	stretchFactor(1),
-	meanOffset(0),
-	histogramMeasurementImpedance(0.95)
+	stretchFactor(1.f),
+	meanOffset(0.f),
+	histogramMeasurementImpedance(0.95f)
 {
-	measuredToneRangeMin = std::numeric_limits<double>::quiet_NaN();
-	measuredToneRangeMax = std::numeric_limits<double>::quiet_NaN();
-	measuredMean  = std::numeric_limits<double>::quiet_NaN();
-	measuredVariance  = std::numeric_limits<double>::quiet_NaN();
+	measuredToneRangeMin = std::numeric_limits<float>::quiet_NaN();
+	measuredToneRangeMax = std::numeric_limits<float>::quiet_NaN();
+	measuredMean  = std::numeric_limits<float>::quiet_NaN();
+	measuredVariance  = std::numeric_limits<float>::quiet_NaN();
 
 	gamma[0] = 0.0f;
 	gamma[1] = 1.0f;
@@ -327,7 +327,7 @@ boost::python::object Stimulus::setTemporalWeights(boost::python::object twList,
 			temporalWeightMin = std::min(temporalWeightMin, temporalWeights[i]);
 			temporalWeightMax = std::max(temporalWeightMax, temporalWeights[i]);
 		}
-		for(int i=0; i<64-length; i++)
+		for(unsigned int i=0; i<64-length; i++)
 			temporalWeights[i] = 0;
 		temporalMemoryLength = length;
 	}
@@ -463,7 +463,7 @@ boost::python::object Stimulus::getPythonObject() const
 boost::python::object Stimulus::getMeasuredHistogramAsPythonList()
 {
 	boost::python::list l;
-	for(int i=0; i<measuredHistogram.size(); i++)
+	for(unsigned int i=0; i<measuredHistogram.size(); i++)
 		l.append(measuredHistogram[i]);
 	return l;
 }
@@ -501,7 +501,7 @@ void Stimulus::setMeasuredDynamics  (
 	const_cast<Stimulus*>(this)->measuredMean			= measuredMean;
 	const_cast<Stimulus*>(this)->measuredVariance		= measuredVariance;
 	const_cast<Stimulus*>(this)->measuredHistogram.clear();
-	for(int i=0; i<histogramResolution*4; i++)
+	for(unsigned int i=0; i<histogramResolution*4; i++)
 		const_cast<Stimulus*>(this)->measuredHistogram.push_back(histi[i]);
 }
 
@@ -750,7 +750,8 @@ boost::python::object Stimulus::setLtiImpulseResponse(boost::python::object mLis
 	std::stringstream ssbb;
 	ssbb << "Optimal LTI system found. Total error of fitting: " << errorSum << ", MSE: " <<  squaredErrorSum << "." << std::endl;
 	PyErr_Warn(PyExc_Warning, ssbb.str().c_str());
-
+#pragma warning( push )
+#pragma warning( disable: 4244 )
 	temporalProcessingStateCount = nStates;
 	if(nStates == 3)
 	{
@@ -788,7 +789,7 @@ boost::python::object Stimulus::setLtiImpulseResponse(boost::python::object mLis
 			p(7, 4), p(7, 5), p(7, 6), p(7, 7)
 			);
 	}
-
+#pragma warning( pop )
 	finishLtiSettings();
 	return boost::python::object();
 }

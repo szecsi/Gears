@@ -183,8 +183,8 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 			sequenceRenderer->sequence->fftWidth_px,
 			sequenceRenderer->sequence->fftHeight_px);
 		copyShader->bindUniformInt2("offset", 
-			sequenceRenderer->sequence->fftWidth_px * (1.0 - sequenceRenderer->sequence->fieldWidth_um / sequenceRenderer->sequence->getSpatialFilteredFieldWidth_um() / 2),
-			sequenceRenderer->sequence->fftHeight_px * (1.0 - sequenceRenderer->sequence->fieldHeight_um / sequenceRenderer->sequence->getSpatialFilteredFieldHeight_um() / 2) 
+			(int) (sequenceRenderer->sequence->fftWidth_px * (1.0 - sequenceRenderer->sequence->fieldWidth_um / sequenceRenderer->sequence->getSpatialFilteredFieldWidth_um() / 2)),
+			(int) (sequenceRenderer->sequence->fftHeight_px * (1.0 - sequenceRenderer->sequence->fieldHeight_um / sequenceRenderer->sequence->getSpatialFilteredFieldHeight_um() / 2))
 			);
 
 		copyShader->bindUniformFloat("pixelArea", sequenceRenderer->sequence->getSpatialFilteredFieldWidth_um() * sequenceRenderer->sequence->getSpatialFilteredFieldHeight_um() 
@@ -252,7 +252,7 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 			spatialDomainConvolutionShader->bindUniformTexture("kernel", spatialKernelId, 1);
 			spatialDomainConvolutionShader->bindUniformFloat2("patternSizeOnRetina", sequenceRenderer->sequence->fieldWidth_um, sequenceRenderer->sequence->fieldHeight_um);
 			spatialDomainConvolutionShader->bindUniformFloat2("kernelSizeOnRetina", spatialFilter->width_um, spatialFilter->height_um);
-			spatialDomainConvolutionShader->bindUniformFloat2("step", 0, spatialFilter->height_um / 17.0);
+			spatialDomainConvolutionShader->bindUniformFloat2("step", 0, spatialFilter->height_um / 17.0f);
 			spatialDomainConvolutionShader->bindUniformBool("combine", false);
 
 			sequenceRenderer->getNothing()->renderQuad();
@@ -288,7 +288,7 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 		spatialDomainConvolutionShader->bindUniformTexture("kernel", spatialKernelId, 1);
 		spatialDomainConvolutionShader->bindUniformFloat2("patternSizeOnRetina", sequenceRenderer->sequence->fieldWidth_um, sequenceRenderer->sequence->fieldHeight_um);
 		spatialDomainConvolutionShader->bindUniformFloat2("kernelSizeOnRetina", spatialFilter->width_um, spatialFilter->height_um);
-		spatialDomainConvolutionShader->bindUniformFloat2("step", spatialFilter->width_um / 17.0, 0);
+		spatialDomainConvolutionShader->bindUniformFloat2("step", spatialFilter->width_um / 17.0f, 0.f);
 		spatialDomainConvolutionShader->bindUniformBool("combine", true);
 		sequenceRenderer->getNothing()->renderQuad();
 		spatialDomainConvolutionShader->disable();

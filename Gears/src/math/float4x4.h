@@ -367,7 +367,7 @@ public:
 		}
 		else
 		{
-		   float invDet = 1.0 / det;
+		   float invDet = 1.0f / det;
 		   /* Compute rest of inverse. */
 		   inv.l[0] *= invDet;
 		   inv.l[1] *= invDet;

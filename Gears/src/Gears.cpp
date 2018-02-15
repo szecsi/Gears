@@ -191,7 +191,7 @@ void setMousePointerLocation(float x, float y)
 	#ifdef _WIN32
 		uint screenw = GetSystemMetrics(SM_CXSCREEN);
 		uint screenh = GetSystemMetrics(SM_CYSCREEN);
-		SetCursorPos(screenw * x, screenh * y);
+		SetCursorPos((int)(screenw * x), (int)(screenh * y));
 	#elif __linux__
 		if(stimulusWindow)
 			stimulusWindow->setCursorPos();
