@@ -94,6 +94,7 @@
       </SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)Gears\src;$(SolutionDir)ThirdParty\googletest\include;$(SolutionDir)libs/glew-1.10.0/include;E:\clFFT-master\build\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DisableSpecificWarnings>4800</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
