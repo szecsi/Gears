@@ -334,7 +334,7 @@ void StimulusRenderer::renderStimulus(GLuint defaultFrameBuffer, int skippedFram
 		else //Stimulus::ToneMappingMode::EQUALIZED
 			dynamicToneShader->bindUniformTexture("histogram", sequenceRenderer->histogramBuffer2->getColorBuffer(0), 2);
 		dynamicToneShader->bindUniformInt("gammaSampleCount", stimulus->gammaSamplesCount);
-		dynamicToneShader->bindUniformFloat2("histogramLimits", sequenceRenderer->histogramMin, 1.0 / (sequenceRenderer->histogramMax - sequenceRenderer->histogramMin));
+		dynamicToneShader->bindUniformFloat2("histogramLimits", sequenceRenderer->histogramMin, 1.0f / (sequenceRenderer->histogramMax - sequenceRenderer->histogramMin));
 		sequenceRenderer->getNothing()->renderQuad();
 		dynamicToneShader->disable();
 	}
@@ -450,10 +450,10 @@ void StimulusRenderer::renderTimeline(bool* signals, uint startFrame, uint frame
 		{
 			glPushMatrix();
 			spikeShader->enable();
-			int scount = frameCount * sequenceRenderer->getSequence()->getFrameInterval_s() / stimulus->sequence->tickInterval * 3 + 1;
+			int scount = int(frameCount * sequenceRenderer->getSequence()->getFrameInterval_s() / stimulus->sequence->tickInterval * 3 + 1);
 			int stride = scount / 8000 + 1;
 			spikeShader->bindUniformInt("stride", stride);
-			spikeShader->bindUniformInt("startOffset", startFrame* sequenceRenderer->getSequence()->getFrameInterval_s() / stimulus->sequence->tickInterval );
+			spikeShader->bindUniformInt("startOffset", (int)(startFrame* sequenceRenderer->getSequence()->getFrameInterval_s() / stimulus->sequence->tickInterval ));
 			sequenceRenderer->getNothing()->renderLineStrip(scount / stride);
 			spikeShader->disable();
 			glPopMatrix();
@@ -611,7 +611,7 @@ void StimulusRenderer::renderTemporalKernel()
 	{
 		glColor3d(1, 0.0, 0);
 		glBegin(GL_LINE_STRIP);
-			for(int i=0; i<stimulus->temporalMemoryLength; i++)
+			for(unsigned int i=0; i<stimulus->temporalMemoryLength; i++)
 			{
 				glVertex2d(stimulus->temporalMemoryLength-i, stimulus->temporalWeights[stimulus->temporalMemoryLength - i-1]);
 				glVertex2d(stimulus->temporalMemoryLength-1-i, stimulus->temporalWeights[stimulus->temporalMemoryLength - i-1]);

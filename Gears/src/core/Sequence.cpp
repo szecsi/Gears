@@ -33,7 +33,7 @@ Sequence::Sequence(std::string name):
 	exportRandomsAsBinary(true),
 	frameRateDivisor(1),
 	deviceFrameRate(59.94f),
-	tickInterval(0.00834167500834167500834167500834),
+	tickInterval(0.00834167500834167500834167500834f),
 	hasFft(false),
 	hasSpatialDomainConvolution(false),
 	shortestStimulusDuration(1000000),

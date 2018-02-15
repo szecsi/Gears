@@ -417,7 +417,7 @@ void StimulusWindow::shareCurrent( unsigned int winId )
 	GLXContext sharedCtx = glXCreateNewContext( display, bestFbc, GLX_RGBA_TYPE, ctx, true );
 
 	if( !glXMakeCurrent(display, winId, sharedCtx) )
-		std::cout << "Error: glXMakeCurrent returns false!" << std::endl;
+		std::cout << "Error: glXMakeCurrent failed!" << std::endl;
 
 
 	XSetErrorHandler( oldHandler );

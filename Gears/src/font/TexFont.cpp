@@ -18,7 +18,7 @@ TexFont::TexFont(std::string faceName)
 
 	texHeight = texWidth = 512;
 	teximage = new unsigned char[texHeight * texWidth];
-	for(int u=0; u < texHeight * texWidth; u++)
+	for(unsigned int u=0; u < texHeight * texWidth; u++)
 		teximage[u] = 0;
 
 	aGlyphs = 160;
@@ -68,7 +68,7 @@ void TexFont::placeGlyph(GlyphInfo& gi, HDC hdc)
 	}
 	if(px + gi.gm.gmBlackBoxX + gap < texWidth && py + gi.gm.gmBlackBoxY + gap < texHeight)
 	{
-		GLYPHMETRICS glym;
+		// GLYPHMETRICS glym;
 		unsigned char glyphBitmap[64 * 64];
 		MAT2 mat;
 		mat.eM11.value = mat.eM22.value = 1;
@@ -76,6 +76,8 @@ void TexFont::placeGlyph(GlyphInfo& gi, HDC hdc)
 		mat.eM11.fract = mat.eM22.fract = 0;
 		mat.eM12.fract = mat.eM21.fract = 0;
 		DWORD err = GetGlyphOutline(hdc, gi.charcode, GGO_GRAY4_BITMAP, &gi.gm /*glym*/, 64*64, glyphBitmap, &mat);
+#pragma warning( push )
+#pragma warning( disable : 4244 )  
 		glyphs[nGlyphs].uvLeft = (px - 0.5) / (double)texWidth;
 		glyphs[nGlyphs].uvRight = (px + 0.5 + gi.gm.gmBlackBoxX) / (double)texWidth;
 		glyphs[nGlyphs].uvTop = (py - 0.5) / (double)texHeight;
@@ -85,11 +87,12 @@ void TexFont::placeGlyph(GlyphInfo& gi, HDC hdc)
 		glyphs[nGlyphs].quadTop = gi.gm.gmptGlyphOrigin.y;
 		glyphs[nGlyphs].quadBottom = (signed)gi.gm.gmptGlyphOrigin.y - (signed)gi.gm.gmBlackBoxY;
 		glyphs[nGlyphs].advance = gi.gm.gmCellIncX;
+#pragma warning( pop ) 
 
 		int glymb = 0;
-		for(int piny = py; piny < py + gi.gm.gmBlackBoxY; piny++)
+		for(unsigned int piny = py; piny < py + gi.gm.gmBlackBoxY; piny++)
 		{
-			for(int pinx = px; pinx < px + gi.gm.gmBlackBoxX; pinx++)
+			for(unsigned int pinx = px; pinx < px + gi.gm.gmBlackBoxX; pinx++)
 			{
 				if(glyphBitmap[glymb] == 0x10)
 					teximage[pinx + piny * texWidth] = 255;
@@ -210,7 +213,7 @@ void TexFont::glRenderString(
 		{
 			glPopMatrix();
 			Glyph& h = *lut['j'-32];
-			glTranslatef(0.0, -1.5 * (h.quadTop - h.quadBottom), 0.0);
+			glTranslatef(0.0f, -1.5f * (h.quadTop - h.quadBottom), 0.0f);
 			glPushMatrix();
 			continue;
 		}
@@ -236,8 +239,8 @@ void TexFont::glRenderString(
 		{
 			underlineStart = float3(g->quadLeft, g->quadBottom, 0.0);
 		}
-		glTranslatef(bold?(g->advance * 0.9):g->advance, 0.0, 0.0);
-		underlineStart.x -= bold?(g->advance * 0.9):g->advance;
+		glTranslatef(bold?(g->advance * 0.9f):g->advance, 0.0f, 0.0f);
+		underlineStart.x -= bold?(g->advance * 0.9f):g->advance;
 	}
 	if(!(mode & TEXFONT_MODE_OPEN_ONLY))
 		glPopMatrix();
@@ -245,7 +248,7 @@ void TexFont::glRenderString(
 	if(underline || strikeout)
 	{
 		if(g)
-			underlineEnd = float3(g->quadRight - (bold?(g->advance * 0.9):g->advance), g->quadBottom, 0.0);
+			underlineEnd = float3(g->quadRight - (bold?(g->advance * 0.9f):g->advance), g->quadBottom, 0.0f);
 
 		glLineWidth(1.0);
 		glBegin(GL_LINES);
@@ -260,8 +263,8 @@ void TexFont::glRenderString(
 			{
 				if(italic)
 				{
-					underlineStart.x += 6.0 * 0.4;
-					underlineEnd.x += 6.0 * 0.4;
+					underlineStart.x += 6.0f * 0.4f;
+					underlineEnd.x += 6.0f * 0.4f;
 				}
 				glVertex2d(underlineStart.x, underlineStart.y + 7.5);
 				glVertex2d(underlineEnd.x,	underlineEnd.y + 7.5);
@@ -349,9 +352,9 @@ Gears::Math::float3 TexFont::getTextExtent(std::string otext, std::string fontFa
 			if(extents.z > h.quadBottom)
 				extents.z = h.quadBottom;
 			if(italic)
-				extents.x += extents.y * 0.4;
+				extents.x += extents.y * 0.4f;
 			if(bold)
-				extents.x *= 1.3;
+				extents.x *= 1.3f;
 
 			if(extents.x > multiExtents.x)
 				multiExtents.x = extents.x;
@@ -369,7 +372,7 @@ Gears::Math::float3 TexFont::getTextExtent(std::string otext, std::string fontFa
 		}
 		Glyph& h = *g;
 		if(bold)
-			extents.x += h.advance * 0.9;
+			extents.x += h.advance * 0.9f;
 		else
 			extents.x += h.advance;
 		if(h.quadTop - h.quadBottom > extents.y)
@@ -383,9 +386,9 @@ Gears::Math::float3 TexFont::getTextExtent(std::string otext, std::string fontFa
 	if(extents.z > h.quadBottom)
 		extents.z = h.quadBottom;
 	if(italic)
-		extents.x += extents.y * 0.4;
+		extents.x += extents.y * 0.4f;
 	if(bold)
-		extents.x *= 1.3;
+		extents.x *= 1.3f;
 	if(extents.x > multiExtents.x)
 		multiExtents.x = extents.x;
 	multiExtents.y += extents.y;

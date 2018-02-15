@@ -152,7 +152,7 @@ void StimulusWindow::run()
 		makeCurrent();
 		glViewport(0, 0, screenw, screenh);
 
-		glClearColor(0.5, 0.1, 0.2, 1);
+		glClearColor(0.5f, 0.1f, 0.2f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		if(sequenceRenderer->exporting())
 			setSwapInterval( 0 );

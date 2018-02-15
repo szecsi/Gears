@@ -207,7 +207,8 @@ std::string Shader::getProgramInfoLog(GLuint& object){
   }
   return log;
 }
-
+#pragma warning( push )
+#pragma warning( disable: 4244 )
 bool Shader::fileToString(const char* path, char*& out, int& len) {
   std::ifstream file(path, std::ios::ate | std::ios::binary);
   if(!file.is_open()) {
@@ -221,6 +222,7 @@ bool Shader::fileToString(const char* path, char*& out, int& len) {
   out[len] = 0;
   return true;
 }
+#pragma warning( pop )
 
 void Shader::enable(){
   glUseProgram(shaderProgram);

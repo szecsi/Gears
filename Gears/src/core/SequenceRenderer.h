@@ -23,7 +23,8 @@
 #include "KernelManager.h"
 #include "SpatialFilterRenderer.h"
 #include "Ticker.h"
-#include "FFT.h"
+#include "GLFFT.h"
+#include "OPENCLFFT.h"
 #ifdef _WIN32
 #	include "FontManager.h"
 #endif
@@ -131,6 +132,9 @@ class SequenceRenderer
 	float measuredMean;
 	float measuredVariance;
 
+	// fft switch
+	bool _clFFT = false;
+
 	void readCalibrationResults();
 
 	//! Constructor. Sets some parameters to zero, but the sequence remains invalid until apply is called.
@@ -140,6 +144,8 @@ public:
 	
 	//! Creates GPU resources for the sequence, releasing earlier ones, if any.
 	void apply(Sequence::P sequence, ShaderManager::P shaderManager, TextureManager::P textureManager, KernelManager::P kernelManager);
+
+	bool clFFT() const { return _clFFT; }
 
 	void cleanup();
 	void reset();

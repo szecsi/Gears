@@ -26,7 +26,7 @@ Framebuffer::Framebuffer(GLuint width, GLuint height, GLuint planes, GLenum form
 	if(fmod(fnumMips, 1.0f) != 0)
 		hasMipMaps = false;
 	else
-		numMips = fnumMips + 1;
+		numMips = (int)(fnumMips + 1);
   }
 
   if(genMipMaps && !hasMipMaps)
@@ -136,11 +136,11 @@ void Framebuffer::setRenderTarget(int mipLevel)
 
   if(mipLevel >= 0 && hasMipMaps)
   {
-	  for(int i = 0; i < planes; i++)
+	  for(unsigned int i = 0; i < planes; i++)
 	  {
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, colorBuffer[i], mipLevel);
 	  }
-	  int texsize = pow(2.0f, numMips - 1 - mipLevel);
+	  int texsize = (int)pow(2, numMips - 1 - mipLevel);
 	  glViewport(0,0, texsize, texsize);
   }
   else

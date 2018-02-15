@@ -31,8 +31,8 @@ class TexFont
 
 	GLuint glTextureName;
 	std::string faceName;
-	int texWidth;
-	int texHeight;
+	unsigned int texWidth;
+	unsigned int texHeight;
 	int maxAscent;
 	int maxDescent;
 	int nGlyphs;

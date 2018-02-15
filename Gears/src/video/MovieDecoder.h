@@ -25,7 +25,10 @@
 
 extern "C" {
 #include <libavcodec/avcodec.h>
+#pragma warning( push )  
+#pragma warning( disable : 4244 )  
 #include <libavformat/avformat.h>
+#pragma warning( pop )
 }
 
 #include <thread>

@@ -12,8 +12,21 @@ GearsPy/Project/Logs
 
 Gears/obj
 Gears/bin
-Gears/\.vscode/
 
-*.vcxproj
+GearsTest/*.vcxproj
+GearsTest/.cache/*
+GearsTest/*/*.obj
+GearsTest/*/*.pdb
+GearsTest/*/*.ilk
+GearsTest/*/*.log
+GearsTest/*/vc120.idb
+GearsTest/*/GearsTest.tlog
+GearsTest/GearsTest.vcxproj.user
+
+Thirdparty/googletest/msvc/2010/gtest/*/temp/*
+Thirdparty/googletest/msvc/2010/gtest/*/*.pdb
+Thirdparty/googletest/msvc/2010/gtest/*/*.ilk
 
 *.pyproj
+
+Gears\.VC\.VC\.opendb

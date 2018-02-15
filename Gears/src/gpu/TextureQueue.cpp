@@ -119,7 +119,7 @@ void TextureQueue::disableRenderTarget(){
 void TextureQueue::clear(){
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   glClearDepth(1.0f);
-  for(int i=0; i<nSlices; i++)
+  for(unsigned int i=0; i<nSlices; i++)
   {
 	  setRenderTarget(i);
 	  glClear(GL_COLOR_BUFFER_BIT);
@@ -131,7 +131,7 @@ void TextureQueue::clear(){
 void TextureQueue::setRenderTargets()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, handle);
-	for(int i=0; i<nSlices; i++)
+	for(unsigned int i=0; i<nSlices; i++)
 	{
 		glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, colorBuffer, 0, i);
 	}

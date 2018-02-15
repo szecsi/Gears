@@ -168,8 +168,8 @@ void Pass::setPolygonMask(std::string mode, boost::python::object o)
 					QuadData qd;
 					qd.x = d.getFloat("x");
 					qd.y = d.getFloat("y");
-					qd.halfwidth = d.getFloat("width")*0.5;
-					qd.halfheight = d.getFloat("height")*0.5;
+					qd.halfwidth = d.getFloat("width")*0.5f;
+					qd.halfheight = d.getFloat("height")*0.5f;
 					qd.pif = d.getFloat("pif");
 					qd.motion = d.getFloat("motion");
 					quads.push_back( qd );

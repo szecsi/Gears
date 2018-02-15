@@ -16,7 +16,7 @@ uint KernelManager::getKernel(SpatialFilter::CP spatialFilter)
 	if (i != kernels.end())
 	{
 		if(i->second.fft)
-			return i->second.fft->get_output();
+			return i->second.fft->get_fullTex();
 		if(i->second.buff)
 			return i->second.buff->getColorBuffer(0);
 	}
@@ -28,7 +28,11 @@ uint KernelManager::getKernel(SpatialFilter::CP spatialFilter)
 
 	if(spatialFilter->useFft)
 	{
-		FFT* fft = new FFT(sequence->fftWidth_px, sequence->fftHeight_px);
+		FFT* fft;
+		if(sequenceRenderer->clFFT())
+			fft = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
+		else
+			fft = new GLFFT( sequence->fftWidth_px, sequence->fftHeight_px );
 		kernels[slongid] = Kernel{fft, nullptr, kernelShader};
 	}
 	else
@@ -74,8 +78,8 @@ uint KernelManager::update(SpatialFilter::CP spatialFilter)
 //							512 * 512 * 1.4 * 3.1415926535897932384626433832795 / sequence->getSpatialFilteredFieldHeight_um()
 							);
 						kernelShader->bindUniformFloat2("texelSize_um", 
-							sequence->fftWidth_px / 3.1415926535897932384626433832795 / sequence->getSpatialFilteredFieldWidth_um() / 2000000,
-							sequence->fftHeight_px / 3.1415926535897932384626433832795 / sequence->getSpatialFilteredFieldHeight_um() / 200000);
+							(float)(sequence->fftWidth_px / 3.1415926535897932384626433832795 / sequence->getSpatialFilteredFieldWidth_um() / 2000000),
+							(float)(sequence->fftHeight_px / 3.1415926535897932384626433832795 / sequence->getSpatialFilteredFieldHeight_um() / 200000));
 					}
 					else
 					{
@@ -124,7 +128,7 @@ uint KernelManager::update(SpatialFilter::CP spatialFilter)
 		fft->redraw_input();
 		if(!spatialFilter->kernelGivenInFrequencyDomain)
 			fft->do_fft();
-		return fft->get_output();
+		return fft->get_fullTex();
 	}
 	else
 	{

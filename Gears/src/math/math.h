@@ -22,6 +22,9 @@
 #include "uint3.h"
 #include "uint4.h"
 
+#pragma warning( push )  
+#pragma warning( disable : 4244 )  
+
 #include "floatswizzle.h"
 #include "float2swizzle.h"
 #include "float3swizzle.h"
@@ -30,6 +33,8 @@
 #include "float2.h"
 #include "float3.h"
 #include "float4.h"
+
+#pragma warning( pop )
 
 #include "float4x4.h"
 #include "dualquat.h"
