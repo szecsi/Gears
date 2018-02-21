@@ -92,7 +92,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;OPHTHO_EXPORTS;BOOST_PYTHON_STATIC_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>
       </SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)Gears\src;$(SolutionDir)ThirdParty\googletest\include;$(SolutionDir)libs/glew-1.10.0/include;E:\clFFT-master\build\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Gears\src;$(SolutionDir)ThirdParty\googletest\include;$(SolutionDir)libs/glew-1.10.0/include;$(SolutionDir)Thirdparty\clFFT\build\include;$(CUDA_PATH)\include;$(BoostPath);$(PythonPath)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <DisableSpecificWarnings>4800</DisableSpecificWarnings>
     </ClCompile>
@@ -100,7 +100,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glew32.lib;OpenCL.lib;opengl32.lib;gtestd.lib;clFFT.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0\lib\Win32;E:\clFFT-master\build\library\Debug;E:\boost_1_63_0\bin.v2\libs\python\build\msvc-12.0\debug\link-static\threading-multi;E:\boost_1_63_0\bin.v2\libs\filesystem\build\msvc-12.0\debug\link-static\threading-multi;E:\boost_1_63_0\bin.v2\libs\system\build\msvc-12.0\debug\link-static\threading-multi\;C:\Python35-32\libs;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)Thirdparty\googletest\msvc\2010\gtest\Win32-Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(CUDA_PATH)\lib\Win32;$(SolutionDir)\Thirdparty\clFFT\build\library\Debug;$(BoostPath)\bin.v2\libs\python\build\msvc-12.0\debug\link-static\threading-multi;$(BoostPath)\bin.v2\libs\filesystem\build\msvc-12.0\debug\link-static\threading-multi;$(BoostPath)\bin.v2\libs\system\build\msvc-12.0\debug\link-static\threading-multi\;$(PythonPath)\libs;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)Thirdparty\googletest\msvc\2010\gtest\Win32-Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <PerUserRedirection>false</PerUserRedirection>
     </Link>
   </ItemDefinitionGroup>
@@ -129,16 +129,16 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;BOOST_PYTHON_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)Gears\src;$(SolutionDir)ThirdParty\googletest\include;$(SolutionDir)libs/glew-1.10.0/include;E:\clFFT-master\build\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Gears\src;$(SolutionDir)ThirdParty\googletest\include;$(SolutionDir)libs/glew-1.10.0/include;$(SolutionDir)Thirdparty\clFFT\build\include;$(CUDA_PATH)\include;$(BoostPath);$(PythonPath)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>E:\clFFT-master\build\library\Release;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0\lib\Win32;$(SolutionDir)Thirdparty\googletest\msvc\2010\gtest\Win32-Release\;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Thirdparty\clFFT\build\library\Release;$(CUDA_PATH)\lib\Win32;$(BoostPath)\bin.v2\libs\python\build\msvc-12.0\release\link-static\threading-multi;$(BoostPath)\bin.v2\libs\filesystem\build\msvc-12.0\release\link-static\threading-multi;$(BoostPath)\bin.v2\libs\system\build\msvc-12.0\release\link-static\threading-multi\;$(PythonPath)\libs;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)Thirdparty\googletest\msvc\2010\gtest\Win32-Release\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;OpenCL.lib;opengl32.lib;clFFT.lib;gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

@@ -59,19 +59,19 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;OPHTHO_EXPORTS;BOOST_PYTHON_STATIC_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\Development\Python34\include;$(SolutionDir)libs/freeglut/include;$(SolutionDir)libs/glew-1.10.0/include;$(SolutionDir)libs/devil1.6.8-rc2/include;$(ProjectDir)src;$(ProjectDir)src/gpu;$(ProjectDir)src/core;$(ProjectDir)src/fft;$(ProjectDir)src/font;$(SolutionDir)libs/eigen-eigen-07105f7124f9;$(ProjectDir)src/video;$(SolutionDir)libs/libav-11.3-win32/win32/usr/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CUDA_PATH)\include;$(PythonPath)\include;$(BoostPath);$(SolutionDir)libs/freeglut/include;$(SolutionDir)libs/glew-1.10.0/include;$(SolutionDir)libs/devil1.6.8-rc2/include;$(ProjectDir)src;$(ProjectDir)src/gpu;$(ProjectDir)src/core;$(ProjectDir)src/fft;$(ProjectDir)src/font;$(SolutionDir)libs/eigen-eigen-07105f7124f9;$(ProjectDir)src/video;$(SolutionDir)libs/libav-11.3-win32/win32/usr/include;$(SolutionDir)Thirdparty\clFFT\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>d:\Development\External\boost_1_57_0\bin.v2\libs\python\build\msvc-12.0\debug\link-static\threading-multi\;D:\Development\Python34\libs;$(SolutionDir)libs/freeglut/lib;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)libs/devil1.6.8-rc2/lib;d:\Development\External\boost_1_57_0\bin.v2\libs\filesystem\build\msvc-12.0\debug\link-static\threading-multi\;d:\Development\External\boost_1_57_0\bin.v2\libs\system\build\msvc-12.0\debug\link-static\threading-multi\;D:\Development\External\boost_1_57_0\lib32-msvc-12.0;$(SolutionDir)libs/TILLPolychrome/lib;$(SolutionDir)libs/libav-11.3-win32/win32/usr/bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(BoostPath)\bin.v2\libs\python\build\msvc-12.0\debug\link-static\threading-multi;$(BoostPath)\bin.v2\libs\filesystem\build\msvc-12.0\debug\link-static\threading-multi;$(BoostPath)\bin.v2\libs\system\build\msvc-12.0\debug\link-static\threading-multi\;$(CUDA_PATH)\lib\Win32;$(PythonPath)\libs;$(SolutionDir)libs/freeglut/lib;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)libs/devil1.6.8-rc2/lib;$(SolutionDir)libs/TILLPolychrome/lib;$(SolutionDir)libs/libav-11.3-win32/win32/usr/bin;$(SolutionDir)Thirdparty\clFFT\build\library\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <PerUserRedirection>true</PerUserRedirection>
-      <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;ILU.lib;opengl32.lib;avcodec.lib;swscale.lib;avfilter.lib;avformat.lib;avdevice.lib;avutil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;ILU.lib;opengl32.lib;avcodec.lib;swscale.lib;avfilter.lib;avformat.lib;avdevice.lib;avutil.lib;clFFT.lib;OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OptimizeReferences>
       </OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(OutDir)Gears.pyd $(SolutionDir)GearsPy\</Command>
+      <Command>xcopy /y "$(OutDir)Gears.pyd" "$(SolutionDir)GearsPy\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -83,19 +83,19 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;OPHTHO_EXPORTS;BOOST_PYTHON_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\Development\Python34\include;$(SolutionDir)libs/freeglut/include;$(SolutionDir)libs/glew-1.10.0/include;$(SolutionDir)libs/devil1.6.8-rc2/include;$(ProjectDir)src;$(ProjectDir)src/gpu;$(ProjectDir)src/core;$(ProjectDir)src/fft;$(ProjectDir)src/font;$(SolutionDir)libs/eigen-eigen-07105f7124f9;$(ProjectDir)src/video;$(SolutionDir)libs/libav-11.3-win32/win32/usr/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CUDA_PATH)\include;$(PythonPath)\include;$(BoostPath);$(SolutionDir)libs/freeglut/include;$(SolutionDir)libs/glew-1.10.0/include;$(SolutionDir)libs/devil1.6.8-rc2/include;$(ProjectDir)src;$(ProjectDir)src/gpu;$(ProjectDir)src/core;$(ProjectDir)src/fft;$(ProjectDir)src/font;$(SolutionDir)libs/eigen-eigen-07105f7124f9;$(ProjectDir)src/video;$(SolutionDir)libs/libav-11.3-win32/win32/usr/include;$(SolutionDir)Thirdparty\clFFT\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>d:\Development\External\boost_1_57_0\bin.v2\libs\python\build\msvc-12.0\release\link-static\threading-multi\;D:\Development\Python34\libs;$(SolutionDir)libs/freeglut/lib;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)libs/devil1.6.8-rc2/lib;d:\Development\External\boost_1_57_0\bin.v2\libs\filesystem\build\msvc-12.0\release\link-static\threading-multi\;d:\Development\External\boost_1_57_0\bin.v2\libs\system\build\msvc-12.0\release\link-static\threading-multi\;D:\Development\External\boost_1_57_0\lib32-msvc-12.0;$(SolutionDir)libs/TILLPolychrome/lib;$(SolutionDir)libs/libav-11.3-win32/win32/usr/bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(BoostPath)\bin.v2\libs\python\build\msvc-12.0\release\link-static\threading-multi;$(BoostPath)\bin.v2\libs\filesystem\build\msvc-12.0\release\link-static\threading-multi;$(BoostPath)\bin.v2\libs\system\build\msvc-12.0\release\link-static\threading-multi\;$(CUDA_PATH)\lib\Win32;$(Pythonpath)\libs;$(SolutionDir)libs/freeglut/lib;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)libs/devil1.6.8-rc2/lib;$(SolutionDir)libs/TILLPolychrome/lib;$(SolutionDir)libs/libav-11.3-win32/win32/usr/bin;$(SolutionDir)Thirdparty\clFFT\build\library\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <PerUserRedirection>true</PerUserRedirection>
-      <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;ILU.lib;opengl32.lib;avcodec.lib;swscale.lib;avfilter.lib;avformat.lib;avdevice.lib;avutil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;ILU.lib;opengl32.lib;avcodec.lib;swscale.lib;avfilter.lib;avformat.lib;avdevice.lib;avutil.lib;clFFT.lib;OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(OutDir)Gears.pyd $(SolutionDir)GearsPy\</Command>
+      <Command>xcopy /y "$(OutDir)Gears.pyd" "$(SolutionDir)GearsPy\"</Command>
       <Message>Copy pyd.</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -137,14 +137,12 @@
     <ClCompile Include="src\core\Ticker.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\event\events.cpp" />
-    <ClCompile Include="src\fft\FFT.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="src\fft\glFFT.cpp" />
     <ClCompile Include="src\fft\load_shaders.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\fft\openCLFFT.cpp" />
     <ClCompile Include="src\font\FontManager.cpp" />
     <ClCompile Include="src\font\TexFont.cpp" />
     <ClCompile Include="src\gpu\Framebuffer.cpp">
@@ -238,7 +236,9 @@
     <ClInclude Include="src\event\StimulusStart.h" />
     <ClInclude Include="src\event\Wheel.h" />
     <ClInclude Include="src\fft\FFT.h" />
+    <ClInclude Include="src\fft\glFFT.h" />
     <ClInclude Include="src\fft\load_shaders.h" />
+    <ClInclude Include="src\fft\openCLFFT.h" />
     <ClInclude Include="src\font\FontManager.h" />
     <ClInclude Include="src\font\TexFont.h" />
     <ClInclude Include="src\gpu\Framebuffer.hpp" />
