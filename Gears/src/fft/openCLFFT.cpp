@@ -8,9 +8,88 @@
 cl_device_id OPENCLFFT::device = 0;
 cl_context OPENCLFFT::ctx = 0;
 
+#ifdef _DEBUG
+void printPixel( float* img, unsigned& idx, unsigned channels, bool complex )
+{
+	std::cout << "(";
+	for ( unsigned k = 0; k < channels; k++ )
+	{
+		std::cout << img[idx++];
+		if ( complex )
+			std::cout << "+" << img[idx++] << "i";
+		if ( k < channels - 1 )
+			std::cout << ", ";
+	}
+	std::cout << ") ";
+}
+#endif
+
+void printImgTest( float* img, unsigned w, unsigned h, const char* name = "FFT", unsigned channels = 4, bool complex = false, unsigned pad = 0 )
+{
+#ifdef _DEBUG
+	if ( w > 10 )
+		return;
+	unsigned idx = 0;
+	unsigned rowWidth = complex ? w / 2 + 1 : w;
+	std::cout << name << ": " << std::endl;
+	for ( unsigned i = 0; i < h; i++ )
+	{
+		for ( unsigned j = 0; j < rowWidth; j++ )
+		{
+			printPixel( img, idx, channels, complex );
+		}
+		if ( pad )
+		{
+			std::cout << "| ";
+			for ( unsigned k = 0; k < pad; k++ )
+			{
+				printPixel( img, idx, channels, complex );
+			}
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+	std::cout << std::endl;
+#endif
+}
+
+void clPrintError(cl_int& errorCode)
+{
+#ifdef _DEBUG
+	if ( !errorCode )
+		return;
+
+	std::cout <<  std::endl << "*********************************************************************************************" << std::endl << "** Error: ";
+	switch ( errorCode )
+	{
+		case CL_INVALID_CONTEXT:
+			std::cout << "Invalid cl context";
+			break;
+		case CL_INVALID_MEM_OBJECT:
+			std::cout << "Invalid cl memory object";
+			break;
+		case CL_INVALID_WORK_GROUP_SIZE:
+			std::cout << "Invalid cl work group size";
+			break;
+		case CL_INVALID_KERNEL_ARGS:
+			std::cout << "Invalid cl kernel args";
+			break;
+		case CL_INVALID_VALUE:
+			std::cout << "Invalid cl value";
+			break;
+		case CL_INVALID_GL_SHAREGROUP_REFERENCE_KHR:
+			std::cout << "Invalid gl sharegroup reference";
+			break;
+			
+	}
+	std::cout << " (" << errorCode << ") " << std::endl << "*********************************************************************************************" << std::endl;
+	errorCode = 0;
+#endif
+}
+
 OPENCLFFT::OPENCLFFT( unsigned int width, unsigned int height, unsigned int input_tex ):
 	FFT( width, height ), fullTex( input_tex ), getChannelsProgramSize( strlen( getChannelsProgram ) ), getFullImageProgramSize( strlen( getFullImageProgram ) ),
-	full_img_size( size[0] * size[1] * 4 ), channel_img_size( size[1] * (size[0] + 2) ), transformed( false ), ownsChannels(true)
+	full_img_size( size[0] * size[1] * 4 ), channel_img_size( size[1] * (size[0] + 2) ), transformed( false ), ownsChannels( true )
 {
 	has_input_tex = glIsTexture( input_tex );
 	init_framebuffer();
@@ -22,9 +101,21 @@ OPENCLFFT::OPENCLFFT( unsigned int width, unsigned int height, unsigned int inpu
 	props[4] = CL_WGL_HDC_KHR;
 	props[5] = (cl_context_properties) GetDC(GetActiveWindow());
 	props[6] = 0;
+
+	for ( size_t i = 0; i < 3; i++ )
+	{
+		origin[i] = 0;
+		region[i] = 1;
+	}
+
+	global_work_size[0] = full_img_size / 4 ;
+	local_work_size[0] = global_work_size[0] / 4;
+
+	region[0] = size[0];
+	region[1] = size[1];
+
 	initCl();
 	bakePlans();
-	//std::cout << "group: " << local_work_size << std::endl;
 }
 
 OPENCLFFT::~OPENCLFFT()
@@ -89,7 +180,7 @@ void OPENCLFFT::createKernelFromSource( const char* kernelSource, size_t kernelS
 	}
 
 	err = clBuildProgram( program, 0, NULL, NULL, NULL, NULL );
-	if ( err < 0 )
+	if ( err )
 	{
 		clGetProgramBuildInfo(
 			program,
@@ -113,12 +204,17 @@ void OPENCLFFT::createKernelFromSource( const char* kernelSource, size_t kernelS
 			NULL
 		);
 
-		std::cout << "Error::clBuildProgram" << err << std::endl;
+		clPrintError( err );
 		std::cout << program_log << std::endl;
 		free( program_log );
 		exit( 0 );
 	}
 	kernel = clCreateKernel( program, "getChannels", &err );
+	if ( err )
+	{
+		clPrintError( err );
+		exit( 0 );
+	}
 }
 
 void OPENCLFFT::bakePlans()
@@ -126,35 +222,51 @@ void OPENCLFFT::bakePlans()
 	cl_int err;
 	clfftDim dim = CLFFT_2D;
 
+	float* res;
+	res = new GLfloat[full_img_size];
+
 	/* Setup clFFT. */
 	clfftSetupData fftSetup;
 	err = clfftInitSetupData( &fftSetup );
+	clPrintError( err );
 	err = clfftSetup( &fftSetup );
+	clPrintError( err );
 
 	/* Create a default plan for a complex FFT. */
 	err = clfftCreateDefaultPlan( &planHandleFFT, ctx, dim, size );
+	clPrintError( err );
 	err = clfftCreateDefaultPlan( &planHandleIFFT, ctx, dim, size );
+	clPrintError( err );
 
 	/* Set plan parameters. */
 	err = clfftSetPlanPrecision( planHandleFFT, CLFFT_SINGLE );
+	clPrintError( err );
 	err = clfftSetLayout( planHandleFFT, CLFFT_REAL, CLFFT_HERMITIAN_INTERLEAVED );
+	clPrintError( err );
 	size_t strides[2] = { 1, size[0] + 2 };
 	clfftSetPlanInStride( planHandleFFT, dim, strides );
 	strides[1] = (size[0] / 2 + 1);
 	clfftSetPlanOutStride( planHandleFFT, dim, strides );
 	err = clfftSetResultLocation( planHandleFFT, CLFFT_INPLACE );
+	clPrintError( err );
 
 	err = clfftSetPlanPrecision( planHandleIFFT, CLFFT_SINGLE );
+	clPrintError( err );
 	err = clfftSetLayout( planHandleIFFT, CLFFT_HERMITIAN_INTERLEAVED, CLFFT_REAL );
+	clPrintError( err );
 	strides[1] = size[0] / 2 + 1 ;
 	clfftSetPlanInStride( planHandleIFFT, dim, strides );
 	strides[1] = size[0] + 2;
 	clfftSetPlanOutStride( planHandleIFFT, dim, strides );
 	err = clfftSetResultLocation( planHandleIFFT, CLFFT_INPLACE );
+	clPrintError( err );
 
 	/* Bake the plan. */
 	err = clfftBakePlan( planHandleFFT, 1, &queue, NULL, NULL );
+	clPrintError( err );
 	err = clfftBakePlan( planHandleIFFT, 1, &queue, NULL, NULL );
+	clPrintError( err );
+
 }
 
 void OPENCLFFT::initCl()
@@ -169,55 +281,70 @@ void OPENCLFFT::initCl()
 	if ( ctx == 0 )
 	{
 		err = clGetPlatformIDs( 1, &platform, NULL );
+		clPrintError( err );
 
 		size_t ret_param_size = 0;
 		err = clGetPlatformInfo( platform, CL_PLATFORM_NAME,
 			sizeof( platform_name ), platform_name,
 			&ret_param_size );
+		clPrintError( err );
 		//std::cout << "Platform found: " << platform_name << std::endl;
 
 		err = clGetDeviceIDs( platform, CL_DEVICE_TYPE_DEFAULT, 1, &device, NULL );
+		clPrintError( err );
 
 		err = clGetDeviceInfo( device, CL_DEVICE_NAME,
 			sizeof( device_name ), device_name,
 			&ret_param_size );
+		clPrintError( err );
 		//std::cout << "Device found on the above platform: " << device_name << std::endl;
 
 		char device_extensions[1024];
 		err = clGetDeviceInfo( device, CL_DEVICE_EXTENSIONS,
 			sizeof( device_extensions ), device_extensions,
 			&ret_param_size );
+		clPrintError( err );
 		// std::cout << ret_param_size << "  " << device_extensions << std::endl;
 
-
-		err = 0;
 		props[1] = (cl_context_properties) platform;
 		ctx = clCreateContext( props, 1, &device, NULL, NULL, &err );
+		clPrintError( err );
 	}
 	queue = clCreateCommandQueue( ctx, device, 0, &err );
+	clPrintError( err );
 
 	createKernelFromSource( getChannelsProgram, getChannelsProgramSize, separatorKernel );
 	createKernelFromSource( getFullImageProgram, getFullImageProgramSize, combinatorKernel );
-	err = 0;
+
 	clImgFull = clCreateFromGLTexture( ctx, CL_MEM_READ_WRITE, GL_TEXTURE_RECTANGLE_ARB, 0, fullTex, &err );
-	if ( err < 0 )
-	{
-		std::cout << err << std::endl;
-		switch ( err )
-		{
-			case CL_INVALID_CONTEXT:
-			std::cout << "Error: CL_INVALID_CONTEXT for FFT" << std::endl;
-			exit( 0 );
-			break;
-			default:
-			std::cout << err << std::endl;
-		}
-	}
+	clPrintError( err );
+
+	/*float* res = new float[400];
+	glFinish();
+	err = clEnqueueAcquireGLObjects( queue, 1, &clImgFull, 0, 0, NULL );
+	clPrintError( err );
+	err = clEnqueueReadImage( queue, clImgFull, CL_TRUE, origin, region, 10 * 4 * sizeof( float ), 0, res, 0, NULL, NULL );
+	if ( !err )
+		printImgTest( res, 10, 10, "Full Image in cl mem" );
+	clPrintError( err );
+
 	
-	//clImgFull = clCreateBuffer( ctx, CL_MEM_WRITE_ONLY, full_img_size * sizeof( float ), NULL, &err );
 	clImgr = clCreateBuffer( ctx, CL_MEM_READ_ONLY, channel_img_size * sizeof( float ), NULL, &err );
+	clPrintError( err );
 	clImgg = clCreateBuffer( ctx, CL_MEM_READ_ONLY, channel_img_size * sizeof( float ), NULL, &err );
+	clPrintError( err );
 	clImgb = clCreateBuffer( ctx, CL_MEM_READ_ONLY, channel_img_size * sizeof( float ), NULL, &err );
+	clPrintError( err );
+
+	err = clEnqueueReadImage( queue, clImgFull, CL_TRUE, origin, region, 10 * 4 * sizeof( float ), 0, res, 0, NULL, NULL );
+	if( !err )
+		printImgTest( res, 10, 10, "Full img in cl_mem" );
+	clPrintError( err );
+
+	clFinish( queue );
+	clEnqueueReleaseGLObjects( queue, 1, &clImgFull, 0, 0, NULL );
+
+	delete[] res;*/
 }
 
 void OPENCLFFT::printImg( float* imgToPrint, const char* imgName, unsigned channelNum )
@@ -254,29 +381,31 @@ void OPENCLFFT::printImg( float* imgToPrint, const char* imgName, unsigned chann
 		}
 	}
 	std::cout << std::endl;
-	std::cout << "******************" << std::endl;
-	for ( unsigned i = 0; i < size[1] * (size[0] + 2); i++ )
-		std::cout << imgToPrint[i] << " ";
-	std::cout << std::endl << "******************" << std::endl;
 	std::cout << std::endl;
 }
 
 void OPENCLFFT::separateChannels()
 {
 	cl_int err;
-	//glBindTexture( GL_TEXTURE_RECTANGLE_ARB, fullTex );
-	//glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, img );
-	//printImg(img, "Full image");
-	//err = clEnqueueWriteBuffer( queue, clImgFull, CL_TRUE, 0, full_img_size * sizeof( float ), img, 0, NULL, NULL );
+	glFinish();
+	clEnqueueAcquireGLObjects( queue, 1, &clImgFull, 0, 0, NULL );
 
 	//Kenels argument settings
 	err = clSetKernelArg( separatorKernel, 0, sizeof( cl_mem ), &clImgFull );
+	clPrintError( err );
 	err = clSetKernelArg( separatorKernel, 1, sizeof( cl_mem ), &clImgr );
+	clPrintError( err );
 	err = clSetKernelArg( separatorKernel, 2, sizeof( cl_mem ), &clImgg );
+	clPrintError( err );
 	err = clSetKernelArg( separatorKernel, 3, sizeof( cl_mem ), &clImgb );
+	clPrintError( err );
 	err = clSetKernelArg( separatorKernel, 4, sizeof( int ), (void*) &size[0] );
+	clPrintError( err );
+	err = clEnqueueNDRangeKernel( queue, separatorKernel, work_dim, &global_work_offset, global_work_size, local_work_size, 0, NULL, NULL );
+	clPrintError( err );
 
-	err = clEnqueueNDRangeKernel( queue, separatorKernel, work_dim, &global_work_offset, &full_img_size, &local_work_size, 0, NULL, NULL );
+	clFinish( queue );
+	clEnqueueReleaseGLObjects( queue, 1, &clImgFull, 0, 0, NULL );
 	// Read result
 	/*float* res;
 	res = new float[channel_img_size];
@@ -292,30 +421,62 @@ void OPENCLFFT::separateChannels()
 
 void OPENCLFFT::combineChannels()
 {
-	cl_int err;
+	cl_int err = 0;
+
+	/*float* res;
+	res = new float[full_img_size];*/
+
+	glFinish();
+	clEnqueueAcquireGLObjects( queue, 1, &clImgFull, 0, 0, NULL );
+
+	/*err = clEnqueueReadImage( queue, clImgFull, CL_TRUE, origin, region, size[0] * 4 * sizeof( float ), 0, res, 0, NULL, NULL );
+	if ( !err )
+		printImgTest( res, size[0], size[1] );
+	clPrintError( err );
+
+	// Read inverse fourier transform per channel
+	err = clEnqueueReadBuffer( queue, clImgr, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
+	if ( !err )
+		printImgTest( res, size[0], size[1], "r channel", 1, false, 2 );
+	clPrintError( err );
+	err = clEnqueueReadBuffer( queue, clImgg, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
+	if ( !err )
+		printImgTest( res, size[0], size[1], "g channel", 1, false, 2 );
+	clPrintError( err );
+	err = clEnqueueReadBuffer( queue, clImgb, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
+	if ( !err )
+		printImgTest( res, size[0], size[1], "b channel", 1, false, 2 );
+	clPrintError( err );*/
 
 	//Kenels argument settings
 	err = clSetKernelArg( combinatorKernel, 0, sizeof( cl_mem ), &clImgFull );
+	clPrintError( err );
 	err = clSetKernelArg( combinatorKernel, 1, sizeof( cl_mem ), &clImgr );
+	clPrintError( err );
 	err = clSetKernelArg( combinatorKernel, 2, sizeof( cl_mem ), &clImgg );
+	clPrintError( err );
 	err = clSetKernelArg( combinatorKernel, 3, sizeof( cl_mem ), &clImgb );
+	clPrintError( err );
 	err = clSetKernelArg( combinatorKernel, 4, sizeof( int ), (void*) &size[0] );
-	// Read result
-	/*float* res;
-	res = new float[channel_img_size];
-	err = clEnqueueReadBuffer( queue, clImgr, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "r channel", 1 );
-	err = clEnqueueReadBuffer( queue, clImgg, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "g channel", 1 );
-	err = clEnqueueReadBuffer( queue, clImgb, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "b channel", 1 );
+	clPrintError( err );
 
-	delete[] res;*/
-	err = clEnqueueNDRangeKernel( queue, combinatorKernel, work_dim, &global_work_offset, &channel_img_size, &local_work_size, 0, NULL, NULL );
+	//delete[] res;
+	
+	err = clEnqueueNDRangeKernel( queue, combinatorKernel, work_dim, &global_work_offset, global_work_size, local_work_size, 0, NULL, NULL );
+	clPrintError( err );
 
 	// Read result
-	//err = clEnqueueReadBuffer( queue, clImgFull, CL_TRUE, 0, full_img_size * sizeof( float ), img, 0, NULL, NULL );
-	//printImg( img, "Combined Image" );
+	/*err = clEnqueueReadImage( queue, clImgFull, CL_TRUE, origin, region, size[0] * 4 * sizeof( float ), 0, res, 0, NULL, NULL );
+	if ( !err )
+		printImgTest( res, size[0], size[1], "Full image after combine channels in cl mem" );
+	clPrintError( err );*/
+
+	clFinish( queue );
+	clEnqueueReleaseGLObjects( queue, 1, &clImgFull, 0, 0, NULL );
+
+	/*glBindTexture( GL_TEXTURE_RECTANGLE_ARB, fullTex );
+	glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, res );
+	printImgTest( res, size[0], size[1], "Full image after combine channels in texture" );*/
 }
 
 void OPENCLFFT::do_inverse_fft()
@@ -355,66 +516,32 @@ void OPENCLFFT::do_fft()
 		return;
 	if ( !redrawn )
 		redraw_input();
-
-	/* Prepare OpenCL memory objects and place data inside them. */
-	//bufX = clCreateFromGLTexture( ctx, CL_MEM_READ_WRITE, GL_TEXTURE_RECTANGLE_ARB, 0, fullText, &glerr );
-	//bufX = clCreateBuffer( ctx, CL_MEM_READ_WRITE, img_size, NULL, &err );
-
-	//err = clEnqueueWriteBuffer( queue, bufX, CL_TRUE, 0, img_size, img, 0, NULL, NULL );
-
-
-
-	/* Fetch results of calculations. */
-	//err = clEnqueueReadBuffer( queue, bufX, CL_TRUE, 0, buffer_size, X, 0, NULL, NULL );
-
-	/*for ( unsigned i = 0; i < size[0] * 4 * size[1]; i += 4 )
-	{
-	if ( i % (4 * size[0]) == 0 )
-	std::cout << std::endl;
-	std::cout << "(" << X[i] << ", " << X[i + 1] << ", " << X[i + 2] << ", " << X[i + 3] << ")";
-	}
-	std::cout << std::endl;
-	std::cout << std::endl;*/
-
-	// doesn't need to copy from host memory
-	//err = clEnqueueWriteBuffer( queue, bufX, CL_TRUE, 0, buffer_size, X, 0, NULL, NULL );
-
-	/* FFT library realted declarations */
-	
-
-	// Read result
-	/*float* res;
-	res = new float[channel_img_size];
-	err = clEnqueueReadBuffer( queue, clImgr, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "r channel", 1 );
-	err = clEnqueueReadBuffer( queue, clImgg, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "g channel", 1 );
-	err = clEnqueueReadBuffer( queue, clImgb, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "b channel", 1 );
-	delete[] res;*/
-	
-	//auto start = std::chrono::system_clock::now();
 	
 	separateChannels();
-	
+
 	clfftEnqueueTransform( planHandleFFT, CLFFT_FORWARD, 1, &queue, 0, NULL, NULL, &clImgr, NULL, NULL );
 	clfftEnqueueTransform( planHandleFFT, CLFFT_FORWARD, 1, &queue, 0, NULL, NULL, &clImgg, NULL, NULL );
 	clfftEnqueueTransform( planHandleFFT, CLFFT_FORWARD, 1, &queue, 0, NULL, NULL, &clImgb, NULL, NULL );
 	
-	//clFinish( queue );
 	transformed = true;
 
+	/*cl_int err;
+	float* res = new float[full_img_size];
 	// Read result
-	/*res = new float[channel_img_size];
 	err = clEnqueueReadBuffer( queue, clImgr, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "r channel", 1 );
+	if ( !err )
+		printImgTest( res, size[0], size[1], "r channel", 1, true );
+	clPrintError( err );
 	err = clEnqueueReadBuffer( queue, clImgg, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "g channel", 1 );
+	if ( !err )
+		printImgTest( res, size[0], size[1], "g channel", 1, true );
+	clPrintError( err );
 	err = clEnqueueReadBuffer( queue, clImgb, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "b channel", 1 );
-	delete[] res;*/
+	if ( !err )
+		printImgTest( res, size[0], size[1], "b channel", 1, true );
+	clPrintError( err );
 
-	
+	delete[] res;*/
 }
 
 void OPENCLFFT::get_channels( cl_mem& r, cl_mem& g, cl_mem& b ) const

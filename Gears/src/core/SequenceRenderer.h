@@ -60,9 +60,6 @@ class SequenceRenderer
 
 	Stimulus::SignalMap noTickSignal;
 
-	using SpatialFilterRendererMap = std::map<std::string, SpatialFilterRenderer::P >;
-	SpatialFilterRendererMap spatialFilterRenderers;
-
 //	Quad* fullscreenQuad;
 	Nothing* nothing;
 

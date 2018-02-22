@@ -20,7 +20,7 @@ MSG   msg;				/* message */
 int indexPixelFormat;
 PIXELFORMATDESCRIPTOR pfd;
 
-const int runNumber = 5;
+const int runNumber = 10;
 
 bool setGLFormat( void )
 {
@@ -126,8 +126,10 @@ void closeWnd()
 }
 
 
-void printFFT( GLfloat *img, unsigned w, unsigned h )
+void printImg( float* img, unsigned w, unsigned h )
 {
+	if ( w > 10 )
+		return;
 	std::cout << "FFT: " << std::endl;
 	for ( unsigned i = 0; i < w * 4 * h; i += 4 )
 	{
@@ -179,7 +181,7 @@ unsigned w, h;
 //	0.f, 0.f, 0.f, 1.f,   1.f, 1.f, 1.f, 1.f
 //};
 
-void initTexture(unsigned& tex, unsigned w, unsigned h, float* pixels = 0)
+void initTexture(unsigned* tex, unsigned w, unsigned h, float* pixels = 0)
 {
 	
 	if ( !pixels )
@@ -187,8 +189,8 @@ void initTexture(unsigned& tex, unsigned w, unsigned h, float* pixels = 0)
 		pixels = p;
 	}
 
-	glGenTextures( 1, &tex );
-	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, tex );
+	glGenTextures( 1, tex );
+	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, *tex );
 	glTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_WRAP_S, GL_CLAMP );
 	glTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_WRAP_T, GL_CLAMP );
 	glTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
@@ -196,10 +198,51 @@ void initTexture(unsigned& tex, unsigned w, unsigned h, float* pixels = 0)
 	glTexImage2D( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA32F_ARB, w, h, 0, GL_RGBA, GL_FLOAT, pixels );
 }
 
+void generateInputData()
+{
+	w = h = 10;
+	p = new float[w * h * 4];
+	for ( unsigned i = 0; i < h; i++ )
+		for ( unsigned j = 0; j < w * 4; j += 4 )
+		{
+			float a = (i % 2 == 0 || j % 2 == 0) ? 1.f : 0.f;
+			p[i*w * 4 + j + 0] = a;
+			p[i*w * 4 + j + 1] = a * 0.3f;
+			p[i*w * 4 + j + 2] = a * 0.7f;
+			p[i*w * 4 + j + 3] = 1.f;
+		}
+}
+
+TEST( FFTTest, SimpleglFFTMonochrome )
+{
+	unsigned tex;
+	initTexture( &tex, w, h );
+	GLFFT fft( w, h, tex );
+	GLFFT ifft( w, h, tex, true, true );
+	fft.set_input( [] () {} );
+	GLfloat* img;
+	img = new GLfloat[w * h * 4];
+	fft.do_fft();
+
+	printImg( p, w, h );
+	printImg( img, w, h );
+
+	ifft.do_fft();
+
+	//std::cout << "FT finished elapsed time: " << elapsed_seconds.count() * 1000 / runNumber << "ms." << std::endl;
+	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, tex );
+	glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, img );
+	EXPECT_TRUE( mtxIsEqual( img, p, w, h ) );
+	printImg(p, w, h);
+	printImg(img, w, h);
+	delete[] img;
+	//printFFT( img, w, h );
+}
+
 TEST( FFTTest, SimpleglFFT ) 
 {
 	unsigned tex;
-	initTexture( tex, w, h );
+	initTexture( &tex, w, h );
 	GLFFT fft( w, h, tex );
 	GLFFT ifft(w, h, tex, true, true);
 	fft.set_input( [] () {} );
@@ -232,7 +275,7 @@ TEST( FFTTest, SimpleglFFT )
 TEST( FFTTest, SimpleclFFT )
 {
 	unsigned tex;
-	initTexture( tex, w, h );
+	initTexture( &tex, w, h );
 	OPENCLFFT fft( w, h, tex );
 	fft.set_input( [] () {} );
 	auto start = std::chrono::system_clock::now();
@@ -242,19 +285,24 @@ TEST( FFTTest, SimpleclFFT )
 
 	for ( int i = 0; i < runNumber; i++ )
 	{
-		elapsed_seconds = start-start;
+		elapsed_seconds = start - start;
+		//printImg( img, w, h );
 		start = std::chrono::system_clock::now();
 		fft.do_fft();
+		//initTexture( tex, w, h, alma );
+		//glBindTexture( GL_TEXTURE_RECTANGLE_ARB, tex );
+		//glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, img );
 		auto end = std::chrono::system_clock::now();
 		elapsed_seconds += end - start;
 		fft.finish();
 		start = std::chrono::system_clock::now();
+		//printImg( img, w, h );
 		fft.do_inverse_fft();
 		end = std::chrono::system_clock::now();
 		elapsed_seconds += end - start;
 		std::cout << "FT finished elapsed time: " << elapsed_seconds.count() * 1000 / (i + 1) << "ms." << std::endl;
 		fft.finish();
-		glBindTexture( GL_TEXTURE_RECTANGLE_ARB, tex );
+		glBindTexture( GL_TEXTURE_RECTANGLE_ARB, fft.get_fullTex() );
 		glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, img );
 	}
 	
@@ -299,17 +347,8 @@ bool init()
 
 	ShowWindow( hWnd, SW_SHOW );
 
-	w = h = 1024;
-	p = new float[w * h * 4];
-	for(unsigned i = 0; i < h; i++)
-		for ( unsigned j = 0; j < w * 4; j+=4 )
-		{
-			float a = (i % 2 == 0 || j % 2 == 0) ? 1.f : 0.f;
-			p[i*w*4 + j + 0] = a;
-			p[i*w*4 + j + 1] = a;
-			p[i*w*4 + j + 2] = a;
-			p[i*w*4 + j + 3] = 1;
-		}
+	generateInputData();
+
 	return true;
 }
 

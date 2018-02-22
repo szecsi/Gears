@@ -26,25 +26,32 @@ public:
 	void finish() { if ( queue ) clFinish( queue ); }
 
 	const char* getChannelsProgram =
+		"__constant sampler_t sampler =\n"
+		"CLK_NORMALIZED_COORDS_FALSE\n"
+		"| CLK_ADDRESS_CLAMP_TO_EDGE\n"
+		"| CLK_FILTER_NEAREST;\n"
 		"__kernel void getChannels(\n"
-		"__global float* fullImg,\n"
+		"__read_only image2d_t fullImg,\n"
 		"__global float* imgr,\n"
 		"__global float* imgg,\n"
 		"__global float* imgb,\n"
 		"const int w)\n"
 		"{\n"
 		"int i = get_global_id( 0 );\n"
-		"int ci = i / 4;"
-		"int channelIndex = ci/w*(w+2)+(ci%w);\n"
-		"imgr[channelIndex] = fullImg[i/4*4];\n"
-		"imgg[channelIndex] = fullImg[i/4*4 + 1];\n"
-		"imgb[channelIndex] = fullImg[i/4*4 + 2];\n"
+		//"int ci = i / 4;"
+		"int channelIndex = (i/w)*(w+2)+(i%w);\n"
+		"imgr[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).x;\n"
+		"imgg[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).y;\n"
+		"imgb[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).z;\n"
+		//"imgr[channelIndex] = fullImg[i/4*4];\n"
+		//"imgg[channelIndex] = fullImg[i/4*4 + 1];\n"
+		//"imgb[channelIndex] = fullImg[i/4*4 + 2];\n"
 		"}\n";
 	const unsigned getChannelsProgramSize;
 
 	const char* getFullImageProgram =
 		"__kernel void getChannels(\n"
-		"__global float* fullImg,\n"
+		"__write_only image2d_t fullImg,\n"
 		"__global float* imgr,\n"
 		"__global float* imgg,\n"
 		"__global float* imgb,\n"
@@ -52,10 +59,11 @@ public:
 		"{\n"
 		"int i = get_global_id( 0 );\n"
 		"int index = i + (i/w)*2;\n"
-		"fullImg[i*4] = imgr[index];\n"
-		"fullImg[i*4 + 1] = imgg[index];\n"
-		"fullImg[i*4 + 2] = imgb[index];\n"
-		"fullImg[i*4 + 3] = 1;\n"
+		"write_imagef( fullImg, (int2)(i/w, i%w), (float4)(imgr[index], imgg[index], imgb[index], 1.0f) );"
+		//"fullImg[i*4] = imgr[index];\n"
+		//"fullImg[i*4 + 1] = imgg[index];\n"
+		//"fullImg[i*4 + 2] = imgb[index];\n"
+		//"fullImg[i*4 + 3] = 1;\n"
 		"}\n";
 	const unsigned getFullImageProgramSize;
 
@@ -64,6 +72,7 @@ protected:
 	bool has_input_tex;
 	bool transformed;
 	bool ownsChannels;
+	bool monochrome;
 
 	static cl_device_id device;
 	cl_context_properties props[7];
@@ -86,7 +95,11 @@ protected:
 	//Enqueue the kernel for execution
 	cl_uint work_dim = 1;
 	size_t global_work_offset = 0;
-	size_t local_work_size = CL_DEVICE_MAX_WORK_GROUP_SIZE / 16 * 16;
+	size_t global_work_size[1];
+	size_t local_work_size[1];
+	
+	size_t origin[3];
+	size_t region[3];
 
 	GLfloat *img = nullptr;
 
