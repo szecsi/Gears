@@ -11,5 +11,6 @@
 #include <tchar.h>
 
 
+bool mtxIsEqual( float* mtx1, float* mtx2, unsigned w, unsigned h );
 
 // TODO: reference additional headers your program requires here

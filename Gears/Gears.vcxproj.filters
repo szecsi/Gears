@@ -148,6 +148,9 @@
     <ClCompile Include="src\fft\openCLFFT.cpp">
       <Filter>src\fft</Filter>
     </ClCompile>
+    <ClCompile Include="src\fft\imageHelper.cpp" />
+    <ClCompile Include="src\fft\openCLHelper.cpp" />
+    <ClCompile Include="src\fft\openCLCore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -390,5 +393,6 @@
     <ClInclude Include="src\fft\openCLFFT.h">
       <Filter>src\fft</Filter>
     </ClInclude>
+    <ClInclude Include="src\fft\openCLCore.h" />
   </ItemGroup>
 </Project>

@@ -130,7 +130,7 @@ class SequenceRenderer
 	float measuredVariance;
 
 	// fft switch
-	bool _clFFT = false;
+	bool _clFFT = true;
 
 	void readCalibrationResults();
 

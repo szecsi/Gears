@@ -18,6 +18,7 @@ SpatialFilterRenderer::SpatialFilterRenderer(SequenceRenderer::P sequenceRendere
 	if(spatialFilter)
 	{
 		spatialKernelId = kernelManager->getKernel(spatialFilter);
+		this->kernelManager = kernelManager;
 		useFft = spatialFilter->useFft;
 	}
 
@@ -78,6 +79,7 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 {
 	if(spatialFilter->useFft)
 	{
+		FFTChannelMode channelMode = sequenceRenderer->getSequence()->isMonochrome() ? FFTChannelMode::Monochrome : FFTChannelMode::Multichrome;
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
@@ -89,46 +91,67 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 		sequenceRenderer->fft2FrequencyDomain[0]->set_input( renderStimulus );
 		sequenceRenderer->fft2FrequencyDomain[0]->redraw_input();
 		if(!spatialFilter->stimulusGivenInFrequencyDomain)
-			sequenceRenderer->fft2FrequencyDomain[0]->do_fft();
+			sequenceRenderer->fft2FrequencyDomain[0]->do_fft( channelMode );
 
-		unsigned int freqTexId[2];
-		freqTexId[0] = sequenceRenderer->fft2FrequencyDomain[0]->get_fullTex();
-
-		sequenceRenderer->fft2SpatialDomain[0]->set_input( [&] () {
-			convolutionShader->enable();
-			convolutionShader->bindUniformBool("showFft", spatialFilter->showFft);
-			convolutionShader->bindUniformTextureRect("kernel", spatialKernelId, 0);
-			convolutionShader->bindUniformTextureRect("stim", freqTexId[0], 1);
-			convolutionShader->bindUniformInt2("fftSize", 
-				sequenceRenderer->sequence->fftWidth_px,
-				sequenceRenderer->sequence->fftHeight_px);
-			sequenceRenderer->getNothing()->renderQuad();
-			convolutionShader->disable();
-			});
-
-		if( !sequenceRenderer->clFFT() && !sequenceRenderer->getSequence()->isMonochrome() )
+		if ( sequenceRenderer->clFFT() )
 		{
-			spatialFilter->fftSwizzleMask = 0x00000406;
-			sequenceRenderer->fft2FrequencyDomain[1]->set_input( renderStimulus );
-			sequenceRenderer->fft2FrequencyDomain[1]->redraw_input();
-			if(!spatialFilter->stimulusGivenInFrequencyDomain)
-				sequenceRenderer->fft2FrequencyDomain[1]->do_fft();
+			cl_mem filterr;
+			cl_mem filterg;
+			cl_mem filterb;
+			cl_mem imager;
+			cl_mem imageg;
+			cl_mem imageb;
 
-			freqTexId[1] = sequenceRenderer->fft2FrequencyDomain[1]->get_fullTex();
+			if ( kernelManager->getKernelChannels( spatialFilter, filterr, filterg, filterb ) )
+			{
+				static_cast<OPENCLFFT*>(sequenceRenderer->fft2FrequencyDomain[0])->get_channels( imager, imageg, imageb );
+				size_t size[1] = { sequenceRenderer->sequence->fftWidth_px * sequenceRenderer->sequence->fftHeight_px };
+				if ( channelMode == FFTChannelMode::Monochrome )
+					OpenCLCore::Get()->MultiplyFFT(imager, filterr, size);
+				else
+					OpenCLCore::Get()->MultiplyFFT(imager, imageg, imageb, filterr, filterg, filterb, size);
+			}
+		}
+		else
+		{
+			unsigned int freqTexId[2];
+			freqTexId[0] = sequenceRenderer->fft2FrequencyDomain[0]->get_fullTex();
 
-			sequenceRenderer->fft2SpatialDomain[1]->set_input( [&] () {
+			sequenceRenderer->fft2SpatialDomain[0]->set_input( [&] () {
 				convolutionShader->enable();
-				convolutionShader->bindUniformBool("showFft", spatialFilter->showFft);
-				convolutionShader->bindUniformTextureRect("kernel", spatialKernelId, 0);
-				convolutionShader->bindUniformTextureRect("stim", freqTexId[1], 1);
-				convolutionShader->bindUniformInt2("fftSize", 
+				convolutionShader->bindUniformBool( "showFft", spatialFilter->showFft );
+				convolutionShader->bindUniformTextureRect( "kernel", spatialKernelId, 0 );
+				convolutionShader->bindUniformTextureRect( "stim", freqTexId[0], 1 );
+				convolutionShader->bindUniformInt2( "fftSize",
 					sequenceRenderer->sequence->fftWidth_px,
-					sequenceRenderer->sequence->fftHeight_px);
+					sequenceRenderer->sequence->fftHeight_px );
 				sequenceRenderer->getNothing()->renderQuad();
 				convolutionShader->disable();
-				});
-		}
+			} );
 
+			if ( !sequenceRenderer->getSequence()->isMonochrome() )
+			{
+				spatialFilter->fftSwizzleMask = 0x00000406;
+				sequenceRenderer->fft2FrequencyDomain[1]->set_input( renderStimulus );
+				sequenceRenderer->fft2FrequencyDomain[1]->redraw_input();
+				if ( !spatialFilter->stimulusGivenInFrequencyDomain )
+					sequenceRenderer->fft2FrequencyDomain[1]->do_fft();
+
+				freqTexId[1] = sequenceRenderer->fft2FrequencyDomain[1]->get_fullTex();
+
+				sequenceRenderer->fft2SpatialDomain[1]->set_input( [&] () {
+					convolutionShader->enable();
+					convolutionShader->bindUniformBool( "showFft", spatialFilter->showFft );
+					convolutionShader->bindUniformTextureRect( "kernel", spatialKernelId, 0 );
+					convolutionShader->bindUniformTextureRect( "stim", freqTexId[1], 1 );
+					convolutionShader->bindUniformInt2( "fftSize",
+						sequenceRenderer->sequence->fftWidth_px,
+						sequenceRenderer->sequence->fftHeight_px );
+					sequenceRenderer->getNothing()->renderQuad();
+					convolutionShader->disable();
+				} );
+			}
+		}
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);

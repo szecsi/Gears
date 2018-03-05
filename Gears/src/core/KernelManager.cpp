@@ -44,6 +44,23 @@ uint KernelManager::getKernel(SpatialFilter::CP spatialFilter)
 	return update(spatialFilter);
 }
 
+bool KernelManager::getKernelChannels( SpatialFilter::CP spatialFilter, cl_mem& r, cl_mem& g, cl_mem& b )
+{
+	std::string slongid = spatialFilter->getKernelGeneratorShaderSourceWithParameters();
+	KernelMap::iterator i = kernels.find( slongid );
+	if ( i != kernels.end() )
+	{
+		if ( i->second.fft )
+		{
+			static_cast<OPENCLFFT*>(i->second.fft)->get_channels(r, g, b);
+			return true;
+		}
+			return i->second.fft->get_fullTex();
+		return false;
+	}
+	return false;
+}
+
 uint KernelManager::update(SpatialFilter::CP spatialFilter)
 {
 	if(spatialFilter == nullptr) //TODO this is a bit of a hack. update will be called when the component's update method executes initially. Then the current stimulus may be anything and may not have a spatial filter.

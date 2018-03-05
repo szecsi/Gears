@@ -28,7 +28,7 @@ public:
   ~GLFFT();
 
   // overrided methods
-  virtual void do_fft() override;
+  virtual void do_fft( FFTChannelMode mode = FFTChannelMode::Monochrome ) override;
   virtual unsigned int get_fullTex() const override { return fft[current_fft]; }
   virtual unsigned int take_fullTex_ownership() override { ownsTex = false; return fft[current_fft]; }
   virtual void redraw_input() override;

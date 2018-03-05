@@ -29,6 +29,7 @@ class SpatialFilterRenderer
 	Shader* copyShader;
 
 	SpatialFilter::P spatialFilter;
+	KernelManager::P kernelManager;
 	SpatialFilterRenderer(boost::shared_ptr<SequenceRenderer> sequenceRenderer, SpatialFilter::P spatialFilter, ShaderManager::P shaderManager,  KernelManager::P kernelManager);
 public:
 	GEARS_SHARED_CREATE(SpatialFilterRenderer);

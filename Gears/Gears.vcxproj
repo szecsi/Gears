@@ -138,11 +138,14 @@
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\event\events.cpp" />
     <ClCompile Include="src\fft\glFFT.cpp" />
+    <ClCompile Include="src\fft\imageHelper.cpp" />
     <ClCompile Include="src\fft\load_shaders.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\fft\openCLCore.cpp" />
     <ClCompile Include="src\fft\openCLFFT.cpp" />
+    <ClCompile Include="src\fft\openCLHelper.cpp" />
     <ClCompile Include="src\font\FontManager.cpp" />
     <ClCompile Include="src\font\TexFont.cpp" />
     <ClCompile Include="src\gpu\Framebuffer.cpp">
@@ -238,6 +241,7 @@
     <ClInclude Include="src\fft\FFT.h" />
     <ClInclude Include="src\fft\glFFT.h" />
     <ClInclude Include="src\fft\load_shaders.h" />
+    <ClInclude Include="src\fft\openCLCore.h" />
     <ClInclude Include="src\fft\openCLFFT.h" />
     <ClInclude Include="src\font\FontManager.h" />
     <ClInclude Include="src\font\TexFont.h" />

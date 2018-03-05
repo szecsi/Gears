@@ -3,6 +3,12 @@
 
 #include <functional>
 
+enum class FFTChannelMode
+{
+	Monochrome,
+	Multichrome
+};
+
 class FFT
 {
 public:
@@ -16,7 +22,7 @@ public:
 
 	void set_input( std::function<void()> f ) { draw_input = f; }
 
-	virtual void do_fft() = 0;
+	virtual void do_fft( FFTChannelMode mode = FFTChannelMode::Monochrome ) = 0;
 	virtual unsigned int get_fullTex() const = 0;
 	virtual unsigned int take_fullTex_ownership() = 0;
 	virtual void redraw_input() = 0;

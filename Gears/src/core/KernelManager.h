@@ -38,6 +38,7 @@ public:
 	using KernelMap = std::map<std::string, Kernel>;
 
 	unsigned int getKernel(SpatialFilter::CP spatialFilter);
+	bool getKernelChannels( SpatialFilter::CP spatialFilter, cl_mem& r, cl_mem& g, cl_mem& b );
 	unsigned int update(SpatialFilter::CP spatialFilter);
 
 	void clear();

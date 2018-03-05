@@ -12,10 +12,12 @@ GearsPy/Project/Logs
 
 Gears/obj
 Gears/bin
+Gears/Gears.tlog/
 
 GearsTest/*.vcxproj
 GearsTest/.cache/*
-GearsTest/*/*.obj
+GearsTest/Build/
+GearsTest/Bin/
 GearsTest/*/*.pdb
 GearsTest/*/*.ilk
 GearsTest/*/*.log
