@@ -385,7 +385,8 @@ void OPENCLFFT::take_channels( cl_mem& r, cl_mem& g, cl_mem& b )
 
 void OPENCLFFT::redraw_input()
 {
-	if ( draw_input )
+	redrawn = true;
+	/*if ( draw_input )
 	{
 		int vp[4];
 		glGetIntegerv( GL_VIEWPORT, vp );
@@ -398,5 +399,5 @@ void OPENCLFFT::redraw_input()
 
 		glViewport( vp[0], vp[1], vp[2], vp[3] );
 		redrawn = true;
-	}
+	}*/
 }

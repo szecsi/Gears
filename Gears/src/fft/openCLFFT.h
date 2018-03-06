@@ -86,7 +86,7 @@ public:
 
 protected:
 	unsigned int fullTex;
-	bool has_input_tex;
+	unsigned short has_input_tex;
 	bool transformed;
 	bool ownsChannels;
 	FFTChannelMode fftMode = FFTChannelMode::Monochrome;

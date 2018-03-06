@@ -166,7 +166,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GearsTest.cpp" />
+    <ClCompile Include="FFTTest.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <Text Include="TestGLCommon.cpp" />
     <ClCompile Include="TestMain.cpp" />

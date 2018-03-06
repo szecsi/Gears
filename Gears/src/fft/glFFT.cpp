@@ -425,7 +425,7 @@ void GLFFT::do_fft( FFTChannelMode mode )
 
   if(!redrawn)
   {
-    if(!has_input_tex && draw_input)
+    if(!has_input_tex && has_draw_input)
     {
       glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT + current_fft);
       draw_input();
@@ -463,7 +463,7 @@ void GLFFT::redraw_input()
 {
   if(has_input_tex)
     current_fft = 0;
-  else if(draw_input)
+  else if(has_draw_input)
   {
     int vp[4];
     glGetIntegerv(GL_VIEWPORT, vp);
