@@ -9,9 +9,9 @@ OPENCLFFT::OPENCLFFT( unsigned int width, unsigned int height, unsigned int inpu
 	FFT( width, height ), fullTex( input_tex ),
 	full_img_size( size[0] * size[1] * 4 ), channel_img_size( size[1] * (size[0] + 2) ), transformed( false ), ownsChannels( true )
 {
+	ownsTex = false;
 	has_input_tex = glIsTexture( input_tex );
 	init_framebuffer();
-	img = new GLfloat[full_img_size];
 	initCl();
 
 	for ( size_t i = 0; i < 3; i++ )
@@ -21,7 +21,8 @@ OPENCLFFT::OPENCLFFT( unsigned int width, unsigned int height, unsigned int inpu
 	}
 
 	global_work_size[0] = full_img_size / 4;
-	local_work_size[0] = 64;
+	
+	local_work_size[0] = (64 < global_work_size[0] ? 64 : 4);
 
 	region[0] = size[0];
 	region[1] = size[1];
@@ -33,17 +34,11 @@ OPENCLFFT::~OPENCLFFT()
 {
 	if ( ownsTex )
 		glDeleteTextures( 1, &fullTex );
-	delete[] img;
 
 	/* Release the plan. */
 	clfftDestroyPlan( &planHandleFFT );
 	clfftDestroyPlan( &planHandleIFFT );
 
-	/* Release clFFT library. */
-	clfftTeardown();
-
-	if ( clImgFull )
-		clReleaseMemObject( clImgFull );
 	if ( ownsChannels )
 	{
 		if ( clImgr )
@@ -53,8 +48,6 @@ OPENCLFFT::~OPENCLFFT()
 		if ( clImgb )
 			clReleaseMemObject( clImgb );
 	}
-	/* Release OpenCL working objects. */
-	clReleaseCommandQueue( queue );
 }
 
 void OPENCLFFT::init_framebuffer()
@@ -81,13 +74,6 @@ void OPENCLFFT::bakePlans()
 
 	cl_int err;
 	clfftDim dim = CLFFT_2D;
-
-	/* Setup clFFT. */
-	clfftSetupData fftSetup;
-	err = clfftInitSetupData( &fftSetup );
-	clPrintError( err );
-	err = clfftSetup( &fftSetup );
-	clPrintError( err );
 
 	/* Create a default plan for a complex FFT. */
 	err = clfftCreateDefaultPlan( &planHandleFFT, ctx, dim, size );
@@ -142,9 +128,6 @@ void OPENCLFFT::initCl()
 
 	queue = OpenCLCore::Get()->queue;
 
-	clImgFull = clCreateFromGLTexture( ctx, CL_MEM_READ_WRITE, GL_TEXTURE_RECTANGLE_ARB, 0, fullTex, &err );
-	clPrintError( err );
-
 	clImgr = clCreateBuffer( ctx, CL_MEM_READ_ONLY, channel_img_size * sizeof( float ), NULL, &err );
 	clPrintError( err );
 	clImgg = clCreateBuffer( ctx, CL_MEM_READ_ONLY, channel_img_size * sizeof( float ), NULL, &err );
@@ -155,9 +138,24 @@ void OPENCLFFT::initCl()
 
 void OPENCLFFT::separateChannels( FFTChannelMode channelMode )
 {
+
 	using OpenCLHelper::clPrintError;
 
 	cl_int err;
+
+	float* res;
+	res = new float[full_img_size];
+
+	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, fullTex );
+	glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, res );
+	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, 0 );
+
+	//ImageHelper::printImg( res, size[0], size[1] );
+
+	delete[] res;
+
+	clImgFull = clCreateFromGLTexture( ctx, CL_MEM_READ_WRITE, GL_TEXTURE_RECTANGLE_ARB, 0, fullTex, &err );
+	clPrintError( err );
 
 	cl_kernel separatorKernel = nullptr; 
 	switch ( channelMode )
@@ -284,6 +282,9 @@ void OPENCLFFT::combineChannels()
 	clFinish( queue );
 	clEnqueueReleaseGLObjects( queue, 1, &clImgFull, 0, 0, NULL );
 
+	clReleaseMemObject( clImgFull );
+	clImgFull = nullptr;
+
 	/*glBindTexture( GL_TEXTURE_RECTANGLE_ARB, fullTex );
 	glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, res );
 	printImg( res, size[0], size[1], "Full image after combine channels in texture" );*/
@@ -386,7 +387,7 @@ void OPENCLFFT::take_channels( cl_mem& r, cl_mem& g, cl_mem& b )
 void OPENCLFFT::redraw_input()
 {
 	redrawn = true;
-	/*if ( draw_input )
+	if ( draw_input )
 	{
 		int vp[4];
 		glGetIntegerv( GL_VIEWPORT, vp );
@@ -399,5 +400,5 @@ void OPENCLFFT::redraw_input()
 
 		glViewport( vp[0], vp[1], vp[2], vp[3] );
 		redrawn = true;
-	}*/
+	}
 }

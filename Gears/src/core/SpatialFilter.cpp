@@ -36,19 +36,19 @@ SpatialFilter::SpatialFilter() :
 			uniform bool kernelGivenInFrequencyDomain;
 			void main() {
 				vec4 kernelInTex = vec4(0, 0, 0, 0);
-				for(int u=-4; u<=-4; u++)
-					for(int v=-4; v<=4; v++)	{
+				for(int u=-4; u<=4; u++)
+					for(int v=-4; v<=4; v++){
 						vec2 px = pos + vec2(u, v) / 8.5 * texelSize_um;
 						if(kernelGivenInFrequencyDomain)
 						{	
 							px = mod(px + patternSizeOnRetina, patternSizeOnRetina) - patternSizeOnRetina * 0.5;
 						}
-						kernelInTex += 	kernel(px);
-						}
+						kernelInTex += kernel(px);
+					}
 				kernelInTex /= 81.0;
 				outcolor = mix(vec4(plotDarkColor.rgb, 0), vec4(plotBrightColor, 1), (kernelInTex - vec4(plotMin))/vec4(plotMax-plotMin));
 				int cq = (int(gl_FragCoord.x) % 2) ^ (int(gl_FragCoord.y) % 2);
-				if(kernelGivenInFrequencyDomain && (  cq == 0) )
+				if(kernelGivenInFrequencyDomain && (cq == 0) )
 					outcolor = -outcolor;
 			}
 		)GLSLC0D3"

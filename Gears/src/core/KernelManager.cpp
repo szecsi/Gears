@@ -2,7 +2,6 @@
 #include "KernelManager.h"
 #include "SequenceRenderer.h"
 
-
 KernelManager::KernelManager(SequenceRenderer::P sequenceRenderer, ShaderManager::P shaderManager):
 	sequenceRenderer(sequenceRenderer),
 	shaderManager(shaderManager)
@@ -29,7 +28,7 @@ uint KernelManager::getKernel(SpatialFilter::CP spatialFilter)
 	if(spatialFilter->useFft)
 	{
 		FFT* fft;
-		if(sequenceRenderer->clFFT())
+		if(sequenceRenderer->clFFT)
 			fft = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
 		else
 			fft = new GLFFT( sequence->fftWidth_px, sequence->fftHeight_px );

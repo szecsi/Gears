@@ -129,20 +129,18 @@ class SequenceRenderer
 	float measuredMean;
 	float measuredVariance;
 
-	// fft switch
-	bool _clFFT = true;
-
 	void readCalibrationResults();
 
 	//! Constructor. Sets some parameters to zero, but the sequence remains invalid until apply is called.
 	SequenceRenderer();
 public:
 	GEARS_SHARED_CREATE_WITH_GETSHAREDPTR(SequenceRenderer);
+
+	// fft switch
+	bool clFFT = true;
 	
 	//! Creates GPU resources for the sequence, releasing earlier ones, if any.
 	void apply(Sequence::P sequence, ShaderManager::P shaderManager, TextureManager::P textureManager, KernelManager::P kernelManager);
-
-	bool clFFT() const { return _clFFT; }
 
 	void cleanup();
 	void reset();

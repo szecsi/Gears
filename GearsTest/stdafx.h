@@ -10,7 +10,8 @@
 #include <stdio.h>
 #include <tchar.h>
 
-
+bool floatIsEqual(float n1, float n2);
 bool mtxIsEqual( float* mtx1, float* mtx2, unsigned w, unsigned h );
+bool mtxIsEqualPart(float* mtx1, float* mtx2, unsigned w, unsigned h, unsigned miss);
 
 // TODO: reference additional headers your program requires here

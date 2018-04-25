@@ -64,7 +64,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(BoostPath)\bin.v2\libs\python\build\msvc-12.0\debug\link-static\threading-multi;$(BoostPath)\bin.v2\libs\filesystem\build\msvc-12.0\debug\link-static\threading-multi;$(BoostPath)\bin.v2\libs\system\build\msvc-12.0\debug\link-static\threading-multi\;$(CUDA_PATH)\lib\Win32;$(PythonPath)\libs;$(SolutionDir)libs/freeglut/lib;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)libs/devil1.6.8-rc2/lib;$(SolutionDir)libs/TILLPolychrome/lib;$(SolutionDir)libs/libav-11.3-win32/win32/usr/bin;$(SolutionDir)Thirdparty\clFFT\build\library\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(BoostPath)\stage\lib\;$(CUDA_PATH)\lib\Win32;$(PythonPath)\libs;$(SolutionDir)libs/freeglut/lib;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)libs/devil1.6.8-rc2/lib;$(SolutionDir)libs/TILLPolychrome/lib;$(SolutionDir)libs/libav-11.3-win32/win32/usr/bin;$(SolutionDir)Thirdparty\clFFT\build\library\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <PerUserRedirection>true</PerUserRedirection>
       <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;ILU.lib;opengl32.lib;avcodec.lib;swscale.lib;avfilter.lib;avformat.lib;avdevice.lib;avutil.lib;clFFT.lib;OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OptimizeReferences>

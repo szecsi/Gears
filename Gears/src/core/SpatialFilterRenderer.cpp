@@ -10,7 +10,6 @@
 #include <limits>
 #include "SpatialFilterRenderer.h"
 
-
 SpatialFilterRenderer::SpatialFilterRenderer(SequenceRenderer::P sequenceRenderer, SpatialFilter::P spatialFilter, ShaderManager::P shaderManager, KernelManager::P kernelManager):
 	sequenceRenderer(sequenceRenderer), useFft(false),
 	spatialFilter(spatialFilter)
@@ -28,8 +27,8 @@ SpatialFilterRenderer::SpatialFilterRenderer(SequenceRenderer::P sequenceRendere
 			precision highp float;
 			uniform sampler2DRect kernel;
 			uniform sampler2DRect stim;
-			uniform ivec2 fftSize;
-			uniform bool showFft;
+//			uniform ivec2 fftSize;
+//			uniform bool showFft;
 			in vec2 fTexCoord;
 			out vec4 outcolor;
 //			void main() { vec4 k =  texture2DRect(kernel, (ivec2(gl_FragCoord.xy) + fftSize/2)%fftSize);
@@ -62,15 +61,24 @@ SpatialFilterRenderer::SpatialFilterRenderer(SequenceRenderer::P sequenceRendere
 			uniform float pixelArea;
 			uniform sampler2DRect srcrg;
 			uniform sampler2DRect srcba;
+			uniform bool clFFT;
 			in vec2 fTexCoord;
 			out vec4 outcolor;
-			void main() { vec2 uv = gl_FragCoord.xy * pixelRatio;
-				uv = mod(uv + offset, vec2(fftSize)) + vec2(1, 1) ;
-				outcolor = vec4(texture2DRect(srcrg, uv).xz, texture2DRect(srcba, uv).xz) * pixelArea;
-//				vec2 tc = (uv + vec2(2, 2)) * textureSize(src) ;
-//				int cq = (int(tc.x) % 2) ^ (int(tc.y) % 2);
-//				if(cq == 0) outcolor = -outcolor;
-	}
+			void main() {
+				vec2 uv = gl_FragCoord.xy * pixelRatio;
+				uv = mod(uv + offset, vec2(fftSize)) + vec2(1, 1);
+				if(clFFT)
+				{
+					outcolor = texture2DRect(srcrg, uv) * pixelArea;
+				}
+				else
+				{
+					outcolor = vec4(texture2DRect(srcrg, uv).xz, texture2DRect(srcba, uv).xz) * pixelArea;
+					// vec2 tc = (uv + vec2(2, 2)) * textureSize(src) ;
+					// int cq = (int(tc.x) % 2) ^ (int(tc.y) % 2);
+					// if(cq == 0) outcolor = -outcolor;
+				}
+			}
 		)GLSLC0D3"
 		);
 }
@@ -93,7 +101,7 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 		if(!spatialFilter->stimulusGivenInFrequencyDomain)
 			sequenceRenderer->fft2FrequencyDomain[0]->do_fft( channelMode );
 
-		if ( sequenceRenderer->clFFT() )
+		if ( sequenceRenderer->clFFT )
 		{
 			cl_mem filterr;
 			cl_mem filterg;
@@ -119,12 +127,12 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 
 			sequenceRenderer->fft2SpatialDomain[0]->set_input( [&] () {
 				convolutionShader->enable();
-				convolutionShader->bindUniformBool( "showFft", spatialFilter->showFft );
+				//convolutionShader->bindUniformBool( "showFft", spatialFilter->showFft );
 				convolutionShader->bindUniformTextureRect( "kernel", spatialKernelId, 0 );
 				convolutionShader->bindUniformTextureRect( "stim", freqTexId[0], 1 );
-				convolutionShader->bindUniformInt2( "fftSize",
+				/*convolutionShader->bindUniformInt2( "fftSize",
 					sequenceRenderer->sequence->fftWidth_px,
-					sequenceRenderer->sequence->fftHeight_px );
+					sequenceRenderer->sequence->fftHeight_px );*/
 				sequenceRenderer->getNothing()->renderQuad();
 				convolutionShader->disable();
 			} );
@@ -141,12 +149,12 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 
 				sequenceRenderer->fft2SpatialDomain[1]->set_input( [&] () {
 					convolutionShader->enable();
-					convolutionShader->bindUniformBool( "showFft", spatialFilter->showFft );
+					//convolutionShader->bindUniformBool( "showFft", spatialFilter->showFft );
 					convolutionShader->bindUniformTextureRect( "kernel", spatialKernelId, 0 );
 					convolutionShader->bindUniformTextureRect( "stim", freqTexId[1], 1 );
-					convolutionShader->bindUniformInt2( "fftSize",
+					/*convolutionShader->bindUniformInt2( "fftSize",
 						sequenceRenderer->sequence->fftWidth_px,
-						sequenceRenderer->sequence->fftHeight_px );
+						sequenceRenderer->sequence->fftHeight_px );*/
 					sequenceRenderer->getNothing()->renderQuad();
 					convolutionShader->disable();
 				} );
@@ -157,7 +165,7 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 		glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		if ( sequenceRenderer->clFFT() )
+		if ( sequenceRenderer->clFFT )
 		{
 			if ( !spatialFilter->showFft )
 				static_cast<OPENCLFFT*>(sequenceRenderer->fft2FrequencyDomain[0])->do_inverse_fft();
@@ -226,18 +234,20 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 		double vad = 
 			(double)sequenceRenderer->sequence->fftHeight_px * sequenceRenderer->sequence->fieldHeight_um
 			/ (sequenceRenderer->sequence->getSpatialFilteredFieldHeight_um() * sequenceRenderer->sequence->fieldHeight_px);
-		copyShader->bindUniformFloat2("pixelRatio", 
-			(float)sequenceRenderer->sequence->fftWidth_px * sequenceRenderer->sequence->fieldWidth_um / 
-			(sequenceRenderer->sequence->fieldWidth_px * sequenceRenderer->sequence->getSpatialFilteredFieldWidth_um()) ,
+		copyShader->bindUniformFloat2("pixelRatio",
+			(float)sequenceRenderer->sequence->fftWidth_px * sequenceRenderer->sequence->fieldWidth_um /
+			(sequenceRenderer->sequence->fieldWidth_px * sequenceRenderer->sequence->getSpatialFilteredFieldWidth_um()),
 			(float)sequenceRenderer->sequence->fftHeight_px * sequenceRenderer->sequence->fieldHeight_um
-			/ (sequenceRenderer->sequence->getSpatialFilteredFieldHeight_um() * sequenceRenderer->sequence->fieldHeight_px) );
-
-		if ( sequenceRenderer->clFFT() )
+			/ (sequenceRenderer->sequence->getSpatialFilteredFieldHeight_um() * sequenceRenderer->sequence->fieldHeight_px));
+		if ( sequenceRenderer->clFFT )
 		{
 			copyShader->bindUniformTextureRect( "srcrg", sequenceRenderer->fft2FrequencyDomain[0]->get_fullTex(), 0 );
+			copyShader->bindUniformBool("clFFT", true);
 		}
 		else
 		{
+			
+			copyShader->bindUniformBool("clFFT", false);
 			copyShader->bindUniformTextureRect( "srcrg", sequenceRenderer->fft2SpatialDomain[0]->get_fullTex(), 0 );
 			if ( !sequenceRenderer->getSequence()->isMonochrome() )
 				copyShader->bindUniformTextureRect( "srcba", sequenceRenderer->fft2SpatialDomain[1]->get_fullTex(), 1 );
@@ -339,6 +349,5 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 			sequenceRenderer->textureQueue->disableRenderTarget();
 		}
 	}
-
 }
 

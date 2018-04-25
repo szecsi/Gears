@@ -102,7 +102,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glew32.lib;OpenCL.lib;opengl32.lib;gtestd.lib;clFFT.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(CUDA_PATH)\lib\Win32;$(SolutionDir)\Thirdparty\clFFT\build\library\Debug;$(BoostPath)\bin.v2\libs\python\build\msvc-12.0\debug\link-static\threading-multi;$(BoostPath)\bin.v2\libs\filesystem\build\msvc-12.0\debug\link-static\threading-multi;$(BoostPath)\bin.v2\libs\system\build\msvc-12.0\debug\link-static\threading-multi\;$(PythonPath)\libs;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)Thirdparty\googletest\msvc\2010\gtest\Win32-Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(CUDA_PATH)\lib\Win32;$(SolutionDir)\Thirdparty\clFFT\build\library\Debug;$(BoostPath)\stage\lib\;$(PythonPath)\libs\;$(SolutionDir)libs/glew-1.10.0/lib/Release/Win32;$(SolutionDir)Thirdparty\googletest\msvc\2010\gtest\Win32-Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <PerUserRedirection>false</PerUserRedirection>
     </Link>
   </ItemDefinitionGroup>
@@ -168,10 +168,11 @@
   <ItemGroup>
     <ClCompile Include="FFTTest.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <Text Include="TestGLCommon.cpp" />
+    <ClCompile Include="TestGLCommon.cpp" />
     <ClCompile Include="TestMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestGLCommon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

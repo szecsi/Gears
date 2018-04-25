@@ -5,47 +5,76 @@ namespace ImageHelper
 {
 
 #ifdef _DEBUG
-	void printPixel( float* img, unsigned& idx, unsigned channels, bool complex )
+	void printPixel(std::ostream& st, float* img, unsigned& idx, unsigned channels, bool complex, unsigned channel = 0)
 	{
-		std::cout << "(";
+		if (abs(img[idx]) < 0.0000001f)
+		{
+			idx += channels;
+			return;
+		}
+		st << idx / channels << "(";
 		for ( unsigned k = 0; k < channels; k++ )
 		{
-			std::cout << img[idx++];
+			if (channel > 0 && channel != k + 1)
+			{
+				idx++;
+				if (complex)
+					idx++;
+				continue;
+			}
+			st << img[idx++];
 			if ( complex )
-				std::cout << "+" << img[idx++] << "i";
-			if ( k < channels - 1 )
-				std::cout << ", ";
+				st << (img[idx] >= 0.f ? "+" : "") << img[idx++] << "i";
+			if ( channel <= 0 && k < channels - 1 )
+				st << ", ";
 		}
-		std::cout << ") ";
+		st << ") ";
 	}
 #endif
 
-	void printImg( float* img, unsigned w, unsigned h, const char* name, unsigned channels, bool complex, unsigned pad )
+	void _printImg( float* img, unsigned w, unsigned h, const char* name, unsigned channels, bool complex, unsigned pad, unsigned channel, unsigned offsetW, unsigned offsetH, std::ostream& st )
 	{
 #ifdef _DEBUG
-		if ( w > 10 )
+		if (w < offsetW || h < offsetH)
 			return;
 		unsigned idx = 0;
-		unsigned rowWidth = complex ? w / 2 + 1 : w;
-		std::cout << name << ": " << std::endl;
-		for ( unsigned i = 0; i < h; i++ )
+		st << name << ": " << std::endl;
+		/*if ( w - offsetW > 10 )
+			st << "Image too large, show only the first 10x10 submatrix!" << std::endl;*/
+		for ( unsigned i = offsetH; i < h; i++ )
 		{
-			for ( unsigned j = 0; j < rowWidth; j++ )
+			for ( unsigned j = offsetW; j < w; j++ )
 			{
-				printPixel( img, idx, channels, complex );
+				printPixel(st, img, idx, channels, complex, channel);
 			}
 			if ( pad )
 			{
-				std::cout << "| ";
+				st << "| ";
 				for ( unsigned k = 0; k < pad; k++ )
 				{
-					printPixel( img, idx, channels, complex );
+					printPixel(st, img, idx, channels, complex, channel);
 				}
 			}
-			std::cout << std::endl;
+			if (abs(img[idx - 4]) > 0.0000001f)
+				st << std::endl;
 		}
-		std::cout << std::endl;
-		std::cout << std::endl;
+		st << std::endl;
+		st << std::endl;
 #endif
+	}
+
+	void printImg( float* img, unsigned w, unsigned h, const char* name, unsigned channels, bool complex, unsigned pad, unsigned offsetW, unsigned offsetH)
+	{
+		_printImg( img, w, h, name, channels, complex, pad, 0, offsetW, offsetH, std::cout );
+	}
+
+	void printImgStream(std::ostream& st, float* img, unsigned w, unsigned h, const char* name, unsigned channels, bool complex, unsigned pad, unsigned offsetW, unsigned offsetH)
+	{
+		_printImg(img, w, h, name, channels, complex, pad, 0, offsetW, offsetH, st);
+	}
+
+	void printImgChannel( float* img, unsigned w, unsigned h, unsigned channels, unsigned channel, const char* name, bool complex, unsigned pad, unsigned offsetW, unsigned offsetH)
+	{
+		_printImg( img, w, h, name, channels, complex, pad, channel, offsetW, offsetH, std::cout );
 	}
 }

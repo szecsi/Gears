@@ -8,9 +8,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
-    <Text Include="TestGLCommon.cpp">
-      <Filter>Source Files</Filter>
-    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -22,9 +19,15 @@
     <ClCompile Include="FFTTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TestGLCommon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestGLCommon.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

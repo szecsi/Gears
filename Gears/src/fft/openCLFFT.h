@@ -6,8 +6,6 @@
 #include "FFT.h"
 #include <cstring>
 #include <GL/glew.h>
-#include "CL/cl_gl.h"
-#include <clFFT.h>
 #include "openCLCore.h"
 
 class OPENCLFFT: public FFT

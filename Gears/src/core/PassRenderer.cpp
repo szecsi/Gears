@@ -119,7 +119,7 @@ void PassRenderer::renderPass(int skippedFrames)
 	else
 		stimulusGeneratorShader->bindUniformFloat2("patternSizeOnRetina", stimulus->sequence->fieldWidth_um, stimulus->sequence->fieldHeight_um);
 
-	if(stimulus->spatialFilter != nullptr && stimulus->spatialFilter->useFft)
+	if(!sequenceRenderer->clFFT && stimulus->spatialFilter != nullptr && stimulus->spatialFilter->useFft)
 	{
 		stimulusGeneratorShader->bindUniformInt("swizzleForFft", stimulus->spatialFilter->fftSwizzleMask);
 	}

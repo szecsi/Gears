@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #include "TestGLCommon.h"
 
-bool setGLFormat( void )
+bool TestGLHelper::setGLFormat( void )
 {
 	pfd =
 	{
@@ -40,7 +40,7 @@ LONG WINAPI WindowProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
-HWND CreateOpenGLWindow( char* title, int x, int y, int width, int height, BYTE type, DWORD flags )
+HWND TestGLHelper::CreateOpenGLWindow( char* title, int x, int y, int width, int height, BYTE type, DWORD flags )
 {
 	WNDCLASS    wc;
 	static HINSTANCE hInstance = 0;
@@ -95,7 +95,7 @@ HWND CreateOpenGLWindow( char* title, int x, int y, int width, int height, BYTE 
 	return hWnd;
 }
 
-void closeWnd()
+void TestGLHelper::closeWnd()
 {
 	// Kill window:
 	DestroyWindow( hWnd );
@@ -103,7 +103,7 @@ void closeWnd()
 	std::cout << "Killed window... Take care now. Bye, bye then." << std::endl;
 }
 
-bool initGL() 
+bool TestGLHelper::initGL()
 {
 	hWnd = CreateOpenGLWindow( "minimal", 0, 0, 256, 256, PFD_TYPE_RGBA, 0 );
 	if ( hWnd == NULL )

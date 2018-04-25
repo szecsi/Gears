@@ -10,20 +10,20 @@ const char* multiplyFFTMonoProgram =
 "lhs[i] = (float2)(lhs[i].x * rhs[i].x - lhs[i].y * rhs[i].y, lhs[i].x * rhs[i].y + lhs[i].y * rhs[i].x);\n"
 "}\n";
 
-const char* multiplyFFTProgram =
-"__kernel void multiplyFFT(\n"
-"__global float2* lhsr,\n"
-"__global float2* lhsg,\n"
-"__global float2* lhsb,\n"
-"__global float2* rhsr,\n"
-"__global float2* rhsg,\n"
-"__global float2* rhsb)\n"
-"{\n"
-"int i = get_global_id( 0 );\n"
-"lhsr[i] = (float2)(lhsr[i].x * rhsr[i].x - lhsr[i].y * rhsr[i].y, lhsr[i].x * rhsr[i].y + lhsr[i].y * rhsr[i].x);\n"
-"lhsg[i] = (float2)(lhsg[i].x * rhsg[i].x - lhsg[i].y * rhsg[i].y, lhsg[i].x * rhsg[i].y + lhsg[i].y * rhsg[i].x);\n"
-"lhsb[i] = (float2)(lhsb[i].x * rhsb[i].x - lhsb[i].y * rhsb[i].y, lhsb[i].x * rhsb[i].y + lhsb[i].y * rhsb[i].x);\n"
-"}\n";
+const char* multiplyFFTProgram = R"(
+__kernel void multiplyFFT(
+__global float2* lhsr,
+__global float2* lhsg,
+__global float2* lhsb,
+__global float2* rhsr,
+__global float2* rhsg,
+__global float2* rhsb)
+{
+	int i = get_global_id(0); 
+	lhsr[i] = (float2)(lhsr[i].x * rhsr[i].x - lhsr[i].y * rhsr[i].y, lhsr[i].x * rhsr[i].y + lhsr[i].y * rhsr[i].x);
+	lhsg[i] = (float2)(lhsg[i].x * rhsg[i].x - lhsg[i].y * rhsg[i].y, lhsg[i].x * rhsg[i].y + lhsg[i].y * rhsg[i].x);
+	lhsb[i] = (float2)(lhsb[i].x * rhsb[i].x - lhsb[i].y * rhsb[i].y, lhsb[i].x * rhsb[i].y + lhsb[i].y * rhsb[i].x);
+})";
 
 OpenCLCore::OpenCLCore()
 {
@@ -74,6 +74,13 @@ OpenCLCore::OpenCLCore()
 	clPrintError( err );
 
 	queue = clCreateCommandQueue( ctx, device, 0, &err );
+	clPrintError( err );
+
+	/* Setup clFFT. */
+	clfftSetupData fftSetup;
+	err = clfftInitSetupData( &fftSetup );
+	clPrintError( err );
+	err = clfftSetup( &fftSetup );
 	clPrintError( err );
 }
 
@@ -193,7 +200,7 @@ void OpenCLCore::MultiplyFFT( cl_mem lhs, cl_mem rhs, size_t* imageSize, size_t*
 	clPrintError( err );
 
 	size_t defaultLocal[1] = { 64 };
-	size_t global[1] = { imageSize[1] / 2 };
+	size_t global[1] = { imageSize[0] / 2 };
 	size_t* local;
 
 	if ( localWorkSize )
@@ -231,7 +238,7 @@ void OpenCLCore::MultiplyFFT( cl_mem lhsr, cl_mem lhsg, cl_mem lhsb, cl_mem rhsr
 	clPrintError( err );
 
 	size_t defaultLocal[1] = { 64 };
-	size_t global[1] = { imageSize[0] / 2 };
+	size_t global[1] = { imageSize[0] };
 	size_t* local;
 
 	if ( localWorkSize )
@@ -251,6 +258,9 @@ void OpenCLCore::Destroy()
 {
 	if ( _instance )
 	{
+		/* Release clFFT library. */
+		clfftTeardown();
+
 		clReleaseContext( _instance->ctx );
 		clReleaseDevice( _instance->device );
 		for ( auto k : _instance->kernels )
@@ -263,6 +273,11 @@ void OpenCLCore::Destroy()
 		delete _instance;
 		_instance = nullptr;
 	}
+}
+
+void OpenCLCore::getClData(cl_mem mem, float* data, unsigned size)
+{
+	cl_int err = clEnqueueReadBuffer(queue, mem, CL_TRUE, 0, size * sizeof(float), data, 0, NULL, NULL);
 }
 
 OpenCLCore* OpenCLCore::_instance = nullptr;

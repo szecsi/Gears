@@ -89,6 +89,13 @@ void drawStimulusTimeline(int x, int y, int w, int h){
 	sequenceRenderer->renderSelectedStimulusTimeline();
 }
 
+void useClFFT(bool mode) {
+	if (sequenceRenderer == nullptr)
+		return;
+	std::cout << "use clfft: " << mode << std::endl;
+	sequenceRenderer->clFFT = mode;
+}
+
 void drawSpatialKernel(float min, float max, float width, float height){
 	if(sequence == nullptr)
 		return;
@@ -181,6 +188,7 @@ Stimulus::CP getCurrentStimulus()
 void cleanup()
 {
 	sequenceRenderer->cleanup();
+	OpenCLCore::Destroy();
 //	textureManager->clear();
 //	shaderManager->clear();
 //	kernelManager->clear();
@@ -351,6 +359,7 @@ BOOST_PYTHON_MODULE(Gears)
     // Add regular functions to the module.
     def("greet", greet);
     def("square", square);
+	def("useClFFT", useClFFT);
 	//class_<Gears::Event::Base>("BaseEvent", no_init)
 	//	.def_readonly(	"message"	, &Gears::Event::Base::message	, "Windows message.")
 	//	.def_readonly(	"wParam"	, &Gears::Event::Base::wParam	, "Windows message wParam.")

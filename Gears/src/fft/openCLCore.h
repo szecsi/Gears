@@ -5,6 +5,7 @@
 #include <cstring>
 #include <GL/glew.h>
 #include <CL/cl_gl.h>
+#include <clFFT.h>
 #include <map>
 #include <string>
 
@@ -17,7 +18,9 @@ struct OpenCLKernelEntry
 
 namespace ImageHelper
 {
-	void printImg( float* img, unsigned w, unsigned h, const char* name = "FFT", unsigned channels = 4, bool complex = false, unsigned pad = 0 );
+	void printImg( float* img, unsigned w, unsigned h, const char* name = "FFT", unsigned channels = 4, bool complex = false, unsigned pad = 0, unsigned offsetW = 0, unsigned offsetH = 0 );
+	void printImgChannel( float* img, unsigned w, unsigned h, unsigned channels, unsigned channel, const char* name = "FFT", bool complex = false, unsigned pad = 0, unsigned offsetW = 0, unsigned offsetH = 0);
+	void printImgStream(std::ostream& st, float* img, unsigned w, unsigned h, const char* name = "FFT", unsigned channels = 4, bool complex = false, unsigned pad = 0, unsigned offsetW = 0, unsigned offsetH = 0);
 }
 
 namespace OpenCLHelper
@@ -38,10 +41,12 @@ public:
 	cl_command_queue queue = 0;
 
 	static OpenCLCore* Get();
+	void getClData(cl_mem mem, float* data, unsigned size);
 	static cl_kernel GetKernel( std::string name );
 	static void RegistKernel( std::string name, const char* source, size_t sourceSize = 0, bool compile = false );
 	static cl_kernel CompileKernel( const char* name, const char* source, size_t sourceSize = 0 );
 	static void MultiplyFFT( cl_mem lhs, cl_mem rhs, size_t* global_work_size, size_t* local_work_size = nullptr );
 	static void MultiplyFFT( cl_mem lhsr, cl_mem lhsg, cl_mem lhsb, cl_mem rhsr, cl_mem rhsg, cl_mem rhsb, size_t* global_work_size, size_t* local_work_size = nullptr );
+	void finish() { if ( queue ) clFinish( queue ); }
 	static void Destroy();
 };
