@@ -10,6 +10,9 @@ GearsPy/*/*/*/*/__pycache__/
 ipch/
 GearsPy/Project/Logs
 
+.vs/*
+Thirdparty/googletest/msvc/2010/.vs/*
+
 Gears/obj
 Gears/bin
 Gears/Gears.tlog/

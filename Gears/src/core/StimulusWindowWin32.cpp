@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #ifdef _WIN32
 #include "StimulusWindow.h"
@@ -131,11 +131,7 @@ void StimulusWindow::run()
 
 	GetFocus();
 
-	makeCurrent();
-	glViewport(0, 0, screenw, screenh);
-
-	if(sequenceRenderer->getSequence()->getUsesBusyWaitingThreadForSingals())
-		ticker = sequenceRenderer->startTicker();
+	preRender();
 
 	quit = false;
 	while(!quit)
@@ -149,42 +145,24 @@ void StimulusWindow::run()
 			DispatchMessage(&msg);
 		}
 
-		makeCurrent();
-		glViewport(0, 0, screenw, screenh);
-
-		glClearColor(0.5f, 0.1f, 0.2f, 1.f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		if(sequenceRenderer->exporting())
-			setSwapInterval( 0 );
-		else
-			setSwapInterval( sequenceRenderer->getSequence()->frameRateDivisor );
-
-		sequenceRenderer->setScreenResolution(screenw, screenh);
-		if(! sequenceRenderer->renderFrame(0) )
-			quit = true;
-			//TODO finished 
-
-		SwapBuffers(hdc);
-		glFinish();
-		if(ticker)
-			ticker->onBufferSwap();
+		render();
 
 		//if(GetAsyncKeyState(VK_ESCAPE))
 		//{
 		//	quit = true;
 		//}
 	}
-	if(sequenceRenderer->getSequence()->getUsesBusyWaitingThreadForSingals())
-		ticker->stop();
-	ticker.reset();
-	sequenceRenderer->reset();
-
-	if(onHideCallback)
-		onHideCallback();
+	
+	postRender();
 
 	while( PeekMessage(&msg, hwnd, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE) )
 		;
 	ShowWindow(hwnd, SW_HIDE);
+}
+
+void StimulusWindow::swapBuffers()
+{
+	SwapBuffers(hdc);
 }
 
 WNDCLASSEX StimulusWindow::ex;

@@ -130,6 +130,11 @@ class StimulusWindow
 	long eventMask = KeyPressMask;
 #endif
 
+	void swapBuffers();
+	void render();
+	void preRender();
+	void postRender();
+
 public:
 	GEARS_SHARED_CREATE_WITH_GETSHAREDPTR(StimulusWindow);
 	static StimulusWindow::P instanceCreated;
@@ -157,7 +162,7 @@ public:
 	void makeCurrent();
 	void setCursorPos();
 
-	void setSequenceRenderer(SequenceRenderer::P	sequenceRenderer)
+	void setSequenceRenderer(SequenceRenderer::P sequenceRenderer)
 	{
 		this->sequenceRenderer = sequenceRenderer;
 	}

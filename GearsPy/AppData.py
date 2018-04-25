@@ -31,6 +31,7 @@ def initConfigParams():
         monitorIndex        =  len(QApplication.screens())-1,
         deviceFrameRate     =  screen.refreshRate()        ,
         frameRateDivisor    =  1                           ,
+        useHighFrequenceDevice     =  False           ,
         field_width_um      =  display_width_px * 2        ,
         field_height_um     =  display_height_px * 2       ,
         field_width_px      =  display_width_px            ,

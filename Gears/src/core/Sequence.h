@@ -57,6 +57,7 @@ private:
 
 	//! Constructor. Sets some defaults.
 	Sequence(std::string name);
+
 public:
 	GEARS_SHARED_CREATE_WITH_GETSHAREDPTR(Sequence);
 
@@ -64,6 +65,9 @@ public:
 	std::string brief;							//< A short discription of the sequence.
 
 	bool greyscale;
+
+	bool useHighFreqRender = false;
+	bool debugHighFreqRender = false;
 
 	// random generation
 	uint	maxRandomGridWidth;			//<	Number of cells per row in 2D random grid array for random number generation.

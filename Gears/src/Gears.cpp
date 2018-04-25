@@ -275,6 +275,11 @@ void setResponded()
 	sequenceRenderer->setResponded();
 }
 
+void debugHighFreqRender()
+{
+	sequence->debugHighFreqRender = true;
+}
+
 
 boost::python::object renderSample(uint iFrame, uint x, uint y, uint w, uint h)
 {
@@ -659,6 +664,7 @@ BOOST_PYTHON_MODULE(Gears)
 		.def("getSpatialFilteredFieldWidth_um"		,	&Sequence::getSpatialFilteredFieldWidth_um )
 		.def("getSpatialFilteredFieldHeight_um"		,	&Sequence::getSpatialFilteredFieldHeight_um )
 		.def_readwrite(	"name"								, &Sequence::name							, "Sequence name.")
+		.def_readwrite("useHighFreqRender"					, &Sequence::useHighFreqRender				, "Use high frequence device.")
 		.def_readwrite(	"field_width_um"					, &Sequence::fieldWidth_um				, "The horizontal extent of the light pattern appearing on the retina [um].")
 		.def_readwrite(	"field_height_um"					, &Sequence::fieldHeight_um				, "The vertical extent of the light pattern appearing on the retina [um].")
 		.def_readwrite(	"field_width_px"					, &Sequence::fieldWidth_px				, "The size of the light pattern in display device pixels.")
@@ -724,4 +730,5 @@ BOOST_PYTHON_MODULE(Gears)
 	def("renderSample", renderSample );
 	def("setResponded", setResponded);
 	def("toggleChannelsOrPreview", toggleChannelsOrPreview);
+	def("debugHighFreqRender", debugHighFreqRender);
 }

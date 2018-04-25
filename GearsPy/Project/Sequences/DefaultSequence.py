@@ -20,6 +20,7 @@ class DefaultSequence(gears.Sequence) :
         self.monitorIndex = AppData.configParams['monitorIndex'][-1][0]
         self.deviceFrameRate = AppData.configParams['deviceFrameRate'][-1][0]
         self.frameRateDivisor = AppData.configParams['frameRateDivisor'][-1][0]
+        self.useHighFreqRender = AppData.configParams['useHighFrequenceDevice'][-1][0]
         self.square_field = AppData.configParams['square_field'][-1][0]
         self.field_width_um = AppData.configParams['field_width_um'][-1][0]
         self.field_height_um = AppData.configParams['field_height_um'][-1][0]

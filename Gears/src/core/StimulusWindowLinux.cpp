@@ -295,10 +295,7 @@ void StimulusWindow::run()
 	);
 	XMapWindow(display, wnd);
 
-	glViewport(0, 0, screenw, screenh);
-
-	if(sequenceRenderer->getSequence()->getUsesBusyWaitingThreadForSingals())
-		ticker = sequenceRenderer->startTicker();
+	preRender();
 
 	quit = false;
 	XEvent e;
@@ -312,41 +309,23 @@ void StimulusWindow::run()
 				quit = true;
 			}
 		}
-
-		makeCurrent();
-		glViewport(0, 0, screenw, screenh);
-
-		glClearColor(0.5, 0.1, 0.2, 1);
-		glClear(GL_COLOR_BUFFER_BIT);
-		if(sequenceRenderer->exporting())
-			setSwapInterval( 0 );
-		else
-		{
-			setSwapInterval( sequenceRenderer->getSequence()->frameRateDivisor );
-		}
-		sequenceRenderer->setScreenResolution(screenw, screenh);
-		if(! sequenceRenderer->renderFrame(0) )
-			quit = true;
-			//TODO finished 
-
-		glXSwapBuffers ( display, wnd );
-		glFinish();
-		if(ticker)
-			ticker->onBufferSwap();
+		
+		render();
 
 		//if(GetAsyncKeyState(VK_ESCAPE))
 		//{
 		//	quit = true;
 		//}
 	}
-	if(sequenceRenderer->getSequence()->getUsesBusyWaitingThreadForSingals())
-		ticker->stop();
-	ticker.reset();
-	sequenceRenderer->reset();
 
-	if(onHideCallback)
-		onHideCallback();
+	postRender();
+
 	XUnmapWindow(display, wnd);
+}
+
+void StimulusWindow::swapBuffers()
+{
+	glXSwapBuffers(display, wnd);
 }
 
 void StimulusWindow::closeWindow()

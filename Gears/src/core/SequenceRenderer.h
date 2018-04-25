@@ -131,6 +131,12 @@ class SequenceRenderer
 
 	void readCalibrationResults();
 
+	GLboolean _redMaskByIndex[3] = { GL_TRUE, GL_FALSE, GL_FALSE };
+	GLboolean _greenMaskByIndex[3] = { GL_FALSE, GL_TRUE, GL_FALSE };
+	GLboolean _blueMaskByIndex[3] = { GL_FALSE, GL_FALSE, GL_TRUE };
+
+	bool _enableSignals = true;
+
 	//! Constructor. Sets some parameters to zero, but the sequence remains invalid until apply is called.
 	SequenceRenderer();
 public:
@@ -145,7 +151,7 @@ public:
 	void cleanup();
 	void reset();
 	//! Computes next stimulus and displays it on screen. Return true if not in a black phase between bar or spot stimuli.
-	bool renderFrame(GLuint defaultFrameBuffer);
+	bool renderFrame(GLuint defaultFrameBuffer, unsigned channelId);
 
 	void renderRandoms(Shader* randomGeneratorShader, uint iStimulusFrame, uint randomSeed, uint freezeRandomsAfterFrame);
 	void renderParticles(Shader* particleShader, uint iStimulusFrame, float time);

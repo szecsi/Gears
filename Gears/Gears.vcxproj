@@ -133,6 +133,7 @@
     <Text Include="src\core\StimulusWindowLinux.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </Text>
+    <ClCompile Include="src\core\StimulusWindow.cpp" />
     <ClCompile Include="src\core\StimulusWindowWin32.cpp" />
     <ClCompile Include="src\core\Ticker.cpp" />
     <ClCompile Include="src\dllmain.cpp" />

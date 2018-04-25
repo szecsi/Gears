@@ -270,14 +270,18 @@ void SequenceRenderer::apply(Sequence::P sequence, ShaderManager::P shaderManage
 
 }
 
-bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer)
+bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer, unsigned channelIdx)
 {
 	typedef std::chrono::high_resolution_clock Clock;
 	typedef std::chrono::duration<float> Fsec;
 	int nSkippedFrames = 0;
-
-	glClearColor(0, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	if (sequence->useHighFreqRender)
+	{
+		glColorMask(_redMaskByIndex[channelIdx], _greenMaskByIndex[channelIdx], _blueMaskByIndex[channelIdx], GL_TRUE);
+	}
+	
+	_enableSignals = (channelIdx == 0);
 
 	//if(iFrame == 182)
 	//	paused = true;
@@ -330,31 +334,35 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer)
 			////int toFrame = elapsed.count() / sequence->getFrameInterval_s() + 1.5f;
 			////std::cout << elapsed.count() - (iFrame + frameOffset - 1.5f) * sequence->getFrameInterval_s() << '\n';
 			////toFrame -= frameOffset;
-			Sequence::SignalMap::const_iterator iSignal = sequence->getSignals().lower_bound(iFrame-1);
-			Sequence::SignalMap::const_iterator eSignal = sequence->getSignals().upper_bound(iFrame + vSyncPeriodsSinceLastFrame);
-			while(iSignal != eSignal)
+			if (channelIdx == 0)
 			{
-				if(iSignal->second.clear)
-					clearSignal(iSignal->second.channel);
-				else
-					raiseSignal(iSignal->second.channel);
-				iSignal++;
+				Sequence::SignalMap::const_iterator iSignal = sequence->getSignals().lower_bound(iFrame - 1);
+				Sequence::SignalMap::const_iterator eSignal = sequence->getSignals().upper_bound(iFrame + vSyncPeriodsSinceLastFrame);
+				while (iSignal != eSignal)
+				{
+					if (iSignal->second.clear)
+						clearSignal(iSignal->second.channel);
+					else
+						raiseSignal(iSignal->second.channel);
+					iSignal++;
+				}
+
+				nSkippedFrames = vSyncPeriodsSinceLastFrame - 1;
+				if (nSkippedFrames < 0)
+				{
+					//if(!skippedFrames.empty() && skippedFrames.back() == iFrame)
+					//{
+					//	skippedFrames.pop_back();
+					//					}
+					//else
+					skippedFrames.push_back(-(int)iFrame);
+				}
+				totalFramesSkipped += nSkippedFrames;
+				for (uint q = iFrame; q < iFrame + nSkippedFrames; q++)
+					skippedFrames.push_back(q);
+				iFrame += nSkippedFrames;
+				cFrame += vSyncPeriodsSinceLastFrame;
 			}
-			nSkippedFrames = vSyncPeriodsSinceLastFrame - 1;
-			if(nSkippedFrames < 0)
-			{
-				//if(!skippedFrames.empty() && skippedFrames.back() == iFrame)
-				//{
-				//	skippedFrames.pop_back();
-				//					}
-				//else
-				skippedFrames.push_back(-(int)iFrame);
-			}
-			totalFramesSkipped += nSkippedFrames;
-			for(uint q=iFrame; q<iFrame + nSkippedFrames; q++)
-				skippedFrames.push_back(q);
-			iFrame += nSkippedFrames;
-			cFrame += vSyncPeriodsSinceLastFrame;
 		}
 	}
 	else
@@ -429,7 +437,7 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer)
 	if (textVisible)
 	{
 		Fsec  elapsed = previousFrameTimePoint - firstFrameTimePoint;
-		elapsed.count() / (cFrame-1.0);
+		//elapsed.count() / (cFrame-1.0);
 		std::stringstream ss;
 		ss << "Measured system frame rate [Hz]: " << std::setprecision(4) << (cFrame-1.0) / elapsed.count();
 		this->setText("__GEARS_FPS", ss.str());
@@ -630,6 +638,7 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer)
 
 	}
 
+	_enableSignals = true;
 
 	return true;
 }
@@ -887,38 +896,44 @@ void SequenceRenderer::pickStimulus(double x, double y)
 
 void SequenceRenderer::raiseSignal(std::string channel)
 {
-	Sequence::ChannelMap::const_iterator iChannel = sequence->getChannels().find(channel);
-	if(iChannel == sequence->getChannels().end())
+	if (_enableSignals)
 	{
-		PySys_WriteStdout("\nUnknown channel: ");		//TODO
-		PySys_WriteStdout(channel.c_str());		//TODO
-		return;
+		Sequence::ChannelMap::const_iterator iChannel = sequence->getChannels().find(channel);
+		if (iChannel == sequence->getChannels().end())
+		{
+			PySys_WriteStdout("\nUnknown channel: ");		//TODO
+			PySys_WriteStdout(channel.c_str());		//TODO
+			return;
+		}
+		PortMap::iterator iPort = ports.find(iChannel->second.portName);
+		if (iPort == ports.end())
+		{
+			PySys_WriteStdout("\nChannel uses unknown port:");		//TODO
+			PySys_WriteStdout(iChannel->second.portName.c_str());		//TODO
+			return;
+		}
+		iPort->second.setCommand(iChannel->second.raiseFunc);
 	}
-	PortMap::iterator iPort = ports.find(iChannel->second.portName);
-	if(iPort == ports.end())
-	{
-		PySys_WriteStdout("\nChannel uses unknown port:");		//TODO
-		PySys_WriteStdout(iChannel->second.portName.c_str());		//TODO
-		return;
-	}
-	iPort->second.setCommand(iChannel->second.raiseFunc);
 }
 
 void SequenceRenderer::clearSignal(std::string channel)
 {
-	Sequence::ChannelMap::const_iterator iChannel = sequence->getChannels().find(channel);
-	if(iChannel == sequence->getChannels().end())
+	if (_enableSignals)
 	{
-		PySys_WriteStdout("Unknown channel.");		//TODO
-		return;
+		Sequence::ChannelMap::const_iterator iChannel = sequence->getChannels().find(channel);
+		if (iChannel == sequence->getChannels().end())
+		{
+			PySys_WriteStdout("Unknown channel.");		//TODO
+			return;
+		}
+		PortMap::iterator iPort = ports.find(iChannel->second.portName);
+		if (iPort == ports.end())
+		{
+			PySys_WriteStdout("Channel uses unknown port.");		//TODO
+			return;
+		}
+		iPort->second.setCommand(iChannel->second.clearFunc);
 	}
-	PortMap::iterator iPort = ports.find(iChannel->second.portName);
-	if(iPort == ports.end())
-	{
-		PySys_WriteStdout("Channel uses unknown port.");		//TODO
-		return;
-	}
-	iPort->second.setCommand(iChannel->second.clearFunc);
 }
 
 void SequenceRenderer::reset()
