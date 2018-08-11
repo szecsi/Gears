@@ -33,5 +33,6 @@ Thirdparty/googletest/msvc/2010/gtest/*/*.pdb
 Thirdparty/googletest/msvc/2010/gtest/*/*.ilk
 
 *.pyproj
+*.vcxproj.user
 
 Gears\.VC\.VC\.opendb

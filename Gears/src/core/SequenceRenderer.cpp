@@ -280,8 +280,6 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer, unsigned channelId
 	{
 		glColorMask(_redMaskByIndex[channelIdx], _greenMaskByIndex[channelIdx], _blueMaskByIndex[channelIdx], GL_TRUE);
 	}
-	
-	_enableSignals = (channelIdx == 0);
 
 	//if(iFrame == 182)
 	//	paused = true;
@@ -322,32 +320,35 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer, unsigned channelId
 		{
 		}
 		else if(!calibrating && !randomExportStream.is_open() && !exportingToVideo)
-		{
-			auto now = Clock::now();
-			Fsec  elapsed = now - firstFrameTimePoint;
-			Fsec  elapsedSinceLastFrame = now - previousFrameTimePoint;
-			previousFrameTimePoint = now;
-			////auto  elapsedNano = std::chrono::duration_cast<std::chrono::nanoseconds>(now - firstFrameTimePoint);
-			////std::cout << elapsed.count() << " : " << elapsedNano.count() << '\n';
-			//std::cout << elapsedSinceLastFrame.count() << '\n';
-			int vSyncPeriodsSinceLastFrame = (int)(elapsedSinceLastFrame.count() / sequence->getFrameInterval_s() + 0.5);
-			////int toFrame = elapsed.count() / sequence->getFrameInterval_s() + 1.5f;
-			////std::cout << elapsed.count() - (iFrame + frameOffset - 1.5f) * sequence->getFrameInterval_s() << '\n';
-			////toFrame -= frameOffset;
+		
 			if (channelIdx == 0)
 			{
-				Sequence::SignalMap::const_iterator iSignal = sequence->getSignals().lower_bound(iFrame - 1);
-				Sequence::SignalMap::const_iterator eSignal = sequence->getSignals().upper_bound(iFrame + vSyncPeriodsSinceLastFrame);
-				while (iSignal != eSignal)
-				{
-					if (iSignal->second.clear)
-						clearSignal(iSignal->second.channel);
-					else
-						raiseSignal(iSignal->second.channel);
-					iSignal++;
-				}
+				auto now = Clock::now();
+				Fsec  elapsed = now - firstFrameTimePoint;
+				Fsec  elapsedSinceLastFrame = now - previousFrameTimePoint;
+				previousFrameTimePoint = now;
 
-				nSkippedFrames = vSyncPeriodsSinceLastFrame - 1;
+				////auto  elapsedNano = std::chrono::duration_cast<std::chrono::nanoseconds>(now - firstFrameTimePoint);
+				////std::cout << elapsed.count() << " : " << elapsedNano.count() << '\n';
+				//std::cout << elapsedSinceLastFrame.count() << '\n';
+				int vSyncPeriodsSinceLastFrame = (int)(elapsedSinceLastFrame.count() / sequence->getFrameInterval_s() + 0.5);
+				////int toFrame = elapsed.count() / sequence->getFrameInterval_s() + 1.5f;
+				////std::cout << elapsed.count() - (iFrame + frameOffset - 1.5f) * sequence->getFrameInterval_s() << '\n';
+				////toFrame -= frameOffset;
+			}
+			Sequence::SignalMap::const_iterator iSignal = sequence->getSignals().lower_bound(iFrame - 1);
+			Sequence::SignalMap::const_iterator eSignal = sequence->getSignals().upper_bound(iFrame + vSyncPeriodsSinceLastFrame);
+			while (iSignal != eSignal)
+			{
+				if (iSignal->second.clear)
+					clearSignal(iSignal->second.channel);
+				else
+					raiseSignal(iSignal->second.channel);
+				iSignal++;
+			}
+			if (channelIdx == 0)
+			{
+				nSkippedFrames = vSyncPeriodsSinceLastFrame - 1; //nem 1, hanem count of frame / swapbuffers
 				if (nSkippedFrames < 0)
 				{
 					//if(!skippedFrames.empty() && skippedFrames.back() == iFrame)
@@ -638,8 +639,6 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer, unsigned channelId
 
 	}
 
-	_enableSignals = true;
-
 	return true;
 }
 
@@ -896,44 +895,38 @@ void SequenceRenderer::pickStimulus(double x, double y)
 
 void SequenceRenderer::raiseSignal(std::string channel)
 {
-	if (_enableSignals)
+	Sequence::ChannelMap::const_iterator iChannel = sequence->getChannels().find(channel);
+	if (iChannel == sequence->getChannels().end())
 	{
-		Sequence::ChannelMap::const_iterator iChannel = sequence->getChannels().find(channel);
-		if (iChannel == sequence->getChannels().end())
-		{
-			PySys_WriteStdout("\nUnknown channel: ");		//TODO
-			PySys_WriteStdout(channel.c_str());		//TODO
-			return;
-		}
-		PortMap::iterator iPort = ports.find(iChannel->second.portName);
-		if (iPort == ports.end())
-		{
-			PySys_WriteStdout("\nChannel uses unknown port:");		//TODO
-			PySys_WriteStdout(iChannel->second.portName.c_str());		//TODO
-			return;
-		}
-		iPort->second.setCommand(iChannel->second.raiseFunc);
+		PySys_WriteStdout("\nUnknown channel: ");		//TODO
+		PySys_WriteStdout(channel.c_str());		//TODO
+		return;
 	}
+	PortMap::iterator iPort = ports.find(iChannel->second.portName);
+	if (iPort == ports.end())
+	{
+		PySys_WriteStdout("\nChannel uses unknown port:");		//TODO
+		PySys_WriteStdout(iChannel->second.portName.c_str());		//TODO
+		return;
+	}
+	iPort->second.setCommand(iChannel->second.raiseFunc);
 }
 
 void SequenceRenderer::clearSignal(std::string channel)
 {
-	if (_enableSignals)
+	Sequence::ChannelMap::const_iterator iChannel = sequence->getChannels().find(channel);
+	if (iChannel == sequence->getChannels().end())
 	{
-		Sequence::ChannelMap::const_iterator iChannel = sequence->getChannels().find(channel);
-		if (iChannel == sequence->getChannels().end())
-		{
-			PySys_WriteStdout("Unknown channel.");		//TODO
-			return;
-		}
-		PortMap::iterator iPort = ports.find(iChannel->second.portName);
-		if (iPort == ports.end())
-		{
-			PySys_WriteStdout("Channel uses unknown port.");		//TODO
-			return;
-		}
-		iPort->second.setCommand(iChannel->second.clearFunc);
+		PySys_WriteStdout("Unknown channel.");		//TODO
+		return;
 	}
+	PortMap::iterator iPort = ports.find(iChannel->second.portName);
+	if (iPort == ports.end())
+	{
+		PySys_WriteStdout("Channel uses unknown port.");		//TODO
+		return;
+	}
+	iPort->second.setCommand(iChannel->second.clearFunc);
 }
 
 void SequenceRenderer::reset()
@@ -1132,7 +1125,7 @@ void SequenceRenderer::enableExport(std::string path)
 Ticker::P SequenceRenderer::startTicker()
 {
 	Ticker::P ticker = Ticker::create(getSharedPtr());
-	ticker->start(sequence->tickInterval, sequence->getFrameInterval_s());
+	ticker->start(sequence->tickInterval, getSwapBufferInterval());
 	return ticker;
 }
 
@@ -1579,6 +1572,17 @@ std::string SequenceRenderer::getSequenceTimingReport()
 void SequenceRenderer::updateSpatialKernel(KernelManager::P kernelManager)
 {
 	kernelManager->update(getCurrentStimulus()->getSpatialFilter());
+}
+
+float SequenceRenderer::getSwapBufferInterval() const
+{
+	float devide = sequence->useHighFreqRender ? 3.0 : 1.0;
+	return sequence->getFrameInterval_s() / devide;
+}
+
+double SequenceRenderer::getTimeSinceStart() const
+{
+	return iFrame * getSwapBufferInterval();
 }
 
 double SequenceRenderer::getTime()

@@ -98,7 +98,7 @@ void StimulusRenderer::renderStimulus(GLuint defaultFrameBuffer, int skippedFram
 	auto now = Clock::now();
 	auto prev = Clock::now();
 
-	float time = getCurrentFrame() / stimulus->sequence->deviceFrameRate * stimulus->sequence->frameRateDivisor;
+	float time = getCurrentFrame() / sequenceRenderer->getSwapBufferInterval();
 
 	if(!sequenceRenderer->getSequence()->getUsesBusyWaitingThreadForSingals())
 	{
@@ -160,7 +160,7 @@ void StimulusRenderer::renderStimulus(GLuint defaultFrameBuffer, int skippedFram
 
 		if(stimulus->particleGridWidth != 0)
 		{
-			sequenceRenderer->renderParticles(particleShader, iFrame, iFrame * sequenceRenderer->getSequence()->getFrameInterval_s());
+			sequenceRenderer->renderParticles(particleShader, iFrame, sequenceRenderer->getTimeSinceStart());
 		}
 	}
 	if(stimulus->usesForwardRendering)
@@ -352,7 +352,7 @@ void StimulusRenderer::renderStimulus(GLuint defaultFrameBuffer, int skippedFram
 
 void StimulusRenderer::renderSample(uint sFrame, int left, int top, int width, int height)
 {
-	float time = sFrame / stimulus->sequence->deviceFrameRate * stimulus->sequence->frameRateDivisor;
+	float time = sFrame / sequenceRenderer->getSwapBufferInterval();
 
 	if(stimulus->usesForwardRendering)
 	{

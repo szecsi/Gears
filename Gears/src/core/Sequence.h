@@ -67,7 +67,6 @@ public:
 	bool greyscale;
 
 	bool useHighFreqRender = false;
-	bool debugHighFreqRender = false;
 
 	// random generation
 	uint	maxRandomGridWidth;			//<	Number of cells per row in 2D random grid array for random number generation.

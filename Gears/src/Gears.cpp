@@ -275,12 +275,6 @@ void setResponded()
 	sequenceRenderer->setResponded();
 }
 
-void debugHighFreqRender()
-{
-	sequence->debugHighFreqRender = true;
-}
-
-
 boost::python::object renderSample(uint iFrame, uint x, uint y, uint w, uint h)
 {
 	return sequenceRenderer->renderSample(iFrame, x, y, w, h);
@@ -730,5 +724,4 @@ BOOST_PYTHON_MODULE(Gears)
 	def("renderSample", renderSample );
 	def("setResponded", setResponded);
 	def("toggleChannelsOrPreview", toggleChannelsOrPreview);
-	def("debugHighFreqRender", debugHighFreqRender);
 }

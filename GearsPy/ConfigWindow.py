@@ -209,6 +209,17 @@ class ConfigWindow(QDialog):
 
         self.addParam(
                     layout = displayBoxgl,
+                    label = 'Use High Frequence Device',
+                    box = self.displayBox,
+                    paramName = 'useHighFreqDevice',
+                    rowIndex = rows,
+                    unit = '',
+                    boolean = True,
+                 )
+        rows += 1
+
+        self.addParam(
+                    layout = displayBoxgl,
                     label = 'Field width',
                     box = self.displayBox,
                     paramName = 'field_width_um',
@@ -685,7 +696,7 @@ class ConfigWindow(QDialog):
                     value = getattr(self, s).value()
                 except:
                     c = getattr(self, s)
-                    value = c.itemData( c.getCurrentIndex() )
+                    value = c.itemData( c.currentIndex() )
                 print('  {paramname} = {paramval},'.format(paramname=s, paramval=value), file=file)
         print('  )', file=file)
         file.close()

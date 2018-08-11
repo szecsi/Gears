@@ -135,8 +135,6 @@ class SequenceRenderer
 	GLboolean _greenMaskByIndex[3] = { GL_FALSE, GL_TRUE, GL_FALSE };
 	GLboolean _blueMaskByIndex[3] = { GL_FALSE, GL_FALSE, GL_TRUE };
 
-	bool _enableSignals = true;
-
 	//! Constructor. Sets some parameters to zero, but the sequence remains invalid until apply is called.
 	SequenceRenderer();
 public:
@@ -242,6 +240,8 @@ public:
 
 	void updateSpatialKernel(KernelManager::P kernelManager);
 
+	float getSwapBufferInterval() const;
+	double getTimeSinceStart() const;
 	double getTime();
 
 	bool isShowingCursor();
