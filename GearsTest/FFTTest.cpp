@@ -419,25 +419,88 @@ TEST_F(FFTTest, convolutionWithclFFT)
 
 	float* cldata = new float[h * (w + 2)];
 	clEnqueueReadBuffer(OpenCLCore::Get()->queue, imager, CL_TRUE, 0, (h * (w + 2)) * sizeof(float), cldata, 0, NULL, NULL);
-	ImageHelper::printImg( cldata, w/2, h, "Image ft", 1, true, 1 );
+	//ImageHelper::printImg(cldata, w / 2, h, "Image ft", 1, true, 1);
 
 	clEnqueueReadBuffer(OpenCLCore::Get()->queue, filterr, CL_TRUE, 0, (h * (w + 2)) * sizeof(float), cldata, 0, NULL, NULL);
-	ImageHelper::printImg(cldata, w / 2, h, "Filter ft", 1, true, 1);
+	//ImageHelper::printImg(cldata, w / 2, h, "Filter ft", 1, true, 1);
 
 	size_t size[1] = { (16 / 2) * 16 };
 	OpenCLCore::Get()->MultiplyFFT(imager, filterr, size);
 
 	clEnqueueReadBuffer(OpenCLCore::Get()->queue, imager, CL_TRUE, 0, (h * (w + 2)) * sizeof(float), cldata, 0, NULL, NULL);
-	ImageHelper::printImg(cldata, w / 2, h, "Convolution ft", 1, true, 1);
+	//ImageHelper::printImg(cldata, w / 2, h, "Convolution ft", 1, true, 1);
 
 	imgFFT.do_inverse_fft();
 
 	clEnqueueReadBuffer(OpenCLCore::Get()->queue, imager, CL_TRUE, 0, (h * (w + 2)) * sizeof(float), cldata, 0, NULL, NULL);
-	ImageHelper::printImg(cldata, w / 2, h, "Convolution", 1);
+	//ImageHelper::printImg(cldata, w / 2, h, "Convolution", 1);
 
 	delete[] cldata;
-	
+
 	//EXPECT_TRUE(IsclAndglFFTEqual(ImageChannel::R));
+}
+
+TEST_F(FFTTest, SimpleglFFTTime)
+{
+	float* img[2];
+	img[0] = new float[w * h * 4];
+	img[1] = new float[w * h * 4];
+	std::chrono::duration<double> elapsedSeconds = std::chrono::duration<double>::zero();
+	auto fullStart = std::chrono::system_clock::now();
+	for (unsigned i = 0; i < runNumber; i++)
+	{
+		setTextureData(w, h);
+
+		auto start = std::chrono::system_clock::now();
+		separateRGBA(p, img[0], img[1]);
+
+		setTextureData(w, h, img[0], textures[1]);
+		setTextureData(w, h, img[1], textures[2]);
+
+		glfft[0]->do_fft();
+		glfft[1]->do_fft();
+
+
+
+		glifft[0]->do_fft();
+		glifft[1]->do_fft();
+		combineRGBA(p, img[0], img[1]);
+
+
+		auto end = std::chrono::system_clock::now();
+
+		elapsedSeconds += (end - start);
+
+	}
+	auto fullEnd = std::chrono::system_clock::now();
+	std::chrono::duration<double> fullDuration = fullEnd - fullStart;
+	std::cout << runNumber << " FFT finished elapsed time: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
+	std::cout << runNumber << " FFT finished elapsed time: " << fullDuration.count() * 1000 << "ms." << std::endl;
+}
+
+TEST_F(FFTTest, SimpleclFFTTime)
+{
+	float* img[2];
+	img[0] = new float[w * h * 4];
+	img[1] = new float[w * h * 4];
+	std::chrono::duration<double> elapsedSeconds = std::chrono::duration<double>::zero();
+	auto fullStart = std::chrono::system_clock::now();
+	for (unsigned i = 0; i < runNumber; i++)
+	{
+		setTextureData(w, h);
+		auto start = std::chrono::system_clock::now();
+		clfft->do_fft(FFTChannelMode::Multichrome);
+		clfft->do_inverse_fft();
+		auto end = std::chrono::system_clock::now();
+
+		elapsedSeconds += (end - start);
+
+	}
+	auto fullEnd = std::chrono::system_clock::now();
+	std::chrono::duration<double> fullDuration = fullEnd - fullStart;
+	std::cout << runNumber << " FFT finished elapsed time: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
+	std::cout << runNumber << " FFT finished elapsed time: " << fullDuration.count() * 1000 << "ms." << std::endl;
+	OpenCLCore::Get()->finish();
 }
 
 //TEST_F( FFTTest, SimpleglFFTTime )

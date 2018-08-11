@@ -143,16 +143,16 @@ void OPENCLFFT::separateChannels( FFTChannelMode channelMode )
 
 	cl_int err;
 
-	float* res;
-	res = new float[full_img_size];
+	//float* res;
+	//res = new float[full_img_size];
 
-	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, fullTex );
-	glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, res );
-	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, 0 );
+	//glBindTexture( GL_TEXTURE_RECTANGLE_ARB, fullTex );
+	//glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, res );
+	//glBindTexture( GL_TEXTURE_RECTANGLE_ARB, 0 );
 
 	//ImageHelper::printImg( res, size[0], size[1] );
 
-	delete[] res;
+	//delete[] res;
 
 	clImgFull = clCreateFromGLTexture( ctx, CL_MEM_READ_WRITE, GL_TEXTURE_RECTANGLE_ARB, 0, fullTex, &err );
 	clPrintError( err );
