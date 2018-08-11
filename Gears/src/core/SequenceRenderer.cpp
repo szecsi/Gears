@@ -31,15 +31,15 @@ extern "C" {
 }
 
 #ifdef _WIN32
-	extern PFNWGLSWAPINTERVALEXTPROC       wglSwapIntervalEXT;
-	extern PFNWGLGETSWAPINTERVALEXTPROC    wglGetSwapIntervalEXT;
+extern PFNWGLSWAPINTERVALEXTPROC       wglSwapIntervalEXT;
+extern PFNWGLGETSWAPINTERVALEXTPROC    wglGetSwapIntervalEXT;
 #endif
 
 SequenceRenderer::SequenceRenderer()
 {
 	selectedStimulusRenderer = stimulusRenderers.end();
 
-//	fullscreenQuad = new Quad();
+	//	fullscreenQuad = new Quad();
 	nothing = new Nothing();
 
 	currentResponse = nullptr;
@@ -108,8 +108,8 @@ SequenceRenderer::SequenceRenderer()
 
 	measuredToneRangeMin = std::numeric_limits<float>::quiet_NaN();
 	measuredToneRangeMax = std::numeric_limits<float>::quiet_NaN();
-	measuredMean  = std::numeric_limits<float>::quiet_NaN();
-	measuredVariance  = std::numeric_limits<float>::quiet_NaN();
+	measuredMean = std::numeric_limits<float>::quiet_NaN();
+	measuredVariance = std::numeric_limits<float>::quiet_NaN();
 
 	isDrawingPreview = false;
 	forwardRenderedImage = nullptr;
@@ -138,7 +138,7 @@ void SequenceRenderer::apply(Sequence::P sequence, ShaderManager::P shaderManage
 	else
 		forwardRenderedImage = nullptr;
 
-	if(textureQueue) {delete textureQueue; textureQueue = nullptr;}
+	if(textureQueue) { delete textureQueue; textureQueue = nullptr; }
 
 	if(sequence->getMaxTemporalProcessingStateCount() > 0)
 	{
@@ -146,7 +146,7 @@ void SequenceRenderer::apply(Sequence::P sequence, ShaderManager::P shaderManage
 		if(!sequence->isMonochrome())
 			nSlices *= 3;
 		nSlices += 1; // output
- 		currentTemporalProcessingState = new TextureQueue(sequence->fieldWidth_px, sequence->fieldHeight_px, nSlices, false, false);
+		currentTemporalProcessingState = new TextureQueue(sequence->fieldWidth_px, sequence->fieldHeight_px, nSlices, false, false);
 		currentTemporalProcessingState->clear();
 		nextTemporalProcessingState = new TextureQueue(sequence->fieldWidth_px, sequence->fieldHeight_px, nSlices, false, false);
 		nextTemporalProcessingState->clear();
@@ -169,23 +169,23 @@ void SequenceRenderer::apply(Sequence::P sequence, ShaderManager::P shaderManage
 	}
 	selectedStimulusRenderer = stimulusRenderers.end();
 
-	if ( sequence->hasFft )
+	if(sequence->hasFft)
 	{
-		if ( clFFT )
+		if(clFFT)
 		{
-			fft2FrequencyDomain[0] = new OPENCLFFT( sequence->fftWidth_px, sequence->fftHeight_px );
+			fft2FrequencyDomain[0] = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
 		}
 		else
 		{
-			fft2FrequencyDomain[0] = new GLFFT( sequence->fftWidth_px, sequence->fftHeight_px );
-			fft2SpatialDomain[0] = new GLFFT( sequence->fftWidth_px, sequence->fftHeight_px, 0, true, true );
-			if ( !sequence->isMonochrome() )
+			fft2FrequencyDomain[0] = new GLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
+			fft2SpatialDomain[0] = new GLFFT(sequence->fftWidth_px, sequence->fftHeight_px, 0, true, true);
+			if(!sequence->isMonochrome())
 			{
-				fft2FrequencyDomain[1] = new GLFFT( sequence->fftWidth_px, sequence->fftHeight_px );
-				fft2SpatialDomain[1] = new GLFFT( sequence->fftWidth_px, sequence->fftHeight_px, 0, true, true );
+				fft2FrequencyDomain[1] = new GLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
+				fft2SpatialDomain[1] = new GLFFT(sequence->fftWidth_px, sequence->fftHeight_px, 0, true, true);
 			}
 		}
-		
+
 	}
 	if(sequence->hasSpatialDomainConvolution)
 	{
@@ -250,12 +250,12 @@ void SequenceRenderer::apply(Sequence::P sequence, ShaderManager::P shaderManage
 		PortMap::iterator iPort = ports.find(c.second.portName);
 		if(iPort == ports.end())
 		{
-			auto iNew = ports.insert( std::make_pair( c.second.portName, PortHandler( c.second.portName.c_str() ) ) );
+			auto iNew = ports.insert(std::make_pair(c.second.portName, PortHandler(c.second.portName.c_str())));
 
-			if (iNew.second)
+			if(iNew.second)
 			{
 				ports[c.second.portName].setCommand(c.second.clearFunc);
-				if (ports[c.second.portName].isInvalid())
+				if(ports[c.second.portName].isInvalid())
 				{
 					std::stringstream ss;
 					ss << "No device on port " << c.second.portName << " !" << std::endl;
@@ -276,7 +276,7 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer, unsigned channelId
 	typedef std::chrono::duration<float> Fsec;
 	int nSkippedFrames = 0;
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	if (sequence->useHighFreqRender)
+	if(sequence->useHighFreqRender)
 	{
 		glColorMask(_redMaskByIndex[channelIdx], _greenMaskByIndex[channelIdx], _blueMaskByIndex[channelIdx], GL_TRUE);
 	}
@@ -287,12 +287,12 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer, unsigned channelId
 	{
 		//std::cout << sequence->getMeasurementStart() << ':' << iFrame << '\n';
 
-		if (currentResponse)
+		if(currentResponse)
 		{
-			if (iFrame > currentResponse->startingFrame + currentResponse->duration)
+			if(iFrame > currentResponse->startingFrame + currentResponse->duration)
 			{
 				responseVisible = false;
-				if (currentResponse->loop)
+				if(currentResponse->loop)
 					iFrame = currentResponse->startingFrame;
 				std::cout << "iFrame:" << iFrame << " response start \n";
 			}
@@ -300,14 +300,14 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer, unsigned channelId
 		else
 		{
 			Response::CP r = sequence->getResponseAtFrame(iFrame);
-			if (r != nullptr && iFrame < r->startingFrame + r->duration)
+			if(r != nullptr && iFrame < r->startingFrame + r->duration)
 			{
 				currentResponse = r;
 				responseVisible = true;
 				std::cout << "iFrame:" << iFrame << " response end \n";
 			}
 		}
-		
+
 		if(iFrame == sequence->getMeasurementStart())
 		{
 			firstFrameTimePoint = Clock::now();
@@ -320,8 +320,8 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer, unsigned channelId
 		{
 		}
 		else if(!calibrating && !randomExportStream.is_open() && !exportingToVideo)
-		
-			if (channelIdx == 0)
+
+			if(channelIdx == 0)
 			{
 				auto now = Clock::now();
 				Fsec  elapsed = now - firstFrameTimePoint;
@@ -336,310 +336,310 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer, unsigned channelId
 				////std::cout << elapsed.count() - (iFrame + frameOffset - 1.5f) * sequence->getFrameInterval_s() << '\n';
 				////toFrame -= frameOffset;
 			}
-			Sequence::SignalMap::const_iterator iSignal = sequence->getSignals().lower_bound(iFrame - 1);
-			Sequence::SignalMap::const_iterator eSignal = sequence->getSignals().upper_bound(iFrame + vSyncPeriodsSinceLastFrame);
-			while (iSignal != eSignal)
+		Sequence::SignalMap::const_iterator iSignal = sequence->getSignals().lower_bound(iFrame - 1);
+		Sequence::SignalMap::const_iterator eSignal = sequence->getSignals().upper_bound(iFrame + vSyncPeriodsSinceLastFrame);
+		while(iSignal != eSignal)
+		{
+			if(iSignal->second.clear)
+				clearSignal(iSignal->second.channel);
+			else
+				raiseSignal(iSignal->second.channel);
+			iSignal++;
+		}
+		if(channelIdx == 0)
+		{
+			nSkippedFrames = vSyncPeriodsSinceLastFrame - 1; //nem 1, hanem count of frame / swapbuffers
+			if(nSkippedFrames < 0)
 			{
-				if (iSignal->second.clear)
-					clearSignal(iSignal->second.channel);
-				else
-					raiseSignal(iSignal->second.channel);
-				iSignal++;
+				//if(!skippedFrames.empty() && skippedFrames.back() == iFrame)
+				//{
+				//	skippedFrames.pop_back();
+				//					}
+				//else
+				skippedFrames.push_back(-(int)iFrame);
 			}
-			if (channelIdx == 0)
-			{
-				nSkippedFrames = vSyncPeriodsSinceLastFrame - 1; //nem 1, hanem count of frame / swapbuffers
-				if (nSkippedFrames < 0)
-				{
-					//if(!skippedFrames.empty() && skippedFrames.back() == iFrame)
-					//{
-					//	skippedFrames.pop_back();
-					//					}
-					//else
-					skippedFrames.push_back(-(int)iFrame);
-				}
-				totalFramesSkipped += nSkippedFrames;
-				for (uint q = iFrame; q < iFrame + nSkippedFrames; q++)
-					skippedFrames.push_back(q);
-				iFrame += nSkippedFrames;
-				cFrame += vSyncPeriodsSinceLastFrame;
-			}
+			totalFramesSkipped += nSkippedFrames;
+			for(uint q = iFrame; q < iFrame + nSkippedFrames; q++)
+				skippedFrames.push_back(q);
+			iFrame += nSkippedFrames;
+			cFrame += vSyncPeriodsSinceLastFrame;
 		}
 	}
+}
 	else
 		cFrame = 0;
 
-	StimulusRendererMap::iterator iStimulusRenderer = stimulusRenderers.lower_bound(iFrame);
-	if(calibrating && iFrame > calibrationStartingFrame + calibrationDuration)
-	{
-		readCalibrationResults();
-		return false;
-	}
-	if (iStimulusRenderer == stimulusRenderers.end())
-	{
-		if (exportingToVideo)
+		StimulusRendererMap::iterator iStimulusRenderer = stimulusRenderers.lower_bound(iFrame);
+		if(calibrating && iFrame > calibrationStartingFrame + calibrationDuration)
 		{
-			int i = iFrame;
-			for (got_output = 1; got_output; i++) {
-				fflush(stdout);
-				int ret = avcodec_encode_video2(c, &pkt, NULL, &got_output);
-				if (ret < 0) {
-					fprintf(stderr, "Error encoding frame\n");
-					exit(1);
-				}
-				if (got_output) {
-					printf("Write frame %3d (size=%5d)\n", i, pkt.size);
-					fwrite(pkt.data, 1, pkt.size, videoExportFile);
-					av_free_packet(&pkt);
-				}
-			}
-			/* add sequence end code to have a real mpeg file */
-			uint8_t endcode[] = { 0, 0, 1, 0xb7 };
-			fwrite(endcode, 1, sizeof(endcode), videoExportFile);
-			fclose(videoExportFile);
-			avcodec_close(c);
-			av_free(c);
-			av_freep(frame->data);
-			av_frame_free(&frame);
-			delete videoExportImage;
-			delete videoExportImageY;
-			delete videoExportImageU;
-			delete videoExportImageV;
-			videoExportImage = nullptr;
-			exportingToVideo = false;
+			readCalibrationResults();
+			return false;
 		}
-		return false;
-	}
-	StimulusRenderer::P stimulusRenderer = iStimulusRenderer->second;
-	if(calibrating && iFrame == calibrationStartingFrame)
-		histogramBuffer->clear();
-	Stimulus::CP stimulus = stimulusRenderer->getStimulus();
-	if(stimulus->doesDynamicToneMapping)
-	{
-		if(iFrame == stimulus->startingFrame)
+		if(iStimulusRenderer == stimulusRenderers.end())
 		{
+			if(exportingToVideo)
+			{
+				int i = iFrame;
+				for(got_output = 1; got_output; i++) {
+					fflush(stdout);
+					int ret = avcodec_encode_video2(c, &pkt, NULL, &got_output);
+					if(ret < 0) {
+						fprintf(stderr, "Error encoding frame\n");
+						exit(1);
+					}
+					if(got_output) {
+						printf("Write frame %3d (size=%5d)\n", i, pkt.size);
+						fwrite(pkt.data, 1, pkt.size, videoExportFile);
+						av_free_packet(&pkt);
+					}
+				}
+				/* add sequence end code to have a real mpeg file */
+				uint8_t endcode[] = {0, 0, 1, 0xb7};
+				fwrite(endcode, 1, sizeof(endcode), videoExportFile);
+				fclose(videoExportFile);
+				avcodec_close(c);
+				av_free(c);
+				av_freep(frame->data);
+				av_frame_free(&frame);
+				delete videoExportImage;
+				delete videoExportImageY;
+				delete videoExportImageU;
+				delete videoExportImageV;
+				videoExportImage = nullptr;
+				exportingToVideo = false;
+			}
+			return false;
+		}
+		StimulusRenderer::P stimulusRenderer = iStimulusRenderer->second;
+		if(calibrating && iFrame == calibrationStartingFrame)
 			histogramBuffer->clear();
-			calibrationFrameCount = 0;
-		}
-	}
-	stimulusRenderer->renderStimulus(defaultFrameBuffer, nSkippedFrames);
-	if(stimulus->doesDynamicToneMapping &&  stimulus->toneMappingMode != Stimulus::ToneMappingMode::EQUALIZED)
-		readCalibrationResults();
-
-	if(!paused)
-	{
-		iFrame++;
-		if(sequence->getMaxMemoryLength() > 0)
-			currentSlice = (currentSlice+1) % sequence->getMaxMemoryLength();
-	}
-
-	glViewport(sequence->fieldLeft_px, sequence->fieldBottom_px, sequence->fieldWidth_px, sequence->fieldHeight_px);
-	
-	if (textVisible)
-	{
-		Fsec  elapsed = previousFrameTimePoint - firstFrameTimePoint;
-		//elapsed.count() / (cFrame-1.0);
-		std::stringstream ss;
-		ss << "Measured system frame rate [Hz]: " << std::setprecision(4) << (cFrame-1.0) / elapsed.count();
-		this->setText("__GEARS_FPS", ss.str());
-
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		glColor3d(1, 0, 0);
-		glDisable(GL_TEXTURE_2D);
-		glDisable(GL_LIGHTING);
-		glDisable(GL_DEPTH_TEST);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		/*	glBegin(GL_QUADS);
-		glVertex2d(1, 1);
-		glVertex2d(1, 0);
-		glVertex2d(0, 0);
-		glVertex2d(0, 1);
-		glEnd();*/
-#ifdef _WIN32
-		// TODO: linux implementation
-		textShader->enable();
-		TexFont* font = fontManager.loadFont("Candara");
-		textShader->bindUniformTexture("glyphTexture", font->getTextureId(), 0);
-		glPushMatrix();
-		glTranslated(-1, 0.9, 0);
-		glScaled(0.002, 0.002, 0.002);
-		bool first = true;
-
-		Stimulus::CP stim = this->getCurrentStimulus();
-		std::set<std::string> tags = stim->getTags();
-
-
-		for (auto label : text)
+		Stimulus::CP stimulus = stimulusRenderer->getStimulus();
+		if(stimulus->doesDynamicToneMapping)
 		{
-			if (tags.find(label.first) != tags.end() || label.first[0] == '_'){
-				if (first)
-					font->glRenderString(label.second + "\n", "Candara", false, false, false, false, 0xefffffff, TEXFONT_MODE_OPEN_ONLY);
-				else
-					font->glRenderString(label.second + "\n", "Candara", false, false, false, false, 0xefffffff, TEXFONT_MODE_CONTINUE);
-				first = false;
+			if(iFrame == stimulus->startingFrame)
+			{
+				histogramBuffer->clear();
+				calibrationFrameCount = 0;
 			}
 		}
-		if (!first)
-			glPopMatrix();
-		textShader->disable();
-		glPopMatrix();
-#endif
-		glDisable(GL_BLEND);
-	}
+		stimulusRenderer->renderStimulus(defaultFrameBuffer, nSkippedFrames);
+		if(stimulus->doesDynamicToneMapping &&  stimulus->toneMappingMode != Stimulus::ToneMappingMode::EQUALIZED)
+			readCalibrationResults();
 
-	if (currentResponse)
-	{
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		glColor3d(1, 0, 0);
-		glDisable(GL_TEXTURE_2D);
-		glDisable(GL_LIGHTING);
-		glDisable(GL_DEPTH_TEST);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		if(!paused)
+		{
+			iFrame++;
+			if(sequence->getMaxMemoryLength() > 0)
+				currentSlice = (currentSlice + 1) % sequence->getMaxMemoryLength();
+		}
+
+		glViewport(sequence->fieldLeft_px, sequence->fieldBottom_px, sequence->fieldWidth_px, sequence->fieldHeight_px);
+
+		if(textVisible)
+		{
+			Fsec  elapsed = previousFrameTimePoint - firstFrameTimePoint;
+			//elapsed.count() / (cFrame-1.0);
+			std::stringstream ss;
+			ss << "Measured system frame rate [Hz]: " << std::setprecision(4) << (cFrame - 1.0) / elapsed.count();
+			this->setText("__GEARS_FPS", ss.str());
+
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			glColor3d(1, 0, 0);
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_LIGHTING);
+			glDisable(GL_DEPTH_TEST);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			/*	glBegin(GL_QUADS);
+			glVertex2d(1, 1);
+			glVertex2d(1, 0);
+			glVertex2d(0, 0);
+			glVertex2d(0, 1);
+			glEnd();*/
+#ifdef _WIN32
+			// TODO: linux implementation
+			textShader->enable();
+			TexFont* font = fontManager.loadFont("Candara");
+			textShader->bindUniformTexture("glyphTexture", font->getTextureId(), 0);
+			glPushMatrix();
+			glTranslated(-1, 0.9, 0);
+			glScaled(0.002, 0.002, 0.002);
+			bool first = true;
+
+			Stimulus::CP stim = this->getCurrentStimulus();
+			std::set<std::string> tags = stim->getTags();
+
+
+			for(auto label : text)
+			{
+				if(tags.find(label.first) != tags.end() || label.first[0] == '_') {
+					if(first)
+						font->glRenderString(label.second + "\n", "Candara", false, false, false, false, 0xefffffff, TEXFONT_MODE_OPEN_ONLY);
+					else
+						font->glRenderString(label.second + "\n", "Candara", false, false, false, false, 0xefffffff, TEXFONT_MODE_CONTINUE);
+					first = false;
+				}
+			}
+			if(!first)
+				glPopMatrix();
+			textShader->disable();
+			glPopMatrix();
+#endif
+			glDisable(GL_BLEND);
+		}
+
+		if(currentResponse)
+		{
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			glColor3d(1, 0, 0);
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_LIGHTING);
+			glDisable(GL_DEPTH_TEST);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 #ifdef _WIN32
-		// TODO: linux implementation
-		TexFont* font = fontManager.loadFont("Candara");
-		textShader->bindUniformTexture("glyphTexture", font->getTextureId(), 0);
-		glPushMatrix();
-		glTranslated(-1, 0.9, 0);
-		glScaled(0.002, 0.002, 0.002);
-		font->glRenderString(currentResponse->question + "\n", "Candara", false, false, false, false, 0xefffffff, TEXFONT_MODE_OPEN_AND_CLOSE);
-		glPopMatrix();
+			// TODO: linux implementation
+			TexFont* font = fontManager.loadFont("Candara");
+			textShader->bindUniformTexture("glyphTexture", font->getTextureId(), 0);
+			glPushMatrix();
+			glTranslated(-1, 0.9, 0);
+			glScaled(0.002, 0.002, 0.002);
+			font->glRenderString(currentResponse->question + "\n", "Candara", false, false, false, false, 0xefffffff, TEXFONT_MODE_OPEN_AND_CLOSE);
+			glPopMatrix();
 #endif
 
-		glPushMatrix();
-		glOrtho(-0.5 * sequence->fieldWidth_um,
-			0.5 * sequence->fieldWidth_um,
-			-0.5 * sequence->fieldHeight_um,
-			0.5 * sequence->fieldHeight_um,
-			0, 1
+			glPushMatrix();
+			glOrtho(-0.5 * sequence->fieldWidth_um,
+				0.5 * sequence->fieldWidth_um,
+				-0.5 * sequence->fieldHeight_um,
+				0.5 * sequence->fieldHeight_um,
+				0, 1
 			);
-		for (auto& button : currentResponse->buttons)
-		{
-			if (button.visible){
-				glPushMatrix();
-				glTranslated(button.xcoord, button.ycoord, 0);
-				glColor3d(1, 0, 0);
-				glBegin(GL_QUADS);
-				glVertex2d(button.width * 0.5, button.height * 0.5);
-				glVertex2d(button.width * 0.5, -button.height * 0.5);
-				glVertex2d(-button.width * 0.5, -button.height * 0.5);
-				glVertex2d(-button.width * 0.5, +button.height * 0.5);
-				glEnd();
-				glScaled(3, 3, 3);
-				glColor3d(0, 1, 0);
+			for(auto& button : currentResponse->buttons)
+			{
+				if(button.visible) {
+					glPushMatrix();
+					glTranslated(button.xcoord, button.ycoord, 0);
+					glColor3d(1, 0, 0);
+					glBegin(GL_QUADS);
+					glVertex2d(button.width * 0.5, button.height * 0.5);
+					glVertex2d(button.width * 0.5, -button.height * 0.5);
+					glVertex2d(-button.width * 0.5, -button.height * 0.5);
+					glVertex2d(-button.width * 0.5, +button.height * 0.5);
+					glEnd();
+					glScaled(3, 3, 3);
+					glColor3d(0, 1, 0);
 #ifdef __WIN32
-				// TODO: linux implementaion
-				Gears::Math::float3 extent = font->getTextExtent(button.label + "\n", "Candara", false, false);
-				glTranslated(-extent.x*0.5, -extent.y*0.5 - extent.z, 0);
-				font->glRenderString(button.label + "\n", "Candara", false, false, false, false, 0xefffffff, TEXFONT_MODE_OPEN_AND_CLOSE);
+					// TODO: linux implementaion
+					Gears::Math::float3 extent = font->getTextExtent(button.label + "\n", "Candara", false, false);
+					glTranslated(-extent.x*0.5, -extent.y*0.5 - extent.z, 0);
+					font->glRenderString(button.label + "\n", "Candara", false, false, false, false, 0xefffffff, TEXFONT_MODE_OPEN_AND_CLOSE);
 #endif
+					glPopMatrix();
+				}
+			}
+			glPopMatrix();
+
+			textShader->disable();
+			glPopMatrix();
+			glDisable(GL_BLEND);
+		}
+
+		if(exportingToVideo)
+		{
+			showVideoFrame->enable();
+			showVideoFrame->bindUniformTexture("rgb", videoExportImage->getColorBuffer(0), 0);
+			getNothing()->renderQuad();
+			showVideoFrame->disable();
+
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			glColor3d(1, 0, 0);
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_LIGHTING);
+			glDisable(GL_DEPTH_TEST);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+#ifdef __WIN32
+			// TODO: linux implementaion
+			textShader->enable();
+			TexFont* font = fontManager.loadFont("Candara");
+			textShader->bindUniformTexture("glyphTexture", font->getTextureId(), 0);
+			glPushMatrix();
+			glTranslated(-1, 0.9, 0);
+			glScaled(0.002, 0.002, 0.002);
+
+			font->glRenderString("Exporting video (Frame " + std::to_string(iFrame) + "/" + std::to_string(sequence->getDuration()) + ")", "Candara", false, false, false, false, 0xefffffff, TEXFONT_MODE_OPEN_AND_CLOSE);
+			textShader->disable();
+			glPopMatrix();
+#endif
+			glDisable(GL_BLEND);
+
+		}
+		if(calibrating)
+		{
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			glColor3d(0, 0, 0);
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_LIGHTING);
+			glDisable(GL_DEPTH_TEST);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+#ifdef __WIN32
+			// TODO: linux implementaion
+			textShader->enable();
+			TexFont* font = fontManager.loadFont("Candara");
+			textShader->bindUniformTexture("glyphTexture", font->getTextureId(), 0);
+			for(int i = 0; i <= histogramMax - histogramMin; i++)
+			{
+				int v = i + histogramMin;
+				float p = (v - histogramMin) / (histogramMax - histogramMin) * 2.0f / 1.1f - 0.909f;
+				glPushMatrix();
+				glTranslated(p, -0.8, 0);
+				glScaled(0.004, 0.004, 0.004);
+				font->glRenderString(std::to_string(v), "Candara", false, false, false, false, 0xefffffff, TEXFONT_MODE_OPEN_AND_CLOSE);
+
 				glPopMatrix();
 			}
-		}
-		glPopMatrix();
-	
-		textShader->disable();
-		glPopMatrix();
-		glDisable(GL_BLEND);
-	}
-
-	if(exportingToVideo)
-	{
-		showVideoFrame->enable();
-		showVideoFrame->bindUniformTexture("rgb", videoExportImage->getColorBuffer(0), 0);
-		getNothing()->renderQuad();
-		showVideoFrame->disable();
-
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		glColor3d(1, 0, 0);
-		glDisable(GL_TEXTURE_2D);
-		glDisable(GL_LIGHTING);
-		glDisable(GL_DEPTH_TEST);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-#ifdef __WIN32
-		// TODO: linux implementaion
-		textShader->enable();
-		TexFont* font = fontManager.loadFont("Candara");
-		textShader->bindUniformTexture("glyphTexture", font->getTextureId(), 0);
-		glPushMatrix();
-		glTranslated(-1, 0.9, 0);
-		glScaled(0.002, 0.002, 0.002);
-
-		font->glRenderString("Exporting video (Frame " + std::to_string(iFrame) + "/" + std::to_string(sequence->getDuration()) + ")", "Candara", false, false, false, false, 0xefffffff, TEXFONT_MODE_OPEN_AND_CLOSE);
-		textShader->disable();
-		glPopMatrix();
+			textShader->disable();
 #endif
-		glDisable(GL_BLEND);
-
-	}
-	if(calibrating)
-	{
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		glColor3d(0, 0, 0);
-		glDisable(GL_TEXTURE_2D);
-		glDisable(GL_LIGHTING);
-		glDisable(GL_DEPTH_TEST);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-#ifdef __WIN32
-		// TODO: linux implementaion
-		textShader->enable();
-		TexFont* font = fontManager.loadFont("Candara");
-		textShader->bindUniformTexture("glyphTexture", font->getTextureId(), 0);
-		for(int i=0; i<=histogramMax-histogramMin; i++)
-		{
-			int v = i + histogramMin;
-			float p = (v - histogramMin)/ (histogramMax-histogramMin) * 2.0f / 1.1f - 0.909f;
-			glPushMatrix();
-			glTranslated(p, -0.8, 0);
-			glScaled(0.004, 0.004, 0.004);
-			font->glRenderString(std::to_string(v), "Candara", false, false, false, false, 0xefffffff, TEXFONT_MODE_OPEN_AND_CLOSE);
-
-			glPopMatrix();
-		}	
-		textShader->disable();
-#endif
-		glDisable(GL_BLEND);
+			glDisable(GL_BLEND);
 
 
-		glEnable(GL_LINE_STIPPLE);
-		glLineWidth(2);
-		glLineStipple(1, 0xcccc);
-		glColor3d(0.6, 0.6, 0.6);
-		for(int i=0; i<=histogramMax-histogramMin; i++)
-		{
-			int v = i + (int)histogramMin;
-			float p = (v - histogramMin)/ (histogramMax-histogramMin) * 2.0f / 1.1f - 0.909f;
-			glPushMatrix();
-			glTranslated(p, 0, 0);
+			glEnable(GL_LINE_STIPPLE);
+			glLineWidth(2);
+			glLineStipple(1, 0xcccc);
+			glColor3d(0.6, 0.6, 0.6);
+			for(int i = 0; i <= histogramMax - histogramMin; i++)
+			{
+				int v = i + (int)histogramMin;
+				float p = (v - histogramMin) / (histogramMax - histogramMin) * 2.0f / 1.1f - 0.909f;
+				glPushMatrix();
+				glTranslated(p, 0, 0);
 
-			glBegin(GL_LINES);
+				glBegin(GL_LINES);
 				glVertex2d(0, -10000000);
 				glVertex2d(0, +10000000);
-			glEnd();
-			glPopMatrix();
+				glEnd();
+				glPopMatrix();
+			}
+			glDisable(GL_LINE_STIPPLE);
+
 		}
-		glDisable(GL_LINE_STIPPLE);
 
-	}
-
-	return true;
+		return true;
 }
 
 void SequenceRenderer::renderTimeline()
@@ -669,17 +669,17 @@ void SequenceRenderer::renderTimeline()
 		glTranslated(stim.second->getStimulus()->getStartingFrame(), 0.0, 0);
 		glColor4d(0.35, 0, 0, 1);
 		glBegin(GL_QUADS);
-			glVertex2d(0, -5);
-			glVertex2d(0, 0.89);
-			glVertex2d(stim.second->getStimulus()->getDuration(), 0.89);
-			glVertex2d(stim.second->getStimulus()->getDuration(), -5);
+		glVertex2d(0, -5);
+		glVertex2d(0, 0.89);
+		glVertex2d(stim.second->getStimulus()->getDuration(), 0.89);
+		glVertex2d(stim.second->getStimulus()->getDuration(), -5);
 		glEnd();
 		glPopMatrix();
 	}
 
 	glColor3d(1, 0, 0);
 	int cChannel = 0;
-	for(auto iChannel : sequence->getChannels() )
+	for(auto iChannel : sequence->getChannels())
 	{
 		glPushMatrix();
 		std::string channelName = iChannel.first;
@@ -693,41 +693,41 @@ void SequenceRenderer::renderTimeline()
 
 		glColor4d(0.3, 0, 0, 1);
 		glBegin(GL_LINES);
-			glVertex2d(-100, 1);
-			glVertex2d(+100000, 1);
-			glVertex2d(+100000, 0);
-			glVertex2d(-100, 0);
+		glVertex2d(-100, 1);
+		glVertex2d(+100000, 1);
+		glVertex2d(+100000, 0);
+		glVertex2d(-100, 0);
 		glEnd();
 		glColor4d(1, 0, 0, 1);
 
 		bool channelHasSequenceSignal = false;
 		bool lastHigh = false;
 		glBegin(GL_LINE_STRIP);
-			for(auto iSignal : signals)
+		for(auto iSignal : signals)
+		{
+			if(iSignal.second.channel == iChannel.first)
 			{
-				if(iSignal.second.channel == iChannel.first)
+				if(channelHasSequenceSignal == false)
 				{
-					if(channelHasSequenceSignal == false)
-					{
-						channelHasSequenceSignal = true;
-						glVertex2d(1, 0);
-					}
-					if(iSignal.second.clear)
-					{
-						glVertex2d(iSignal.first, lastHigh?1.0:0.0);
-						glVertex2d(iSignal.first, 0.0);
-						lastHigh = false;
-					}
-					else
-					{
-						glVertex2d(iSignal.first, lastHigh?1.0:0.0);
-						glVertex2d(iSignal.first, 1.0);
-						lastHigh = true;
-					}
+					channelHasSequenceSignal = true;
+					glVertex2d(1, 0);
+				}
+				if(iSignal.second.clear)
+				{
+					glVertex2d(iSignal.first, lastHigh ? 1.0 : 0.0);
+					glVertex2d(iSignal.first, 0.0);
+					lastHigh = false;
+				}
+				else
+				{
+					glVertex2d(iSignal.first, lastHigh ? 1.0 : 0.0);
+					glVertex2d(iSignal.first, 1.0);
+					lastHigh = true;
 				}
 			}
-			if(channelHasSequenceSignal)
-				glVertex2d(sequence->getDuration(), lastHigh?1:0);
+		}
+		if(channelHasSequenceSignal)
+			glVertex2d(sequence->getDuration(), lastHigh ? 1 : 0);
 		glEnd();
 		glPopMatrix();
 		cChannel++;
@@ -751,28 +751,28 @@ void SequenceRenderer::renderTimeline()
 		if(tof > dur)
 			tof = dur;
 		if(fromf < tof)
-			stim.second->renderTimeline(signalLevels, fromf, tof - fromf );
+			stim.second->renderTimeline(signalLevels, fromf, tof - fromf);
 		glPopMatrix();
 	}
 
 	int vp[4];
 	glGetIntegerv(GL_VIEWPORT, vp);
 
-//	// white blank for shots
-//	glViewport(vp[0], 50, vp[2], 200);
-////	glViewport(0, 0, 1920, 400);
-//	glPushMatrix();
-//	glLoadIdentity();
-//	glColor3d(0, 0, 0);
-//	glBegin(GL_QUADS);
-//	glVertex2d(-1, -1);
-//	glVertex2d(-1, 1);
-//	glVertex2d(1, 1);
-//	glVertex2d(1, -1);
-//	glEnd();
-//	glPopMatrix();
+	//	// white blank for shots
+	//	glViewport(vp[0], 50, vp[2], 200);
+	////	glViewport(0, 0, 1920, 400);
+	//	glPushMatrix();
+	//	glLoadIdentity();
+	//	glColor3d(0, 0, 0);
+	//	glBegin(GL_QUADS);
+	//	glVertex2d(-1, -1);
+	//	glVertex2d(-1, 1);
+	//	glVertex2d(1, 1);
+	//	glVertex2d(1, -1);
+	//	glEnd();
+	//	glPopMatrix();
 
-	if(isDrawingPreview){
+	if(isDrawingPreview) {
 		// render film strip
 		glViewport(vp[0], 0, vp[2], 363);
 		glPushMatrix();
@@ -784,25 +784,25 @@ void SequenceRenderer::renderTimeline()
 		glVertex2d(1, 1);
 		glVertex2d(1, -1);
 		glColor3d(0, 0, 0);
-		for(uint i=0; i<64; i++)
+		for(uint i = 0; i < 64; i++)
 		{
-			glVertex2d((i+0.5)/32.0 - 1 + -0.004,  -0.95 + -0.02);
-			glVertex2d((i+0.5)/32.0 - 1 + -0.004,  -0.95 +  0.02);
-			glVertex2d((i+0.5)/32.0 - 1 +  0.004,  -0.95 +  0.02);
-			glVertex2d((i+0.5)/32.0 - 1 +  0.004,  -0.95 + -0.02);
+			glVertex2d((i + 0.5) / 32.0 - 1 + -0.004, -0.95 + -0.02);
+			glVertex2d((i + 0.5) / 32.0 - 1 + -0.004, -0.95 + 0.02);
+			glVertex2d((i + 0.5) / 32.0 - 1 + 0.004, -0.95 + 0.02);
+			glVertex2d((i + 0.5) / 32.0 - 1 + 0.004, -0.95 + -0.02);
 		}
-		for(uint i=0; i<64; i++)
+		for(uint i = 0; i < 64; i++)
 		{
-			glVertex2d((i+0.5)/32.0 - 1 + -0.004,  0.95 + -0.02);
-			glVertex2d((i+0.5)/32.0 - 1 + -0.004,  0.95 +  0.02);
-			glVertex2d((i+0.5)/32.0 - 1 +  0.004,  0.95 +  0.02);
-			glVertex2d((i+0.5)/32.0 - 1 +  0.004,  0.95 + -0.02);
+			glVertex2d((i + 0.5) / 32.0 - 1 + -0.004, 0.95 + -0.02);
+			glVertex2d((i + 0.5) / 32.0 - 1 + -0.004, 0.95 + 0.02);
+			glVertex2d((i + 0.5) / 32.0 - 1 + 0.004, 0.95 + 0.02);
+			glVertex2d((i + 0.5) / 32.0 - 1 + 0.004, 0.95 + -0.02);
 		}
 		glEnd();
 		glPopMatrix();
 
 		uint iPic = 0;
-		for(uint iSampleFrame=0; iSampleFrame<sequenceTimelineFrameCount; iSampleFrame += (sequenceTimelineFrameCount - 1) / 3 + 1 )
+		for(uint iSampleFrame = 0; iSampleFrame < sequenceTimelineFrameCount; iSampleFrame += (sequenceTimelineFrameCount - 1) / 3 + 1)
 		{
 			uint iFrameFrame = sequenceTimelineStartFrame + iSampleFrame;
 			StimulusRendererMap::iterator iStimulusRenderer = stimulusRenderers.lower_bound(iFrameFrame);
@@ -814,7 +814,7 @@ void SequenceRenderer::renderTimeline()
 					15,
 					vp[2] / 3,
 					333
-					);
+				);
 				iPic++;
 			}
 		}
@@ -829,7 +829,7 @@ void SequenceRenderer::renderSelectedStimulusTimeline()
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	if(selectedStimulusRenderer == stimulusRenderers.end() )
+	if(selectedStimulusRenderer == stimulusRenderers.end())
 		return;
 
 	glMatrixMode(GL_MODELVIEW);
@@ -847,41 +847,41 @@ void SequenceRenderer::renderSelectedStimulusTimeline()
 
 void SequenceRenderer::renderSelectedStimulusSpatialKernel(float min, float max, float width, float height)
 {
-	if(selectedStimulusRenderer == stimulusRenderers.end() )
+	if(selectedStimulusRenderer == stimulusRenderers.end())
 		return;
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	selectedStimulusRenderer->second->renderSpatialKernel( min,  max, width, height);
+	selectedStimulusRenderer->second->renderSpatialKernel(min, max, width, height);
 }
 
 void SequenceRenderer::renderSelectedStimulusSpatialProfile(float min, float max, float width, float height)
 {
-	if(selectedStimulusRenderer == stimulusRenderers.end() )
+	if(selectedStimulusRenderer == stimulusRenderers.end())
 		return;
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	selectedStimulusRenderer->second->renderSpatialProfile( min,  max, width, height);
+	selectedStimulusRenderer->second->renderSpatialProfile(min, max, width, height);
 }
 
 void SequenceRenderer::renderSelectedStimulusTemporalKernel()
 {
-	if(selectedStimulusRenderer == stimulusRenderers.end() )
+	if(selectedStimulusRenderer == stimulusRenderers.end())
 		return;
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	selectedStimulusRenderer->second->renderTemporalKernel( );
+	selectedStimulusRenderer->second->renderTemporalKernel();
 }
 
 void SequenceRenderer::abort()
 {
-//			raise(CH0); // STOP EXPERIMENT
-//			lower(CH0); // STOP EXPERIMENT
-//			lower(CH1 | CH2 | CH3);
-//			signal = SequenceDesc::Signal::NONE;
-//			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+	//			raise(CH0); // STOP EXPERIMENT
+	//			lower(CH0); // STOP EXPERIMENT
+	//			lower(CH1 | CH2 | CH3);
+	//			signal = SequenceDesc::Signal::NONE;
+	//			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
 }
 
 void SequenceRenderer::pickStimulus(double x, double y)
@@ -896,14 +896,14 @@ void SequenceRenderer::pickStimulus(double x, double y)
 void SequenceRenderer::raiseSignal(std::string channel)
 {
 	Sequence::ChannelMap::const_iterator iChannel = sequence->getChannels().find(channel);
-	if (iChannel == sequence->getChannels().end())
+	if(iChannel == sequence->getChannels().end())
 	{
 		PySys_WriteStdout("\nUnknown channel: ");		//TODO
 		PySys_WriteStdout(channel.c_str());		//TODO
 		return;
 	}
 	PortMap::iterator iPort = ports.find(iChannel->second.portName);
-	if (iPort == ports.end())
+	if(iPort == ports.end())
 	{
 		PySys_WriteStdout("\nChannel uses unknown port:");		//TODO
 		PySys_WriteStdout(iChannel->second.portName.c_str());		//TODO
@@ -915,13 +915,13 @@ void SequenceRenderer::raiseSignal(std::string channel)
 void SequenceRenderer::clearSignal(std::string channel)
 {
 	Sequence::ChannelMap::const_iterator iChannel = sequence->getChannels().find(channel);
-	if (iChannel == sequence->getChannels().end())
+	if(iChannel == sequence->getChannels().end())
 	{
 		PySys_WriteStdout("Unknown channel.");		//TODO
 		return;
 	}
 	PortMap::iterator iPort = ports.find(iChannel->second.portName);
-	if (iPort == ports.end())
+	if(iPort == ports.end())
 	{
 		PySys_WriteStdout("Channel uses unknown port.");		//TODO
 		return;
@@ -934,7 +934,7 @@ void SequenceRenderer::reset()
 	calibrating = false;
 	exportingToVideo = false;
 
-	if (videoExportImage)
+	if(videoExportImage)
 	{
 		delete videoExportImage;
 		delete videoExportImageY;
@@ -965,7 +965,7 @@ void SequenceRenderer::reset()
 			iPort->second.setCommand(c.second.clearFunc);
 		}
 	}
-	
+
 	if(sequence->resetCallback)
 		sequence->resetCallback();
 
@@ -973,14 +973,14 @@ void SequenceRenderer::reset()
 
 void SequenceRenderer::cleanup()
 {
-	if(randomSequenceBuffers[0]) {	delete randomSequenceBuffers[0]; randomSequenceBuffers[0] = nullptr; }
-	if(randomSequenceBuffers[1]) {	delete randomSequenceBuffers[1]; randomSequenceBuffers[1] = nullptr; }
-	if(randomSequenceBuffers[2]) {	delete randomSequenceBuffers[2]; randomSequenceBuffers[2] = nullptr; }
-	if(randomSequenceBuffers[3]) {	delete randomSequenceBuffers[3]; randomSequenceBuffers[3] = nullptr; }
-	if(randomSequenceBuffers[4]) {	delete randomSequenceBuffers[4]; randomSequenceBuffers[4] = nullptr; }
+	if(randomSequenceBuffers[0]) { delete randomSequenceBuffers[0]; randomSequenceBuffers[0] = nullptr; }
+	if(randomSequenceBuffers[1]) { delete randomSequenceBuffers[1]; randomSequenceBuffers[1] = nullptr; }
+	if(randomSequenceBuffers[2]) { delete randomSequenceBuffers[2]; randomSequenceBuffers[2] = nullptr; }
+	if(randomSequenceBuffers[3]) { delete randomSequenceBuffers[3]; randomSequenceBuffers[3] = nullptr; }
+	if(randomSequenceBuffers[4]) { delete randomSequenceBuffers[4]; randomSequenceBuffers[4] = nullptr; }
 
-	if(particleBuffers[0]) {	delete particleBuffers[0]; particleBuffers[0] = nullptr; }
-	if(particleBuffers[1]) {	delete particleBuffers[1]; particleBuffers[1] = nullptr; }
+	if(particleBuffers[0]) { delete particleBuffers[0]; particleBuffers[0] = nullptr; }
+	if(particleBuffers[1]) { delete particleBuffers[1]; particleBuffers[1] = nullptr; }
 
 	if(forwardRenderedImage)
 		delete forwardRenderedImage;
@@ -1003,7 +1003,7 @@ void SequenceRenderer::cleanup()
 
 void SequenceRenderer::renderParticles(Shader* particleShader, uint iStimulusFrame, float time)
 {
- 	particleBuffers[1]->setRenderTarget();
+	particleBuffers[1]->setRenderTarget();
 	particleShader->enable();
 	particleShader->bindUniformTexture("previousParticles", particleBuffers[0]->getColorBuffer(), 0);
 	particleShader->bindUniformTexture("randoms", randomSequenceBuffers[0]->getColorBuffer(), 1);
@@ -1018,7 +1018,7 @@ void SequenceRenderer::renderParticles(Shader* particleShader, uint iStimulusFra
 
 void SequenceRenderer::renderRandoms(Shader* randomGeneratorShader, uint iStimulusFrame, uint randomSeed, uint freezeRandomsAfterFrame)
 {
-	if(freezeRandomsAfterFrame != 0 && freezeRandomsAfterFrame < iStimulusFrame )
+	if(freezeRandomsAfterFrame != 0 && freezeRandomsAfterFrame < iStimulusFrame)
 		return;
 	randomSequenceBuffers[4]->setRenderTarget();
 	randomGeneratorShader->enable();
@@ -1044,13 +1044,13 @@ void SequenceRenderer::renderRandoms(Shader* randomGeneratorShader, uint iStimul
 	if(randomExportStream.is_open())
 	{
 		glBindTexture(GL_TEXTURE_2D, randomSequenceBuffers[0]->getColorBuffer());
-		
+
 		uint* randoms = new uint[sequence->maxRandomGridWidth * sequence->maxRandomGridHeight * 4];
 		glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA_INTEGER, GL_UNSIGNED_INT, (void*)randoms);
 
 		if(sequence->exportRandomsWithHashmark)
 		{
-			randomExportStream << "#Frame " << iStimulusFrame << " of stimulus, frame " << iFrame <<  " of sequence.\n";
+			randomExportStream << "#Frame " << iStimulusFrame << " of stimulus, frame " << iFrame << " of sequence.\n";
 			randomExportStream << "#Number of rows: " << sequence->maxRandomGridHeight << "\n";
 			randomExportStream << "#Number of cells per row: " << sequence->maxRandomGridWidth << "\n";
 			randomExportStream << "#Number of values per cell: " << sequence->exportRandomsChannelCount << "\n";
@@ -1064,7 +1064,7 @@ void SequenceRenderer::renderRandoms(Shader* randomGeneratorShader, uint iStimul
 		uint i = 0;
 		for(uint iRow = 0; iRow < sequence->maxRandomGridHeight; iRow++)
 		{
-			for(uint iPix = 0; iPix < sequence->maxRandomGridWidth ; iPix++)
+			for(uint iPix = 0; iPix < sequence->maxRandomGridWidth; iPix++)
 			{
 				for(uint iColor = 0; iColor < sequence->exportRandomsChannelCount; iColor++, i++)
 				{
@@ -1089,28 +1089,28 @@ void SequenceRenderer::renderRandoms(Shader* randomGeneratorShader, uint iStimul
 void SequenceRenderer::enableExport(std::string path)
 {
 	boost::filesystem::path bpath(path);
-	if( !boost::filesystem::exists( bpath.parent_path() ))
-		boost::filesystem::create_directories( bpath.parent_path() );
+	if(!boost::filesystem::exists(bpath.parent_path()))
+		boost::filesystem::create_directories(bpath.parent_path());
 
 	std::stringstream ss;
 	std::time_t t = time(0);   // get time now
 #ifdef _WIN32
 	struct std::tm  now;
-	localtime_s( &now, &t );
-	ss << path << "_" ;
+	localtime_s(&now, &t);
+	ss << path << "_";
 
-	ss << (now.tm_year + 1900) << '-' 
-			<< (now.tm_mon + 1) << '-'
-			<<  now.tm_mday << "_" << now.tm_hour << "-" << now.tm_min << ".txt";
+	ss << (now.tm_year + 1900) << '-'
+		<< (now.tm_mon + 1) << '-'
+		<< now.tm_mday << "_" << now.tm_hour << "-" << now.tm_min << ".txt";
 
 #elif __linux__
 	struct std::tm * now;
-	now = localtime( &t );
-	ss << path << "_" ;
+	now = localtime(&t);
+	ss << path << "_";
 
-	ss << (now->tm_year + 1900) << '-' 
-			<< (now->tm_mon + 1) << '-'
-			<<  now->tm_mday << "_" << now->tm_hour << "-" << now->tm_min << ".txt";
+	ss << (now->tm_year + 1900) << '-'
+		<< (now->tm_mon + 1) << '-'
+		<< now->tm_mday << "_" << now->tm_hour << "-" << now->tm_min << ".txt";
 #endif
 
 	randomExportStream.open(ss.str());
@@ -1134,7 +1134,7 @@ const Stimulus::SignalMap& SequenceRenderer::tick(uint& iTick)
 {
 	if(iFrame == 1)
 		return noTickSignal;
-	StimulusRendererMap::iterator iStimulusRenderer = stimulusRenderers.lower_bound(iFrame-1);
+	StimulusRendererMap::iterator iStimulusRenderer = stimulusRenderers.lower_bound(iFrame - 1);
 	if(iStimulusRenderer == stimulusRenderers.end())
 		return noTickSignal;
 	StimulusRenderer::P stimulusRenderer = iStimulusRenderer->second;
@@ -1150,24 +1150,24 @@ void SequenceRenderer::skip(int skipCount)
 			paused = false;
 	}
 	bool measurementStarted = iFrame > sequence->getMeasurementStart();
-	if(!measurementStarted && skipCount > 1 || iFrame > sequence->getMeasurementEnd() )
+	if(!measurementStarted && skipCount > 1 || iFrame > sequence->getMeasurementEnd())
 	{
 		iFrame = sequence->getDuration();
 		return;
 	}
 	StimulusRendererMap::iterator iStimulusRenderer = stimulusRenderers.lower_bound(iFrame);
 	if(skipCount > 0)
-		for(int i=0; i < skipCount-1 && iStimulusRenderer != stimulusRenderers.end(); i++)
+		for(int i = 0; i < skipCount - 1 && iStimulusRenderer != stimulusRenderers.end(); i++)
 		{
 			iStimulusRenderer++;
 		}
 	if(skipCount < 0)
-		for(int i=0; i < -skipCount+1 && iStimulusRenderer != stimulusRenderers.begin(); i++)
+		for(int i = 0; i < -skipCount + 1 && iStimulusRenderer != stimulusRenderers.begin(); i++)
 		{
 			iStimulusRenderer--;
 		}
 	if(iStimulusRenderer != stimulusRenderers.end())
-		iFrame = iStimulusRenderer->first+1;
+		iFrame = iStimulusRenderer->first + 1;
 	else
 		iFrame = sequence->getDuration();
 	if(measurementStarted && iFrame < sequence->getMeasurementStart())
@@ -1184,7 +1184,7 @@ bool SequenceRenderer::exporting() const
 
 void SequenceRenderer::beginCalibrationFrame(Stimulus::CP stimulus)
 {
-	if(calibrating || stimulus->doesDynamicToneMapping) 
+	if(calibrating || stimulus->doesDynamicToneMapping)
 	{
 		glViewport(
 			0,
@@ -1198,7 +1198,7 @@ void SequenceRenderer::beginCalibrationFrame(Stimulus::CP stimulus)
 
 void SequenceRenderer::beginVideoExportFrame()
 {
-	if (exportingToVideo)
+	if(exportingToVideo)
 	{
 		if(videoExportImage == nullptr)
 		{
@@ -1220,7 +1220,7 @@ void SequenceRenderer::beginVideoExportFrame()
 
 void SequenceRenderer::endVideoExportFrame()
 {
-	if (exportingToVideo) // add to histogram
+	if(exportingToVideo) // add to histogram
 	{
 		videoExportImage->disableRenderTarget();
 		videoExportImageY->setRenderTarget();
@@ -1252,19 +1252,19 @@ void SequenceRenderer::endVideoExportFrame()
 		glBindTexture(GL_TEXTURE_2D, videoExportImageV->getColorBuffer(0));
 		glGetTexImage(GL_TEXTURE_2D, 0, GL_RED, GL_UNSIGNED_BYTE, (void*)frame->data[2]);
 
-	/*	int y, x;
-		for (y = 0; y<c->height; y++) {
-			for (x = 0; x<c->width; x++) {
-				frame->data[0][y * frame->linesize[0] + x] = x + y + iFrame * 3;
-			}
-		}*/
-	//	Cb and Cr 
-		/*for (y = 0; y<c->height / 2; y++) {
-			for (x = 0; x<c->width / 2; x++) {
-				frame->data[1][y * frame->linesize[1] + x] = 128 + y + iFrame * 2;
-				frame->data[2][y * frame->linesize[2] + x] = 64 + x + iFrame * 5;
-			}
-		}*/
+		/*	int y, x;
+			for (y = 0; y<c->height; y++) {
+				for (x = 0; x<c->width; x++) {
+					frame->data[0][y * frame->linesize[0] + x] = x + y + iFrame * 3;
+				}
+			}*/
+			//	Cb and Cr 
+				/*for (y = 0; y<c->height / 2; y++) {
+					for (x = 0; x<c->width / 2; x++) {
+						frame->data[1][y * frame->linesize[1] + x] = 128 + y + iFrame * 2;
+						frame->data[2][y * frame->linesize[2] + x] = 64 + x + iFrame * 5;
+					}
+				}*/
 		av_init_packet(&pkt);
 		pkt.data = NULL;    // packet data will be allocated by the encoder
 		pkt.size = 0;
@@ -1272,11 +1272,11 @@ void SequenceRenderer::endVideoExportFrame()
 		frame->pts = iFrame;
 		/* encode the image */
 		int ret = avcodec_encode_video2(c, &pkt, frame, &got_output);
-		if (ret < 0) {
+		if(ret < 0) {
 			fprintf(stderr, "Error encoding frame\n");
 			exit(1);
 		}
-		if (got_output) {
+		if(got_output) {
 			printf("Write frame %3d (size=%5d)\n", iFrame, pkt.size);
 			fwrite(pkt.data, 1, pkt.size, videoExportFile);
 			av_free_packet(&pkt);
@@ -1348,10 +1348,10 @@ void SequenceRenderer::endCalibrationFrame(Stimulus::CP stimulus)
 }
 
 
-void SequenceRenderer::enableVideoExport(const char* path, int fr, int w, int h){
+void SequenceRenderer::enableVideoExport(const char* path, int fr, int w, int h) {
 	boost::filesystem::path bpath(path);
-	if( !boost::filesystem::exists( bpath.parent_path() ))
-		boost::filesystem::create_directories( bpath.parent_path() );
+	if(!boost::filesystem::exists(bpath.parent_path()))
+		boost::filesystem::create_directories(bpath.parent_path());
 
 	videoExportImageHeight = h;
 	videoExportImageWidth = w;
@@ -1359,21 +1359,21 @@ void SequenceRenderer::enableVideoExport(const char* path, int fr, int w, int h)
 	exportingToVideo = true;
 
 	AVCodec *codec;
-	
-	uint8_t endcode[] = { 0, 0, 1, 0xb7 };
+
+	uint8_t endcode[] = {0, 0, 1, 0xb7};
 	printf("Encode video file %s\n", path);
 
 	avcodec_register_all();
 	/* find the mpeg1 video encoder */
 //	codec = avcodec_find_encoder(AV_CODEC_ID_H264);
 	codec = avcodec_find_encoder(AV_CODEC_ID_MPEG2VIDEO);
-//	codec = avcodec_find_encoder(AV_CODEC_ID_RAWVIDEO);
-	if (!codec) {
+	//	codec = avcodec_find_encoder(AV_CODEC_ID_RAWVIDEO);
+	if(!codec) {
 		fprintf(stderr, "Codec not found\n");
 		exit(1);
 	}
 	c = avcodec_alloc_context3(codec);
-	if (!c) {
+	if(!c) {
 		fprintf(stderr, "Could not allocate video codec context\n");
 		exit(1);
 	}
@@ -1384,14 +1384,14 @@ void SequenceRenderer::enableVideoExport(const char* path, int fr, int w, int h)
 	c->width = videoExportImageWidth;
 	c->height = videoExportImageHeight;
 	/* frames per second */
-	c->time_base = AVRational{ 1, 60 };
+	c->time_base = AVRational{1, 60};
 	c->gop_size = 10; /* emit one intra frame every ten frames */
 	c->max_b_frames = 1;
-//	c->pix_fmt = AV_PIX_FMT_RGB8;
+	//	c->pix_fmt = AV_PIX_FMT_RGB8;
 	c->pix_fmt = AV_PIX_FMT_YUV420P;
-	
+
 	/* open it */
-	if (avcodec_open2(c, codec, NULL) < 0) {
+	if(avcodec_open2(c, codec, NULL) < 0) {
 		fprintf(stderr, "Could not open codec\n");
 		exit(1);
 	}
@@ -1401,26 +1401,26 @@ void SequenceRenderer::enableVideoExport(const char* path, int fr, int w, int h)
 
 #ifdef _WIN32
 	auto result = fopen_s(&videoExportFile, path, "wb");
-	if (result) {
+	if(result) {
 		fprintf(stderr, "Could not open %s\n", path);
 		exit(1);
 	}
 #elif __linux__
 	videoExportFile = fopen(path, "wb");
-	if (videoExportFile == nullptr) {
+	if(videoExportFile == nullptr) {
 		fprintf(stderr, "Could not open %s\n", path);
 		exit(1);
 	}
 #endif
 	frame = av_frame_alloc();
-	if (!frame) {
+	if(!frame) {
 		fprintf(stderr, "Could not allocate video frame\n");
 		exit(1);
 	}
 	frame->format = c->pix_fmt;
 	frame->width = c->width;
 	frame->height = c->height;
-	
+
 	int res = av_image_alloc(frame->data, frame->linesize, c->width, c->height, c->pix_fmt, 32);
 
 	//video_encode_example(path, AV_CODEC_ID_MPEG1VIDEO);
@@ -1433,13 +1433,13 @@ void SequenceRenderer::enableCalibration(uint startingFrame, uint duration, floa
 	calibrationDuration = duration;
 	this->histogramMin = histogramMin;
 	this->histogramMax = histogramMax;
-	
-//	histogramBuffer->clear();
-//	histogramBuffer->setRenderTarget();
-//	histogramClearShader->enable();
-//	nothing->renderQuad();
-//	histogramClearShader->disable();
-//	histogramBuffer->disableRenderTarget();
+
+	//	histogramBuffer->clear();
+	//	histogramBuffer->setRenderTarget();
+	//	histogramClearShader->enable();
+	//	nothing->renderQuad();
+	//	histogramClearShader->disable();
+	//	histogramBuffer->disableRenderTarget();
 
 	iFrame = calibrationStartingFrame;
 	calibrationFrameCount = 0;
@@ -1451,44 +1451,44 @@ void SequenceRenderer::readCalibrationResults()
 {
 	glBindTexture(GL_TEXTURE_2D, histogramBuffer->getColorBuffer(0));
 
-	float* ohisti = new float[histogramResolution*4];
-	float* histi = new float[histogramResolution*4];
+	float* ohisti = new float[histogramResolution * 4];
+	float* histi = new float[histogramResolution * 4];
 
 	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_FLOAT, (void*)ohisti);
 
-	float runningVal=0.f;
-	for (uint e = 0; e<histogramResolution; e++)
+	float runningVal = 0.f;
+	for(uint e = 0; e < histogramResolution; e++)
 	{
-		float temp = ohisti[e*4] - runningVal;
-		runningVal = ohisti[e*4];
-		histi[e*4] = temp;
+		float temp = ohisti[e * 4] - runningVal;
+		runningVal = ohisti[e * 4];
+		histi[e * 4] = temp;
 	}
-	runningVal=0.f;
-	for (uint e = 0; e<histogramResolution; e++)
+	runningVal = 0.f;
+	for(uint e = 0; e < histogramResolution; e++)
 	{
-		float temp = ohisti[e*4+1] - runningVal;
-		runningVal = ohisti[e*4+1];
-		histi[e*4+1] = temp;
+		float temp = ohisti[e * 4 + 1] - runningVal;
+		runningVal = ohisti[e * 4 + 1];
+		histi[e * 4 + 1] = temp;
 	}
-	runningVal=0.f;
-	for (uint e = 0; e<histogramResolution; e++)
+	runningVal = 0.f;
+	for(uint e = 0; e < histogramResolution; e++)
 	{
-		float temp = ohisti[e*4+2] - runningVal;
-		runningVal = ohisti[e*4+2];
-		histi[e*4+2] = temp;
+		float temp = ohisti[e * 4 + 2] - runningVal;
+		runningVal = ohisti[e * 4 + 2];
+		histi[e * 4 + 2] = temp;
 	}
-	runningVal=0.f;
-	for (uint e = 0; e<histogramResolution; e++)
+	runningVal = 0.f;
+	for(uint e = 0; e < histogramResolution; e++)
 	{
-		float temp = ohisti[e*4+3] - runningVal;
-		runningVal = ohisti[e*4+3];
-		histi[e*4+3] = temp;
+		float temp = ohisti[e * 4 + 3] - runningVal;
+		runningVal = ohisti[e * 4 + 3];
+		histi[e * 4 + 3] = temp;
 	}
 
 	float histogramTop = 0;
 	double m = 0;
 	double w = 0;
-	for (uint e = 0; e<histogramResolution; e++)
+	for(uint e = 0; e < histogramResolution; e++)
 	{
 		double y = histi[e * 4] + histi[e * 4 + 1] + histi[e * 4 + 2];
 		w += y;
@@ -1498,25 +1498,25 @@ void SequenceRenderer::readCalibrationResults()
 	measuredMean = (float)(m / w);
 	histogramScale = histogramTop / (float)(iFrame - calibrationStartingFrame) * 1000.4f;
 
-	double vari2=0;
-	for (uint e = 0; e<histogramResolution; e++)
+	double vari2 = 0;
+	for(uint e = 0; e < histogramResolution; e++)
 	{
 		double d = e / (float)histogramResolution * (histogramMax - histogramMin) + histogramMin - measuredMean;
 		vari2 += (histi[e * 4] + histi[e * 4 + 1] + histi[e * 4 + 2]) * d*d;
 	}
 	measuredVariance = (float)sqrt(vari2 / w);
 
-	for (uint e = 0; e<histogramResolution; e++)
+	for(uint e = 0; e < histogramResolution; e++)
 	{
-		if (histi[e * 4] + histi[e * 4 + 1] + histi[e * 4 + 2] > 10.5)
+		if(histi[e * 4] + histi[e * 4 + 1] + histi[e * 4 + 2] > 10.5)
 		{
 			measuredToneRangeMin = e / (float)histogramResolution * (histogramMax - histogramMin) + histogramMin;
 			break;
 		}
 	}
-	for (uint e = 0; e<histogramResolution-1; e++)
+	for(uint e = 0; e < histogramResolution - 1; e++)
 	{
-		if (histi[(histogramResolution - 1 - e) * 4] + histi[(histogramResolution - 1 - e) * 4 + 1] + histi[(histogramResolution - 1 - e) * 4 + 2] > 10.5)
+		if(histi[(histogramResolution - 1 - e) * 4] + histi[(histogramResolution - 1 - e) * 4 + 1] + histi[(histogramResolution - 1 - e) * 4 + 2] > 10.5)
 		{
 			measuredToneRangeMax = (histogramResolution - e) / (float)histogramResolution * (histogramMax - histogramMin) + histogramMin;
 			break;
@@ -1538,12 +1538,12 @@ void SequenceRenderer::readCalibrationResults()
 Stimulus::CP SequenceRenderer::getCurrentStimulus()
 {
 	StimulusRendererMap::iterator iStimulusRenderer = stimulusRenderers.lower_bound(iFrame);
-	if(iStimulusRenderer == stimulusRenderers.end() )
+	if(iStimulusRenderer == stimulusRenderers.end())
 		iStimulusRenderer = stimulusRenderers.begin();
 	return iStimulusRenderer->second->getStimulus();
 }
 
-Response::CP SequenceRenderer::getCurrentResponse(){
+Response::CP SequenceRenderer::getCurrentResponse() {
 	return sequence->getResponseAtFrame(iFrame);
 }
 
@@ -1562,9 +1562,9 @@ std::string SequenceRenderer::getSequenceTimingReport()
 	else
 	{
 		ss << "Total measurement duration: " << elapsed.count() << "<BR>";
-		ss << "Frames dropped/total: " << totalFramesSkipped << '/' << cFrame-1 << "<BR>";
-		ss << "Measured system frame interval [s]: " << elapsed.count() / (cFrame-1.0) << "<BR>";
-		ss << "Measured system frame rate [Hz]: " <<  (cFrame-1.0) / elapsed.count() << "<BR>";
+		ss << "Frames dropped/total: " << totalFramesSkipped << '/' << cFrame - 1 << "<BR>";
+		ss << "Measured system frame interval [s]: " << elapsed.count() / (cFrame - 1.0) << "<BR>";
+		ss << "Measured system frame rate [Hz]: " << (cFrame - 1.0) / elapsed.count() << "<BR>";
 	}
 	return ss.str();
 }
@@ -1593,7 +1593,7 @@ double SequenceRenderer::getTime()
 boost::python::object SequenceRenderer::renderSample(uint sFrame, int left, int top, int width, int height)
 {
 	StimulusRendererMap::iterator iStimulusRenderer = stimulusRenderers.lower_bound(sFrame);
-	if (iStimulusRenderer == stimulusRenderers.end())
+	if(iStimulusRenderer == stimulusRenderers.end())
 	{
 		return boost::python::object();
 	}
