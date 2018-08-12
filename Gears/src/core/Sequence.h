@@ -100,6 +100,7 @@ public:
 
 
 	uint getDuration() const {return duration;}
+	float getTimeForFrame(unsigned int frame);
 	const StimulusMap& getStimuli() const {return stimuli;}
 	const ChannelMap& getChannels() const {return channels;}
 	uint getChannelCount() const {return channels.size();}

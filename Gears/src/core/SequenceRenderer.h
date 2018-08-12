@@ -50,6 +50,7 @@ class SequenceRenderer
 	std::vector<int> skippedFrames;
 
 	bool isDrawingPreview;
+	int vSyncPeriodsSinceLastFrame = -1;
 	
 	using StimulusRendererMap = std::map<unsigned int, StimulusRenderer::P >;
 	StimulusRendererMap stimulusRenderers;
@@ -240,8 +241,6 @@ public:
 
 	void updateSpatialKernel(KernelManager::P kernelManager);
 
-	float getSwapBufferInterval() const;
-	double getTimeSinceStart() const;
 	double getTime();
 
 	bool isShowingCursor();

@@ -15,10 +15,9 @@ void StimulusWindow::render()
 
 	sequenceRenderer->setScreenResolution(screenw, screenh);
 
-	// render 3 frame in one image
-
+	// render 3 frame in one image if high frequence device used
 	size_t channelNum = sequenceRenderer->getSequence()->useHighFreqRender ? 3 : 1;
-	// sequenceRenderer->SetHighFrequenceRender(true);
+
 	for (size_t channelIdx = 0; channelIdx < channelNum; channelIdx++)
 	{
 		if (!sequenceRenderer->renderFrame(0, channelIdx))
@@ -26,15 +25,10 @@ void StimulusWindow::render()
 			quit = true;
 			break;
 		}
-			//swapBuffers();
 	}
-	//TODO finished 
-
+	//TODO finish
 	// jelek az eszközre, nem tudjuk mikor vált framet az eszköz
 	// 2. és 3.-nál felesleges kiküldeni az elektronikus jelet, ezt is ki kell kapcsolni
-	// szürke árnyalatosra áttranszformálni
-	// .pyx fájl ->DefaultSequence-nek paraméter, vagy ennek leszármazott, ebből tudja, hogy így kell renderelni
-	// nem 3 számmal osztható frameünk van
 	// elektronikus jelek -> nem tud 3 frame-en belül történni
 	
 	swapBuffers();

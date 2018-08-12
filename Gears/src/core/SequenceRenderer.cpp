@@ -320,34 +320,34 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer, unsigned channelId
 		{
 		}
 		else if(!calibrating && !randomExportStream.is_open() && !exportingToVideo)
-
+		{
 			if(channelIdx == 0)
 			{
+				// Calculate how many seconds passed since the last render
 				auto now = Clock::now();
 				Fsec  elapsed = now - firstFrameTimePoint;
 				Fsec  elapsedSinceLastFrame = now - previousFrameTimePoint;
 				previousFrameTimePoint = now;
 
-				////auto  elapsedNano = std::chrono::duration_cast<std::chrono::nanoseconds>(now - firstFrameTimePoint);
-				////std::cout << elapsed.count() << " : " << elapsedNano.count() << '\n';
-				//std::cout << elapsedSinceLastFrame.count() << '\n';
-				int vSyncPeriodsSinceLastFrame = (int)(elapsedSinceLastFrame.count() / sequence->getFrameInterval_s() + 0.5);
-				////int toFrame = elapsed.count() / sequence->getFrameInterval_s() + 1.5f;
-				////std::cout << elapsed.count() - (iFrame + frameOffset - 1.5f) * sequence->getFrameInterval_s() << '\n';
-				////toFrame -= frameOffset;
+				// Calcultate how many frames we missed, because render has not been called
+				vSyncPeriodsSinceLastFrame = (int)(elapsedSinceLastFrame.count() / sequence->getFrameInterval_s() + 0.5);
+				if(sequence->useHighFreqRender) 
+					// If we use high frequency device, than devide with 3, and use in all three channels, 
+					// this way we normalize the time between frames in 1 image
+					vSyncPeriodsSinceLastFrame /= 3;
+
 			}
-		Sequence::SignalMap::const_iterator iSignal = sequence->getSignals().lower_bound(iFrame - 1);
-		Sequence::SignalMap::const_iterator eSignal = sequence->getSignals().upper_bound(iFrame + vSyncPeriodsSinceLastFrame);
-		while(iSignal != eSignal)
-		{
-			if(iSignal->second.clear)
-				clearSignal(iSignal->second.channel);
-			else
-				raiseSignal(iSignal->second.channel);
-			iSignal++;
-		}
-		if(channelIdx == 0)
-		{
+			// Missed signals for missed frames
+			Sequence::SignalMap::const_iterator iSignal = sequence->getSignals().lower_bound(iFrame - 1);
+			Sequence::SignalMap::const_iterator eSignal = sequence->getSignals().upper_bound(iFrame + vSyncPeriodsSinceLastFrame);
+			while(iSignal != eSignal)
+			{
+				if(iSignal->second.clear)
+					clearSignal(iSignal->second.channel);
+				else
+					raiseSignal(iSignal->second.channel);
+				iSignal++;
+			}
 			nSkippedFrames = vSyncPeriodsSinceLastFrame - 1; //nem 1, hanem count of frame / swapbuffers
 			if(nSkippedFrames < 0)
 			{
@@ -365,9 +365,10 @@ bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer, unsigned channelId
 			cFrame += vSyncPeriodsSinceLastFrame;
 		}
 	}
-}
 	else
+	{
 		cFrame = 0;
+	}
 
 		StimulusRendererMap::iterator iStimulusRenderer = stimulusRenderers.lower_bound(iFrame);
 		if(calibrating && iFrame > calibrationStartingFrame + calibrationDuration)
@@ -1125,7 +1126,7 @@ void SequenceRenderer::enableExport(std::string path)
 Ticker::P SequenceRenderer::startTicker()
 {
 	Ticker::P ticker = Ticker::create(getSharedPtr());
-	ticker->start(sequence->tickInterval, getSwapBufferInterval());
+	ticker->start(sequence->tickInterval, sequence->getFrameInterval_s());
 	return ticker;
 }
 
@@ -1572,17 +1573,6 @@ std::string SequenceRenderer::getSequenceTimingReport()
 void SequenceRenderer::updateSpatialKernel(KernelManager::P kernelManager)
 {
 	kernelManager->update(getCurrentStimulus()->getSpatialFilter());
-}
-
-float SequenceRenderer::getSwapBufferInterval() const
-{
-	float devide = sequence->useHighFreqRender ? 3.0 : 1.0;
-	return sequence->getFrameInterval_s() / devide;
-}
-
-double SequenceRenderer::getTimeSinceStart() const
-{
-	return iFrame * getSwapBufferInterval();
 }
 
 double SequenceRenderer::getTime()

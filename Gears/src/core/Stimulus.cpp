@@ -449,6 +449,11 @@ float Stimulus::getDuration_s() const
 	return duration * sequence->getFrameInterval_s();
 }
 
+void Stimulus::setDuration(unsigned int duration)
+{ 
+	this->duration = sequence->useHighFreqRender ? roundForHighFrequency(duration) : duration; 
+}
+
 boost::python::object Stimulus::setPythonObject(boost::python::object o)
 {
 	pythonObject = o;
@@ -466,6 +471,11 @@ boost::python::object Stimulus::getMeasuredHistogramAsPythonList()
 	for(unsigned int i=0; i<measuredHistogram.size(); i++)
 		l.append(measuredHistogram[i]);
 	return l;
+}
+
+unsigned int Stimulus::roundForHighFrequency(unsigned int duration)
+{
+	return (duration % 3 == 0) ? duration : ( (duration % 3 == 1) ? duration - 1 : duration + 1);
 }
 
 boost::python::object Stimulus::setMeasuredDynamicsFromPython (

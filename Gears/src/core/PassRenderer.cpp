@@ -110,7 +110,7 @@ void PassRenderer::renderPass(int skippedFrames)
 	//TODO manage skipped frames in some consistent manner. With PRNGs or videos just skipping a frame is not really tolerable
 	//iFrame += skippedFrames;
 
-	float time = getCurrentFrame() / stimulus->sequence->deviceFrameRate * stimulus->sequence->frameRateDivisor;
+	float time = stimulus->sequence->getTimeForFrame(getCurrentFrame());
 
 	stimulusGeneratorShader->enable();
 

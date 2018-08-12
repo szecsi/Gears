@@ -98,7 +98,7 @@ void StimulusRenderer::renderStimulus(GLuint defaultFrameBuffer, int skippedFram
 	auto now = Clock::now();
 	auto prev = Clock::now();
 
-	float time = getCurrentFrame() / sequenceRenderer->getSwapBufferInterval();
+	float time = stimulus->sequence->getTimeForFrame(getCurrentFrame());
 
 	if(!sequenceRenderer->getSequence()->getUsesBusyWaitingThreadForSingals())
 	{
@@ -160,7 +160,7 @@ void StimulusRenderer::renderStimulus(GLuint defaultFrameBuffer, int skippedFram
 
 		if(stimulus->particleGridWidth != 0)
 		{
-			sequenceRenderer->renderParticles(particleShader, iFrame, sequenceRenderer->getTimeSinceStart());
+			sequenceRenderer->renderParticles(particleShader, iFrame, iFrame * sequenceRenderer->getSequence()->getFrameInterval_s());
 		}
 	}
 	if(stimulus->usesForwardRendering)
@@ -352,7 +352,7 @@ void StimulusRenderer::renderStimulus(GLuint defaultFrameBuffer, int skippedFram
 
 void StimulusRenderer::renderSample(uint sFrame, int left, int top, int width, int height)
 {
-	float time = sFrame / sequenceRenderer->getSwapBufferInterval();
+	float time = sFrame / stimulus->sequence->deviceFrameRate * stimulus->sequence->frameRateDivisor;
 
 	if(stimulus->usesForwardRendering)
 	{
@@ -475,9 +475,9 @@ void StimulusRenderer::renderTimeline(bool* signals, uint startFrame, uint frame
 						glColor4d(0.25, 0, 0, 1);
 						glBegin(GL_LINES);
 							glVertex2d(0, 0);
-							glVertex2d(stimulus->duration / stimulus->sequence->tickInterval * stimulus->sequence->getFrameInterval_s(), 0);
+							glVertex2d(stimulus->getDuration_s() / stimulus->sequence->tickInterval, 0);
 							glVertex2d(0, 1);
-							glVertex2d(stimulus->duration / stimulus->sequence->tickInterval * stimulus->sequence->getFrameInterval_s(), 1);
+							glVertex2d(stimulus->getDuration_s() / stimulus->sequence->tickInterval, 1);
 						glEnd();
 
 						glColor4d(1, 0, 0, 1);
@@ -502,8 +502,7 @@ void StimulusRenderer::renderTimeline(bool* signals, uint startFrame, uint frame
 			}
 			if(channelHasTickSignal)
 			{
-				glVertex2d(stimulus->duration / stimulus->sequence->tickInterval * stimulus->sequence->getFrameInterval_s(),
-					lastHigh?1.0:0.0);
+				glVertex2d(stimulus->getDuration_s() / stimulus->sequence->tickInterval, lastHigh?1.0:0.0);
 				glEnd();
 				cChannel++;
 			}

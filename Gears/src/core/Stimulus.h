@@ -21,7 +21,7 @@ class SpatialFilter;
 //! A structure that contains all stimulus parameters.
 class Stimulus
 {
-
+	unsigned int duration;						//< Stimulus duration [frames]. The number of frames we need to render in stimulus
 public:
 	std::string name;							//< Unique name.
 	std::string brief;							//< A short discription of the stimulus.
@@ -34,7 +34,7 @@ public:
 	boost::python::object joiner;
 	boost::python::object setJoiner(boost::python::object joiner);
 
-	unsigned int duration;						//< Stimulus duration [frames].
+	
 	unsigned int startingFrame;					//< Stimulus starts at this time in sequence [frames].
 
 	struct SignalEvent
@@ -118,6 +118,8 @@ public:
 
 	void finishLtiSettings();
 
+	unsigned int roundForHighFrequency(unsigned int);
+
 	//! Constructor.
 	Stimulus();
 public:
@@ -138,8 +140,8 @@ public:
 
 	void saveConfig(const std::string& expName);
 
-	void setDuration(unsigned int duration) { this->duration = duration;}
-	uint getDuration() const {return duration;} 
+	void setDuration(unsigned int duration);
+	uint getDuration() const {return duration;}
 
 	std::string getRandomGeneratorShaderSource() const
 	{

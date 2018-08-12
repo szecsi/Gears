@@ -73,7 +73,7 @@ void Sequence::addStimulus(Stimulus::P stimulus)
 	stimulus->setSequence(getSharedPtr());
 	stimulus->joiner();
 	mono = mono && stimulus->mono;
-	shortestStimulusDuration = std::min(shortestStimulusDuration, stimulus->duration);
+	shortestStimulusDuration = std::min(shortestStimulusDuration, stimulus->getDuration());
 	duration += stimulus->setStartingFrame(duration+1);
 	stimuli[duration] = stimulus;
 
@@ -201,6 +201,12 @@ bool Sequence::usesRandoms()
 bool Sequence::usesParticles()
 {
 	return maxParticleGridWidth > 0 && maxParticleGridHeight > 0;
+}
+
+float Sequence::getTimeForFrame(unsigned int frame) {
+	// Time since the start of stimulus
+	// time is 1, it is the end of the stimulus
+	return frame / deviceFrameRate * frameRateDivisor;
 }
 
 Sequence::P Sequence::setAgenda(boost::python::object agenda)
