@@ -24,63 +24,57 @@ public:
 	virtual bool storeFrequencyInTexture() const override { return false; }
 	void finish() { if ( queue ) clFinish( queue ); }
 
-	const char* separateChannelsProgram =
-		"__constant sampler_t sampler =\n"
-		"CLK_NORMALIZED_COORDS_FALSE\n"
-		"| CLK_ADDRESS_CLAMP_TO_EDGE\n"
-		"| CLK_FILTER_NEAREST;\n"
-		"__kernel void separateChannels(\n"
-		"__read_only image2d_t fullImg,\n"
-		"const int w,\n"
-		"__global float* imgr,\n"
-		"__global float* imgg,\n"
-		"__global float* imgb)\n"
-		"{\n"
-		"int i = get_global_id( 0 );\n"
-		"int channelIndex = (i/w)*(w+2)+(i%w);\n"
-		"imgr[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).x;\n"
-		"imgg[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).y;\n"
-		"imgb[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).z;\n"
-		"}\n";
+	const char* separateChannelsProgram =R"(
+		__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
+		__kernel void separateChannels(
+		  __read_only image2d_t fullImg,
+		  const int w,
+		  __global float* imgr,
+		  __global float* imgg,
+		  __global float* imgb)
+		  {
+			int i = get_global_id( 0 );
+			int channelIndex = (i/w)*(w+2)+(i%w);
+			imgr[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).x;
+			imgg[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).y;
+			imgb[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).z;
+		  })";
 
-	const char* separateChannelsMonoProgram =
-		"__constant sampler_t sampler =\n"
-		"CLK_NORMALIZED_COORDS_FALSE\n"
-		"| CLK_ADDRESS_CLAMP_TO_EDGE\n"
-		"| CLK_FILTER_NEAREST;\n"
-		"__kernel void separateChannelsMono(\n"
-		"__read_only image2d_t fullImg,\n"
-		"const int w,\n"
-		"__global float* imgr)\n"
-		"{\n"
-		"int i = get_global_id( 0 );\n"
-		"int channelIndex = (i/w)*(w+2)+(i%w);\n"
-		"imgr[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).x;\n"
-		"}\n";
+	const char* separateChannelsMonoProgram = R"(
+		__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE	| CLK_FILTER_NEAREST;
+		__kernel void separateChannelsMono(
+		  __read_only image2d_t fullImg,
+		  const int w,
+		  __global float* imgr)
+		  {
+			int i = get_global_id( 0 );
+			int channelIndex = (i/w)*(w+2)+(i%w);
+			imgr[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).x;
+		  })";
 
-	const char* combineChannelsProgram =
-		"__kernel void combineChannels(\n"
-		"__write_only image2d_t fullImg,\n"
-		"const int w,\n"
-		"__global float* imgr,\n"
-		"__global float* imgg,\n"
-		"__global float* imgb)\n"
-		"{\n"
-		"int i = get_global_id( 0 );\n"
-		"int index = i + (i/w)*2;\n"
-		"write_imagef( fullImg, (int2)(i/w, i%w), (float4)(imgr[index], imgg[index], imgb[index], 1.0f) );"
-		"}\n";
+	const char* combineChannelsProgram = R"(
+		__kernel void combineChannels(
+		  __write_only image2d_t fullImg,
+		  const int w,
+		  __global float* imgr,
+		  __global float* imgg,
+		  __global float* imgb)
+		  {
+			int i = get_global_id( 0 );
+			int index = i + (i/w)*2;
+			write_imagef( fullImg, (int2)(i/w, i%w), (float4)(imgr[index], imgg[index], imgb[index], 1.0f) );
+		  })";
 
-	const char* combineChannelsMonoProgram =
-		"__kernel void combineChannelsMono(\n"
-		"__write_only image2d_t fullImg,\n"
-		"const int w,\n"
-		"__global float* imgr)\n"
-		"{\n"
-		"int i = get_global_id( 0 );\n"
-		"int index = i + (i/w)*2;\n"
-		"write_imagef( fullImg, (int2)(i/w, i%w), (float4)(imgr[index], imgr[index], imgr[index], 1.0f) );"
-		"}\n";
+	const char* combineChannelsMonoProgram = R"(
+		__kernel void combineChannelsMono(
+		  __write_only image2d_t fullImg,
+		  const int w,
+		  __global float* imgr)
+		  {
+			int i = get_global_id( 0 );
+			int index = i + (i/w)*2;
+			write_imagef( fullImg, (int2)(i/w, i%w), (float4)(imgr[index], imgr[index], imgr[index], 1.0f) );
+		  })";
 
 protected:
 	unsigned int fullTex;

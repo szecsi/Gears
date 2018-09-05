@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "openCLCore.h"
 
-const char* multiplyFFTMonoProgram =
-"__kernel void multiplyFFTMono(\n"
-"__global float2* lhs,\n"
-"__global float2* rhs)\n"
-"{\n"
-"int i = get_global_id( 0 );\n"
-"lhs[i] = (float2)(lhs[i].x * rhs[i].x - lhs[i].y * rhs[i].y, lhs[i].x * rhs[i].y + lhs[i].y * rhs[i].x);\n"
-"}\n";
+const char* multiplyFFTMonoProgram =R"(
+kernel void multiplyFFTMono(
+__global float2* lhs,
+__global float2* rhs)
+{
+	int i = get_global_id( 0 );
+	lhs[i] = (float2)(lhs[i].x * rhs[i].x - lhs[i].y * rhs[i].y, lhs[i].x * rhs[i].y + lhs[i].y * rhs[i].x);
+})";
 
 const char* multiplyFFTProgram = R"(
 __kernel void multiplyFFT(
@@ -147,7 +147,7 @@ cl_kernel OpenCLCore::CompileKernel( const char* name, const char* source, size_
 	err = clBuildProgram( program, 0, NULL, NULL, NULL, NULL );
 	if ( err )
 	{
-		clGetProgramBuildInfo(
+		cl_int errcode = clGetProgramBuildInfo(
 			program,
 			_instance->device,
 			CL_PROGRAM_BUILD_LOG,
@@ -155,6 +155,11 @@ cl_kernel OpenCLCore::CompileKernel( const char* name, const char* source, size_
 			NULL,
 			&log_size
 		);
+
+		if(errcode) {
+			std::cout << "clGetProgramBuildInfo failed at line " << __LINE__ << " errcode: " << errcode << std::endl;
+			exit(-1);
+		}
 
 		program_log = (char*) malloc( log_size + 1 );
 
@@ -200,7 +205,7 @@ void OpenCLCore::MultiplyFFT( cl_mem lhs, cl_mem rhs, size_t* imageSize, size_t*
 	clPrintError( err );
 
 	size_t defaultLocal[1] = { 64 };
-	size_t global[1] = { imageSize[0] / 2 };
+	size_t global[1] = { imageSize[0] };
 	size_t* local;
 
 	if ( localWorkSize )

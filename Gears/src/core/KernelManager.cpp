@@ -28,7 +28,7 @@ uint KernelManager::getKernel(SpatialFilter::CP spatialFilter)
 	if(spatialFilter->useFft)
 	{
 		FFT* fft;
-		if(sequenceRenderer->clFFT)
+		if(sequenceRenderer->clFFT())
 			fft = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
 		else
 			fft = new GLFFT( sequence->fftWidth_px, sequence->fftHeight_px );
@@ -54,7 +54,6 @@ bool KernelManager::getKernelChannels( SpatialFilter::CP spatialFilter, cl_mem& 
 			static_cast<OPENCLFFT*>(i->second.fft)->get_channels(r, g, b);
 			return true;
 		}
-			return i->second.fft->get_fullTex();
 		return false;
 	}
 	return false;

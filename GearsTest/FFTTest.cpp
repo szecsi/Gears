@@ -7,7 +7,7 @@
 #include "fft/openCLFFT.cpp"
 #include "fft/load_shaders.cpp"
 
-const unsigned runNumber = 1;
+const unsigned runNumber = 100;
 const size_t texNum = 3;
 unsigned textures[texNum];
 float* p = nullptr;
@@ -502,97 +502,3 @@ TEST_F(FFTTest, SimpleclFFTTime)
 	std::cout << runNumber << " FFT finished elapsed time: " << fullDuration.count() * 1000 << "ms." << std::endl;
 	OpenCLCore::Get()->finish();
 }
-
-//TEST_F( FFTTest, SimpleglFFTTime )
-//{
-//	setTextureData( w, h );
-//	GLFFT fft( w, h, textureId );
-//	GLFFT ifft(w, h, textureId, true, true);
-//	fft.set_input( [] () {} );
-//
-//
-//	GLfloat* img;
-//	img = new GLfloat[w * h * 4];
-//	
-//	fft.do_fft();
-//	
-//	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, textureId );
-//	glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, img );
-//	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, 0 );
-//	ImageHelper::printImg( img, w, h );
-//
-//	ifft.do_fft();
-//
-//	
-//
-//	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, textureId );
-//	glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, img );
-//	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, 0 );
-//
-//	
-//
-//	std::chrono::duration<double> elapsedSeconds = std::chrono::duration<double>::zero();
-//	auto fullStart = std::chrono::system_clock::now();
-//	for ( unsigned i = 0; i < runNumber; i++ )
-//	{
-//		setTextureData( w, h );
-//		
-//		auto start = std::chrono::system_clock::now();
-//		fft.do_fft();
-//		ifft.do_fft();
-//		glFinish();
-//		auto end = std::chrono::system_clock::now();
-//		
-//		elapsedSeconds += end - start;
-//		
-//	}
-//	auto fullEnd = std::chrono::system_clock::now();
-//	std::chrono::duration<double> fullDuration = fullEnd - fullStart;
-//	std::cout << runNumber << " FFT finished elapsed time: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
-//	std::cout << runNumber << " FFT finished elapsed time: " << fullDuration.count() * 1000 << "ms." << std::endl;
-//
-//	EXPECT_TRUE( mtxIsEqual( img, p, w, h ) );
-//
-//	delete[] img;
-//}
-//
-//TEST_F( FFTTest, SimpleclFFTTime )
-//{
-//	setTextureData( w, h );
-//	OPENCLFFT fft( w, h, textureId );
-//	fft.set_input( [] () {} );
-//
-//	fft.do_fft();
-//	fft.do_inverse_fft();
-//	GLfloat* img;
-//	img = new GLfloat[w * h * 4];
-//	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, textureId );
-//	glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, img );
-//	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, 0 );
-//
-//	std::chrono::duration<double> elapsedSeconds = std::chrono::duration<double>::zero();
-//	auto fullStart = std::chrono::system_clock::now();
-//	for ( unsigned i = 0; i < runNumber; i++ )
-//	{
-//		setTextureData( w, h );
-//
-//		auto start = std::chrono::system_clock::now();
-//		fft.do_fft();
-//		fft.do_inverse_fft();
-//		fft.finish();
-//		auto end = std::chrono::system_clock::now();
-//
-//		elapsedSeconds += end - start;
-//	}
-//
-//	auto fullEnd = std::chrono::system_clock::now();
-//	std::chrono::duration<double> fullDuration = fullEnd - fullStart;
-//	std::cout << runNumber << " FFT finished elapsed time: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
-//	std::cout << runNumber << " FFT finished elapsed time: " << fullDuration.count() * 1000 << "ms." << std::endl;
-//
-//	
-//	EXPECT_TRUE( mtxIsEqual( img, p, w, h ) );
-//
-//	delete[] img;
-//}
-

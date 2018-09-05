@@ -85,6 +85,7 @@ SpatialFilterRenderer::SpatialFilterRenderer(SequenceRenderer::P sequenceRendere
 
 void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 {
+	auto start = std::chrono::system_clock::now();
 	if(spatialFilter->useFft)
 	{
 		FFTChannelMode channelMode = sequenceRenderer->getSequence()->isMonochrome() ? FFTChannelMode::Monochrome : FFTChannelMode::Multichrome;
@@ -101,7 +102,7 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 		if(!spatialFilter->stimulusGivenInFrequencyDomain)
 			sequenceRenderer->fft2FrequencyDomain[0]->do_fft( channelMode );
 
-		if ( sequenceRenderer->clFFT )
+		if ( sequenceRenderer->clFFT() )
 		{
 			cl_mem filterr;
 			cl_mem filterg;
@@ -117,7 +118,7 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 				if ( channelMode == FFTChannelMode::Monochrome )
 					OpenCLCore::Get()->MultiplyFFT(imager, filterr, size);
 				else
-					OpenCLCore::Get()->MultiplyFFT(imager, imageg, imageb, filterr, filterg, filterb, size);
+					OpenCLCore::Get()->MultiplyFFT(imager, imageg, imageb, filterr, filterr, filterr, size); // Filter is monochrome, stored in red
 			}
 		}
 		else
@@ -165,7 +166,7 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 		glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		if ( sequenceRenderer->clFFT )
+		if ( sequenceRenderer->clFFT() )
 		{
 			if ( !spatialFilter->showFft )
 				static_cast<OPENCLFFT*>(sequenceRenderer->fft2FrequencyDomain[0])->do_inverse_fft();
@@ -239,7 +240,7 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 			(sequenceRenderer->sequence->fieldWidth_px * sequenceRenderer->sequence->getSpatialFilteredFieldWidth_um()),
 			(float)sequenceRenderer->sequence->fftHeight_px * sequenceRenderer->sequence->fieldHeight_um
 			/ (sequenceRenderer->sequence->getSpatialFilteredFieldHeight_um() * sequenceRenderer->sequence->fieldHeight_px));
-		if ( sequenceRenderer->clFFT )
+		if ( sequenceRenderer->clFFT() )
 		{
 			copyShader->bindUniformTextureRect( "srcrg", sequenceRenderer->fft2FrequencyDomain[0]->get_fullTex(), 0 );
 			copyShader->bindUniformBool("clFFT", true);
@@ -349,5 +350,8 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 			sequenceRenderer->textureQueue->disableRenderTarget();
 		}
 	}
+	auto end = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsedSeconds = end - start;
+	std::cout << "Frame render time for " << (sequenceRenderer->clFFT() ? "clFFT" : "glFFT") << ": " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
 }
 

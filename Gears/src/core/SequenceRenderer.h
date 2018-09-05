@@ -140,9 +140,6 @@ class SequenceRenderer
 	SequenceRenderer();
 public:
 	GEARS_SHARED_CREATE_WITH_GETSHAREDPTR(SequenceRenderer);
-
-	// fft switch
-	bool clFFT = true;
 	
 	//! Creates GPU resources for the sequence, releasing earlier ones, if any.
 	void apply(Sequence::P sequence, ShaderManager::P shaderManager, TextureManager::P textureManager, KernelManager::P kernelManager);
@@ -255,5 +252,10 @@ public:
 	void toggleChannelsOrPreview()
 	{
 		isDrawingPreview = !isDrawingPreview;
+	}
+
+	bool clFFT()
+	{
+		return sequence->useOpenCL;
 	}
 };

@@ -220,6 +220,17 @@ class ConfigWindow(QDialog):
 
         self.addParam(
                     layout = displayBoxgl,
+                    label = 'Use OpenCL for FFT',
+                    box = self.displayBox,
+                    paramName = 'useOpenCL',
+                    rowIndex = rows,
+                    unit = '',
+                    boolean = True,
+                 )
+        rows += 1
+
+        self.addParam(
+                    layout = displayBoxgl,
                     label = 'Field width',
                     box = self.displayBox,
                     paramName = 'field_width_um',

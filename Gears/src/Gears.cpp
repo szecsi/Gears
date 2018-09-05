@@ -89,13 +89,6 @@ void drawStimulusTimeline(int x, int y, int w, int h){
 	sequenceRenderer->renderSelectedStimulusTimeline();
 }
 
-void useClFFT(bool mode) {
-	if (sequenceRenderer == nullptr)
-		return;
-	std::cout << "use clfft: " << mode << std::endl;
-	sequenceRenderer->clFFT = mode;
-}
-
 void drawSpatialKernel(float min, float max, float width, float height){
 	if(sequence == nullptr)
 		return;
@@ -358,7 +351,6 @@ BOOST_PYTHON_MODULE(Gears)
     // Add regular functions to the module.
     def("greet", greet);
     def("square", square);
-	def("useClFFT", useClFFT);
 	//class_<Gears::Event::Base>("BaseEvent", no_init)
 	//	.def_readonly(	"message"	, &Gears::Event::Base::message	, "Windows message.")
 	//	.def_readonly(	"wParam"	, &Gears::Event::Base::wParam	, "Windows message wParam.")
@@ -657,8 +649,9 @@ BOOST_PYTHON_MODULE(Gears)
 		.def("getUsesBusyWaitingThreadForSingals", &Sequence::getUsesBusyWaitingThreadForSingals )
 		.def("getSpatialFilteredFieldWidth_um"		,	&Sequence::getSpatialFilteredFieldWidth_um )
 		.def("getSpatialFilteredFieldHeight_um"		,	&Sequence::getSpatialFilteredFieldHeight_um )
-		.def_readwrite(	"name"								, &Sequence::name							, "Sequence name.")
-		.def_readwrite("useHighFreqRender"					, &Sequence::useHighFreqRender				, "Use high frequence device.")
+		.def_readwrite(	"name"								, &Sequence::name						, "Sequence name.")
+		.def_readwrite( "useHighFreqRender"					, &Sequence::useHighFreqRender			, "Use high frequence device.")
+		.def_readwrite( "useOpenCL"							, &Sequence::useOpenCL					, "Use OpenCL for FFT.")
 		.def_readwrite(	"field_width_um"					, &Sequence::fieldWidth_um				, "The horizontal extent of the light pattern appearing on the retina [um].")
 		.def_readwrite(	"field_height_um"					, &Sequence::fieldHeight_um				, "The vertical extent of the light pattern appearing on the retina [um].")
 		.def_readwrite(	"field_width_px"					, &Sequence::fieldWidth_px				, "The size of the light pattern in display device pixels.")

@@ -171,7 +171,7 @@ void SequenceRenderer::apply(Sequence::P sequence, ShaderManager::P shaderManage
 
 	if(sequence->hasFft)
 	{
-		if(clFFT)
+		if(clFFT())
 		{
 			fft2FrequencyDomain[0] = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
 		}

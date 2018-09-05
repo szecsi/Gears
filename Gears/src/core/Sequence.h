@@ -66,6 +66,8 @@ public:
 
 	bool greyscale;
 
+	// fft switch
+	bool useOpenCL = false;
 	bool useHighFreqRender = false;
 
 	// random generation
