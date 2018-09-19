@@ -16,6 +16,9 @@
 #include <boost/filesystem.hpp>
 #include "core/pythonerr.h"
 
+#include "filter/clSpatialFilterRenderer.h"
+#include "filter/glSpatialFilterRenderer.h"
+
 extern "C" {
 #include <libavutil/opt.h>
 
@@ -53,11 +56,6 @@ SequenceRenderer::SequenceRenderer()
 	textureQueue = nullptr;
 	currentTemporalProcessingState = nullptr;
 	nextTemporalProcessingState = nullptr;
-
-	fft2FrequencyDomain[0] = nullptr;
-	fft2FrequencyDomain[1] = nullptr;
-	fft2SpatialDomain[0] = nullptr;
-	fft2SpatialDomain[1] = nullptr;
 
 	spatialDomainFilteringBuffers[0] = nullptr;
 	spatialDomainFilteringBuffers[1] = nullptr;
@@ -161,6 +159,18 @@ void SequenceRenderer::apply(Sequence::P sequence, ShaderManager::P shaderManage
 	}
 	stimulusRenderers.clear();
 
+	if(sequence->hasFft)
+	{
+		if(clFFT())
+		{
+			spatialFilterRenderer = CLSpatialFilterRenderer::create(boost::shared_ptr<SequenceRenderer>(this), shaderManager, kernelManager, sequence->fftWidth_px, sequence->fftHeight_px);
+		}
+		else
+		{
+			spatialFilterRenderer = GLSpatialFilterRenderer::create(boost::shared_ptr<SequenceRenderer>(this), shaderManager, kernelManager, sequence->fftWidth_px, sequence->fftHeight_px);
+		}
+	}
+
 	for(auto& s : sequence->getStimuli())
 	{
 		StimulusRenderer::P stimulusRenderer = StimulusRenderer::create(getSharedPtr(), s.second, shaderManager, textureManager, kernelManager);
@@ -169,24 +179,6 @@ void SequenceRenderer::apply(Sequence::P sequence, ShaderManager::P shaderManage
 	}
 	selectedStimulusRenderer = stimulusRenderers.end();
 
-	if(sequence->hasFft)
-	{
-		if(clFFT())
-		{
-			fft2FrequencyDomain[0] = new OPENCLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
-		}
-		else
-		{
-			fft2FrequencyDomain[0] = new GLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
-			fft2SpatialDomain[0] = new GLFFT(sequence->fftWidth_px, sequence->fftHeight_px, 0, true, true);
-			if(!sequence->isMonochrome())
-			{
-				fft2FrequencyDomain[1] = new GLFFT(sequence->fftWidth_px, sequence->fftHeight_px);
-				fft2SpatialDomain[1] = new GLFFT(sequence->fftWidth_px, sequence->fftHeight_px, 0, true, true);
-			}
-		}
-
-	}
 	if(sequence->hasSpatialDomainConvolution)
 	{
 		spatialDomainFilteringBuffers[0] = new Framebuffer(sequence->fieldWidth_px, sequence->fieldHeight_px, 1, GL_RGBA16F);

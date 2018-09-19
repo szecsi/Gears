@@ -10,7 +10,7 @@
 #include "Quad.hpp"
 #include "Nothing.hpp"
 #include "PortHandler.h"
-
+#include <memory>
 #include <string>
 #include <fstream>
 #include <map>
@@ -20,11 +20,11 @@
 #include "StimulusRenderer.h"
 #include "ShaderManager.h"
 #include "TextureManager.h"
-#include "KernelManager.h"
-#include "SpatialFilterRenderer.h"
+#include "filter/KernelManager.h"
+#include "filter/SpatialFilterRenderer.h"
 #include "Ticker.h"
-#include "GLFFT.h"
-#include "OPENCLFFT.h"
+#include "filter/fft/glFFT.h"
+#include "filter/fft/openCLFFT.h"
 #ifdef _WIN32
 #	include "FontManager.h"
 #endif
@@ -37,9 +37,8 @@ class SequenceRenderer
 
 	//! Active sequence.
 	Sequence::CP sequence;
-	FFT* fft2FrequencyDomain[2];
-	FFT* fft2SpatialDomain[2];
 	Framebuffer* spatialDomainFilteringBuffers[2];
+	boost::shared_ptr<SpatialFilterRenderer> spatialFilterRenderer;
 
 	bool paused;
 	unsigned int iFrame;
@@ -258,4 +257,6 @@ public:
 	{
 		return sequence->useOpenCL;
 	}
+
+	boost::shared_ptr<SpatialFilterRenderer> getSpatialFilterRenderer() { return spatialFilterRenderer; }
 };

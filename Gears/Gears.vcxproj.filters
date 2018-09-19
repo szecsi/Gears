@@ -46,16 +46,7 @@
     <ClCompile Include="src\stdafx.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\KernelManager.cpp">
-      <Filter>src\core</Filter>
-    </ClCompile>
     <ClCompile Include="src\core\ShaderManager.cpp">
-      <Filter>src\core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\SpatialFilter.cpp">
-      <Filter>src\core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\SpatialFilterRenderer.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
     <ClCompile Include="src\core\Stimulus.cpp">
@@ -63,9 +54,6 @@
     </ClCompile>
     <ClCompile Include="src\core\StimulusRenderer.cpp">
       <Filter>src\core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\fft\load_shaders.cpp">
-      <Filter>src\fft</Filter>
     </ClCompile>
     <ClCompile Include="src\gpu\Framebuffer.cpp">
       <Filter>src\gpu</Filter>
@@ -142,16 +130,30 @@
     <ClCompile Include="src\core\SequenceRenderer.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\fft\glFFT.cpp">
-      <Filter>src\fft</Filter>
-    </ClCompile>
-    <ClCompile Include="src\fft\openCLFFT.cpp">
-      <Filter>src\fft</Filter>
-    </ClCompile>
-    <ClCompile Include="src\fft\imageHelper.cpp" />
-    <ClCompile Include="src\fft\openCLHelper.cpp" />
-    <ClCompile Include="src\fft\openCLCore.cpp" />
     <ClCompile Include="src\core\StimulusWindow.cpp" />
+    <ClCompile Include="src\core\filter\fft\glFFT.cpp">
+      <Filter>src\fft</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\filter\fft\imageHelper.cpp" />
+    <ClCompile Include="src\core\filter\fft\load_shaders.cpp">
+      <Filter>src\fft</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\filter\fft\openCLCore.cpp" />
+    <ClCompile Include="src\core\filter\fft\openCLFFT.cpp">
+      <Filter>src\fft</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\filter\fft\openCLHelper.cpp" />
+    <ClCompile Include="src\core\filter\SpatialFilterRenderer.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\filter\SpatialFilter.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\filter\KernelManager.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\filter\clSpatialFilterRenderer.cpp" />
+    <ClCompile Include="src\core\filter\glSpatialFilterRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -160,19 +162,10 @@
     <ClInclude Include="src\targetver.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\KernelManager.h">
-      <Filter>src\core</Filter>
-    </ClInclude>
     <ClInclude Include="src\core\ShaderManager.h">
       <Filter>src\core</Filter>
     </ClInclude>
     <ClInclude Include="src\core\Signal.h">
-      <Filter>src\core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\SpatialFilter.h">
-      <Filter>src\core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\SpatialFilterRenderer.h">
       <Filter>src\core</Filter>
     </ClInclude>
     <ClInclude Include="src\core\Stimulus.h">
@@ -186,12 +179,6 @@
     </ClInclude>
     <ClInclude Include="src\core\wglext.h">
       <Filter>src\core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\fft\FFT.h">
-      <Filter>src\fft</Filter>
-    </ClInclude>
-    <ClInclude Include="src\fft\load_shaders.h">
-      <Filter>src\fft</Filter>
     </ClInclude>
     <ClInclude Include="src\gpu\Framebuffer.hpp">
       <Filter>src\gpu</Filter>
@@ -388,12 +375,29 @@
     <ClInclude Include="src\core\PortHandler.h">
       <Filter>src\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\fft\glFFT.h">
+    <ClInclude Include="src\core\filter\fft\FFT.h">
       <Filter>src\fft</Filter>
     </ClInclude>
-    <ClInclude Include="src\fft\openCLFFT.h">
+    <ClInclude Include="src\core\filter\fft\glFFT.h">
       <Filter>src\fft</Filter>
     </ClInclude>
-    <ClInclude Include="src\fft\openCLCore.h" />
+    <ClInclude Include="src\core\filter\fft\load_shaders.h">
+      <Filter>src\fft</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\filter\fft\openCLCore.h" />
+    <ClInclude Include="src\core\filter\fft\openCLFFT.h">
+      <Filter>src\fft</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\filter\SpatialFilterRenderer.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\filter\SpatialFilter.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\filter\KernelManager.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\filter\clSpatialFilterRenderer.h" />
+    <ClInclude Include="src\core\filter\glSpatialFilterRenderer.h" />
   </ItemGroup>
 </Project>

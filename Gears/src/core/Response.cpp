@@ -3,7 +3,7 @@
 
 #include "Response.h"
 #include "Sequence.h"
-#include "SpatialFilter.h"
+#include "filter/SpatialFilter.h"
 #include <algorithm>
 #include <fstream>
 #include <sstream>

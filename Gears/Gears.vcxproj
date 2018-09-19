@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -103,7 +103,9 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\KernelManager.cpp">
+    <ClCompile Include="src\core\filter\clSpatialFilterRenderer.cpp" />
+    <ClCompile Include="src\core\filter\glSpatialFilterRenderer.cpp" />
+    <ClCompile Include="src\core\filter\KernelManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\core\Pass.cpp" />
@@ -118,10 +120,10 @@
     <ClCompile Include="src\core\ShaderManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\core\SpatialFilter.cpp">
+    <ClCompile Include="src\core\filter\SpatialFilter.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\core\SpatialFilterRenderer.cpp">
+    <ClCompile Include="src\core\filter\SpatialFilterRenderer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\core\Stimulus.cpp">
@@ -138,15 +140,15 @@
     <ClCompile Include="src\core\Ticker.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\event\events.cpp" />
-    <ClCompile Include="src\fft\glFFT.cpp" />
-    <ClCompile Include="src\fft\imageHelper.cpp" />
-    <ClCompile Include="src\fft\load_shaders.cpp">
+    <ClCompile Include="src\core\filter\fft\glFFT.cpp" />
+    <ClCompile Include="src\core\filter\fft\imageHelper.cpp" />
+    <ClCompile Include="src\core\filter\fft\load_shaders.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\fft\openCLCore.cpp" />
-    <ClCompile Include="src\fft\openCLFFT.cpp" />
-    <ClCompile Include="src\fft\openCLHelper.cpp" />
+    <ClCompile Include="src\core\filter\fft\openCLCore.cpp" />
+    <ClCompile Include="src\core\filter\fft\openCLFFT.cpp" />
+    <ClCompile Include="src\core\filter\fft\openCLHelper.cpp" />
     <ClCompile Include="src\font\FontManager.cpp" />
     <ClCompile Include="src\font\TexFont.cpp" />
     <ClCompile Include="src\gpu\Framebuffer.cpp">
@@ -205,7 +207,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\core\KernelManager.h" />
+    <ClInclude Include="src\core\filter\clSpatialFilterRenderer.h" />
+    <ClInclude Include="src\core\filter\glSpatialFilterRenderer.h" />
+    <ClInclude Include="src\core\filter\KernelManager.h" />
     <ClInclude Include="src\core\Pass.h" />
     <ClInclude Include="src\core\PassRenderer.h" />
     <ClInclude Include="src\core\PortHandler.h" />
@@ -216,8 +220,8 @@
     <ClInclude Include="src\core\SequenceRenderer.h" />
     <ClInclude Include="src\core\ShaderManager.h" />
     <ClInclude Include="src\core\Signal.h" />
-    <ClInclude Include="src\core\SpatialFilter.h" />
-    <ClInclude Include="src\core\SpatialFilterRenderer.h" />
+    <ClInclude Include="src\core\filter\SpatialFilter.h" />
+    <ClInclude Include="src\core\filter\SpatialFilterRenderer.h" />
     <ClInclude Include="src\core\Stimulus.h" />
     <ClInclude Include="src\core\StimulusRenderer.h" />
     <ClInclude Include="src\core\StimulusWindow.h" />
@@ -239,11 +243,11 @@
     <ClInclude Include="src\event\StimulusEnd.h" />
     <ClInclude Include="src\event\StimulusStart.h" />
     <ClInclude Include="src\event\Wheel.h" />
-    <ClInclude Include="src\fft\FFT.h" />
-    <ClInclude Include="src\fft\glFFT.h" />
-    <ClInclude Include="src\fft\load_shaders.h" />
-    <ClInclude Include="src\fft\openCLCore.h" />
-    <ClInclude Include="src\fft\openCLFFT.h" />
+    <ClInclude Include="src\core\filter\fft\FFT.h" />
+    <ClInclude Include="src\core\filter\fft\glFFT.h" />
+    <ClInclude Include="src\core\filter\fft\load_shaders.h" />
+    <ClInclude Include="src\core\filter\fft\openCLCore.h" />
+    <ClInclude Include="src\core\filter\fft\openCLFFT.h" />
     <ClInclude Include="src\font\FontManager.h" />
     <ClInclude Include="src\font\TexFont.h" />
     <ClInclude Include="src\gpu\Framebuffer.hpp" />

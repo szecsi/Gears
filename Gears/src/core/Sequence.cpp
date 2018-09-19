@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Sequence.h"
-#include "SpatialFilter.h"
+#include "filter/SpatialFilter.h"
 #include "PythonDict.h"
 #include <iostream>
 #include "Response.h"

@@ -3,10 +3,10 @@
 #include "gtest/gtest.h"
 #include <iostream>
 #include <GL/glew.h>
-#include "fft/load_shaders.h"
-#include "fft/FFT.h"
-#include "fft/openCLFFT.h"
-#include "fft/glFFT.h"
+#include "core/filter/fft/load_shaders.h"
+#include "core/filter/fft/FFT.h"
+#include "core/filter/fft/openCLFFT.h"
+#include "core/filter/fft/glFFT.h"
 
 class TestGLHelper
 {

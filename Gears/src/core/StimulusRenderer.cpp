@@ -29,7 +29,7 @@ StimulusRenderer::StimulusRenderer(SequenceRenderer::P sequenceRenderer, Stimulu
 		dynamicToneShader = nullptr;
 	if(stimulus->spatialFilter)
 	{
-		spatialFilterRenderer = SpatialFilterRenderer::create(sequenceRenderer, stimulus->spatialFilter, shaderManager, kernelManager);
+		spatialFilterRenderer = sequenceRenderer->getSpatialFilterRenderer();
 		std::string fragmentShaderSource = stimulus->spatialFilter->getKernelGeneratorShaderSource();
 		kernelShader = shaderManager->loadShader(fragmentShaderSource);
 		profileShader = shaderManager->loadShader(
@@ -88,6 +88,15 @@ StimulusRenderer::~StimulusRenderer()
 
 void StimulusRenderer::renderStimulus(GLuint defaultFrameBuffer, int skippedFrames)
 {
+	if(!alreadyRenderCurrentStimulus)
+	{
+		alreadyRenderCurrentStimulus = true;
+		if(spatialFilterRenderer && stimulus->spatialFilter)
+		{
+			spatialFilterRenderer->changeFilter(stimulus->spatialFilter);
+		}
+	}
+
 	{
 		int err = glGetError();
 		if(err)

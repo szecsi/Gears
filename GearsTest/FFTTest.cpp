@@ -1,11 +1,11 @@
 #include "TestGLCommon.h"
 
-#include "fft/glFFT.cpp"
-#include "fft/imageHelper.cpp"
-#include "fft/OpenCLHelper.cpp"
-#include "fft/openCLCore.cpp"
-#include "fft/openCLFFT.cpp"
-#include "fft/load_shaders.cpp"
+#include "core/filter/fft/glFFT.cpp"
+#include "core/filter/fft/imageHelper.cpp"
+#include "core/filter/fft/OpenCLHelper.cpp"
+#include "core/filter/fft/openCLCore.cpp"
+#include "core/filter/fft/openCLFFT.cpp"
+#include "core/filter/fft/load_shaders.cpp"
 
 const unsigned runNumber = 100;
 const size_t texNum = 3;

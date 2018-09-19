@@ -26,7 +26,7 @@
 #include "Ticker.h"
 #include "ShaderManager.h"
 #include "TextureManager.h"
-#include "KernelManager.h"
+#include "filter/KernelManager.h"
 #include "StimulusWindow.h"
 #include "event/events.h"
 #include "Response.h"

@@ -14,8 +14,8 @@
 #include "PassRenderer.h"
 #include "ShaderManager.h"
 #include "TextureManager.h"
-#include "KernelManager.h"
-#include "SpatialFilterRenderer.h"
+#include "filter/KernelManager.h"
+#include "filter/SpatialFilterRenderer.h"
 
 class SequenceRenderer;
 class PassRenderer;
@@ -26,10 +26,11 @@ class StimulusRenderer
 	friend class PassRenderer;
 	boost::shared_ptr<SequenceRenderer> sequenceRenderer;
 
+	bool alreadyRenderCurrentStimulus = false;
 	unsigned int iFrame;
 	unsigned int iTick;
 	Stimulus::CP stimulus;
-	SpatialFilterRenderer::P spatialFilterRenderer;
+	boost::shared_ptr<SpatialFilterRenderer> spatialFilterRenderer;
 
 	Shader*	randomGeneratorShader;
 	Shader*	particleShader;
