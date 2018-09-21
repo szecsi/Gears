@@ -410,7 +410,7 @@ void OPENCLFFT::redraw_input()
 
 		glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, fbo );
 		glDrawBuffer( GL_COLOR_ATTACHMENT0_EXT );
-		draw_input();
+		draw_input(1);
 		glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
 
 		glViewport( vp[0], vp[1], vp[2], vp[3] );

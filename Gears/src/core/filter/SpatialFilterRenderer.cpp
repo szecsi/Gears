@@ -10,18 +10,14 @@
 #include <limits>
 #include "SpatialFilterRenderer.h"
 
-SpatialFilterRenderer::SpatialFilterRenderer(SequenceRenderer::P sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager):
-	sequenceRenderer(sequenceRenderer), kernelManager(_kernelManager), shaderManager(shaderManager)
+SpatialFilterRenderer::SpatialFilterRenderer(SequenceRenderer::P sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager, SpatialFilter::P _spatialFilter):
+	sequenceRenderer(sequenceRenderer), kernelManager(_kernelManager), shaderManager(shaderManager), spatialFilter(_spatialFilter)
 {
 	renderQuad = [this]() 
 	{
 		this->sequenceRenderer->getNothing()->renderQuad();
 	};
-}
 
-void SpatialFilterRenderer::changeFilter(SpatialFilter::P _spatialFilter)
-{
-	spatialFilter = _spatialFilter;
 	if(spatialFilter)
 	{
 		spatialKernelId = kernelManager->getKernel(spatialFilter);
@@ -29,7 +25,7 @@ void SpatialFilterRenderer::changeFilter(SpatialFilter::P _spatialFilter)
 	}
 }
 
-void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
+void SpatialFilterRenderer::renderFrame(std::function<void(int)> renderStimulus)
 {
 	renderStim = renderStimulus;
 	if(spatialFilter->useFft)
@@ -135,7 +131,7 @@ void SpatialFilterRenderer::renderFrame(std::function<void()> renderStimulus)
 void SpatialFilterRenderer::normalConvolution()
 {
 	sequenceRenderer->spatialDomainFilteringBuffers[0]->setRenderTarget(0);
-	renderStim();
+	renderStim(0);
 	sequenceRenderer->spatialDomainFilteringBuffers[0]->disableRenderTarget();
 
 	///////////////

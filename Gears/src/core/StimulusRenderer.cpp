@@ -11,6 +11,8 @@
 #include <iostream>
 #include "event/events.h"
 #include "core/pythonerr.h"
+#include "filter/clSpatialFilterRenderer.h"
+#include "filter/glSpatialFilterRenderer.h"
 
 StimulusRenderer::StimulusRenderer(SequenceRenderer::P sequenceRenderer, Stimulus::CP stimulus, ShaderManager::P shaderManager, TextureManager::P textureManager, KernelManager::P kernelManager):
 	stimulus(stimulus),
@@ -27,9 +29,19 @@ StimulusRenderer::StimulusRenderer(SequenceRenderer::P sequenceRenderer, Stimulu
 		dynamicToneShader = shaderManager->loadShader(stimulus->getDynamicToneShaderSource());
 	else
 		dynamicToneShader = nullptr;
+
 	if(stimulus->spatialFilter)
 	{
-		spatialFilterRenderer = sequenceRenderer->getSpatialFilterRenderer();
+		auto width = sequenceRenderer->getSequence()->fftWidth_px;
+		auto height = sequenceRenderer->getSequence()->fftHeight_px;
+		if(sequenceRenderer->clFFT())
+		{
+			spatialFilterRenderer = make_unique<CLSpatialFilterRenderer>(boost::shared_ptr<SequenceRenderer>(sequenceRenderer), shaderManager, kernelManager, stimulus->spatialFilter, width, height);
+		}
+		else
+		{
+			spatialFilterRenderer = make_unique<GLSpatialFilterRenderer>(boost::shared_ptr<SequenceRenderer>(sequenceRenderer), shaderManager, kernelManager, stimulus->spatialFilter, width, height);
+		}
 		std::string fragmentShaderSource = stimulus->spatialFilter->getKernelGeneratorShaderSource();
 		kernelShader = shaderManager->loadShader(fragmentShaderSource);
 		profileShader = shaderManager->loadShader(
@@ -38,7 +50,6 @@ StimulusRenderer::StimulusRenderer(SequenceRenderer::P sequenceRenderer, Stimulu
 	}
 	else
 	{
-		spatialFilterRenderer = nullptr;
 		kernelShader = nullptr;
 		profileShader = nullptr;
 	}
@@ -88,15 +99,6 @@ StimulusRenderer::~StimulusRenderer()
 
 void StimulusRenderer::renderStimulus(GLuint defaultFrameBuffer, int skippedFrames)
 {
-	if(!alreadyRenderCurrentStimulus)
-	{
-		alreadyRenderCurrentStimulus = true;
-		if(spatialFilterRenderer && stimulus->spatialFilter)
-		{
-			spatialFilterRenderer->changeFilter(stimulus->spatialFilter);
-		}
-	}
-
 	{
 		int err = glGetError();
 		if(err)
@@ -182,7 +184,7 @@ void StimulusRenderer::renderStimulus(GLuint defaultFrameBuffer, int skippedFram
 		err = glGetError();
 		sequenceRenderer->forwardRenderedImage->disableRenderTarget();
 	}
-	auto stim = [&](){
+	auto stim = [&](int offset){
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -194,7 +196,7 @@ void StimulusRenderer::renderStimulus(GLuint defaultFrameBuffer, int skippedFram
 
 		for(auto& passRenderer : passRenderers)
 		{
-			passRenderer->renderPass(skippedFrames);
+			passRenderer->renderPass(skippedFrames, 0);
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_ONE, GL_ONE);
 		}
@@ -216,7 +218,7 @@ void StimulusRenderer::renderStimulus(GLuint defaultFrameBuffer, int skippedFram
 		if(stimulus->sequence->getMaxTemporalProcessingStateCount() > 0)
 		{
 			sequenceRenderer->nextTemporalProcessingState->setRenderTargets( );
-			stim();
+			stim(0);
 			sequenceRenderer->nextTemporalProcessingState->disableRenderTargets();
 			std::swap(sequenceRenderer->nextTemporalProcessingState, sequenceRenderer->currentTemporalProcessingState);
 		}
@@ -224,14 +226,14 @@ void StimulusRenderer::renderStimulus(GLuint defaultFrameBuffer, int skippedFram
 		else if(!stimulus->doesToneMappingInStimulusGenerator)
 		{
 			sequenceRenderer->textureQueue->setRenderTarget( sequenceRenderer->currentSlice );
-			stim();
+			stim(0);
 			sequenceRenderer->textureQueue->disableRenderTarget();
 		}
 		else
 		{
 			sequenceRenderer->beginCalibrationFrame(stimulus);
 			sequenceRenderer->beginVideoExportFrame();
-			stim();
+			stim(0);
 		}
 	}
 

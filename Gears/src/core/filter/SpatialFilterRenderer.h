@@ -28,17 +28,16 @@ protected:
 	Shader* spatialDomainConvolutionShader;
 	Shader* copyShader;
 
-	std::function<void()> renderStim;
+	std::function<void(int)> renderStim;
 	FFTChannelMode channelMode;
 	std::function<void()> renderQuad;
 
 	SpatialFilter::P spatialFilter;
 	KernelManager::P kernelManager;
 	ShaderManager::P shaderManager;
-	SpatialFilterRenderer(boost::shared_ptr<SequenceRenderer> sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager);
+	SpatialFilterRenderer(boost::shared_ptr<SequenceRenderer> sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager, SpatialFilter::P _spatialFilter);
 public:
-	void renderFrame(std::function<void()> renderStimulus);
-	void changeFilter(SpatialFilter::P spatialFilter);
+	void renderFrame(std::function<void(int)> renderStimulus);
 
 	void updateKernel();
 

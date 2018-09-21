@@ -16,9 +16,6 @@
 #include <boost/filesystem.hpp>
 #include "core/pythonerr.h"
 
-#include "filter/clSpatialFilterRenderer.h"
-#include "filter/glSpatialFilterRenderer.h"
-
 extern "C" {
 #include <libavutil/opt.h>
 
@@ -158,18 +155,6 @@ void SequenceRenderer::apply(Sequence::P sequence, ShaderManager::P shaderManage
 		textureQueue->clear();
 	}
 	stimulusRenderers.clear();
-
-	if(sequence->hasFft)
-	{
-		if(clFFT())
-		{
-			spatialFilterRenderer = CLSpatialFilterRenderer::create(boost::shared_ptr<SequenceRenderer>(this), shaderManager, kernelManager, sequence->fftWidth_px, sequence->fftHeight_px);
-		}
-		else
-		{
-			spatialFilterRenderer = GLSpatialFilterRenderer::create(boost::shared_ptr<SequenceRenderer>(this), shaderManager, kernelManager, sequence->fftWidth_px, sequence->fftHeight_px);
-		}
-	}
 
 	for(auto& s : sequence->getStimuli())
 	{

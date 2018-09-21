@@ -77,7 +77,7 @@ uint KernelManager::update(SpatialFilter::CP spatialFilter)
 	Sequence::CP sequence = sequenceRenderer->getSequence();
 	
 	auto renderKernelLambda = 
-		[&] () {
+		[&] (int) {
 				kernelShader->enable();
 				kernelShader->bindUniformBool("kernelGivenInFrequencyDomain", spatialFilter->kernelGivenInFrequencyDomain ); 
 				if(spatialFilter->useFft)
@@ -149,7 +149,7 @@ uint KernelManager::update(SpatialFilter::CP spatialFilter)
 	{
 		Framebuffer* bufi = i->second.buff;
 		bufi->setRenderTarget(0);
-		renderKernelLambda();
+		renderKernelLambda(0);
 		bufi->disableRenderTarget();
 		return bufi->getColorBuffer(0);
 	}

@@ -20,7 +20,7 @@ public:
 	}
 	virtual ~FFT() {}
 
-	void set_input( std::function<void()> f ) { draw_input = f; has_draw_input = true; }
+	void set_input( std::function<void(int)> f ) { draw_input = f; has_draw_input = true; }
 
 	virtual void do_fft( FFTChannelMode mode = FFTChannelMode::Monochrome ) = 0;
 	virtual unsigned int get_fullTex() const = 0;
@@ -33,7 +33,7 @@ protected:
 	bool redrawn;
 	unsigned int size[2];
 	unsigned int fbo;
-	std::function<void()> draw_input;
+	std::function<void(int)> draw_input;
 	bool has_draw_input = false;
 };
 

@@ -1,5 +1,7 @@
 ﻿#include "stdafx.h"
 #include "StimulusWindow.h"
+#include <ctime>
+#include <chrono>
 
 void StimulusWindow::render()
 {
@@ -20,11 +22,15 @@ void StimulusWindow::render()
 
 	for (size_t channelIdx = 0; channelIdx < channelNum; channelIdx++)
 	{
+		auto start = std::chrono::system_clock::now();
 		if (!sequenceRenderer->renderFrame(0, channelIdx))
 		{
 			quit = true;
 			break;
 		}
+		auto end = std::chrono::system_clock::now();
+		std::chrono::duration<double> elapsedSeconds = end - start;
+		std::cout << "Length of renderFrame for " << (sequenceRenderer->getSequence()->useOpenCL ? "cl" : "gl") << "fft: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
 	}
 	//TODO finish
 	// jelek az eszközre, nem tudjuk mikor vált framet az eszköz

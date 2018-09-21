@@ -67,7 +67,14 @@ using uint = unsigned int;
 	inline boost::shared_ptr<T> getSharedPtr(){ return weakPtrForGetSharedPtr.lock();} \
 	using P = boost::shared_ptr<T>;	\
 	using CP =  boost::shared_ptr<T const>;	\
-	using W = boost::weak_ptr<T>
+	using W = boost::weak_ptr<T>;
+
+template<class _Ty,
+	class... _Types>
+	inline std::unique_ptr<_Ty> make_unique(_Types&&... _Args)
+{	// make a unique_ptr
+	return (std::unique_ptr<_Ty>(new _Ty(_STD forward<_Types>(_Args)...)));
+}
 
 #ifdef __linux__
 #include <ctime>

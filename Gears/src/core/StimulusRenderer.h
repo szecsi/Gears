@@ -26,11 +26,10 @@ class StimulusRenderer
 	friend class PassRenderer;
 	boost::shared_ptr<SequenceRenderer> sequenceRenderer;
 
-	bool alreadyRenderCurrentStimulus = false;
 	unsigned int iFrame;
 	unsigned int iTick;
 	Stimulus::CP stimulus;
-	boost::shared_ptr<SpatialFilterRenderer> spatialFilterRenderer;
+	std::unique_ptr<SpatialFilterRenderer> spatialFilterRenderer;
 
 	Shader*	randomGeneratorShader;
 	Shader*	particleShader;

@@ -428,7 +428,7 @@ void GLFFT::do_fft( FFTChannelMode mode )
     if(!has_input_tex && has_draw_input)
     {
       glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT + current_fft);
-      draw_input();
+      draw_input(1);
     }
   }
   else
@@ -471,7 +471,7 @@ void GLFFT::redraw_input()
 
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
     glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT + current_fft);
-    draw_input();
+    draw_input(0);
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
     glViewport(vp[0], vp[1], vp[2], vp[3]);

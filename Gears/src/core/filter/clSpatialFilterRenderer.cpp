@@ -2,8 +2,8 @@
 #include <chrono>
 #include "clSpatialFilterRenderer.h"
 
-CLSpatialFilterRenderer::CLSpatialFilterRenderer(boost::shared_ptr<SequenceRenderer> sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager, unsigned int width, unsigned int height)
-	: SpatialFilterRenderer(sequenceRenderer, shaderManager, _kernelManager)
+CLSpatialFilterRenderer::CLSpatialFilterRenderer(boost::shared_ptr<SequenceRenderer> sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager, SpatialFilter::P _spatialFilter, unsigned int width, unsigned int height)
+	: SpatialFilterRenderer(sequenceRenderer, shaderManager, _kernelManager, _spatialFilter)
 	, fft(width, height)
 	, fft_prepare(width, height)
 	, width(width)

@@ -43,11 +43,12 @@ class PassRenderer
 	VideoFrame videoFrame;
 	Gears::Math::float2 videoClipFactorY;
 	Gears::Math::float2 videoClipFactorUV;
+	void _renderPass(float time, uint& slot);
 public:
 	GEARS_SHARED_CREATE(PassRenderer);
 	~PassRenderer();
 	
-	void renderPass(int skippedFrames);
+	void renderPass(int skippedFrames, int offset = 0);
 	void renderSample(uint sFrame);
 	void renderTimeline(uint startFrame, uint frameCount);
 

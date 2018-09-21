@@ -1,8 +1,8 @@
 #include <stdafx.h>
 #include "glSpatialFilterRenderer.h"
 
-GLSpatialFilterRenderer::GLSpatialFilterRenderer(boost::shared_ptr<SequenceRenderer> sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager, unsigned int width, unsigned int height)
-	: SpatialFilterRenderer(sequenceRenderer, shaderManager, _kernelManager)
+GLSpatialFilterRenderer::GLSpatialFilterRenderer(boost::shared_ptr<SequenceRenderer> sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager, SpatialFilter::P _spatialFilter, unsigned int width, unsigned int height)
+	: SpatialFilterRenderer(sequenceRenderer, shaderManager, _kernelManager, _spatialFilter)
 	, fft_rg(width, height)
 	, fft_ba(width, height)
 	, ifft_rg(width, height, 0, true, true)
@@ -75,7 +75,7 @@ void GLSpatialFilterRenderer::fftConvolution()
 	freqTexId[0] = fft_rg.get_fullTex();
 
 	// Convolute in frequency space
-	ifft_rg.set_input([&]() {
+	ifft_rg.set_input([&](int) {
 		convolutionShader->enable();
 		//convolutionShader->bindUniformBool( "showFft", spatialFilter->showFft );
 		convolutionShader->bindUniformTextureRect("kernel", spatialKernelId, 0);
@@ -100,7 +100,7 @@ void GLSpatialFilterRenderer::fftConvolution()
 		freqTexId[1] = fft_ba.get_fullTex();
 
 		// Convolute in frequency space
-		ifft_ba.set_input([&]() {
+		ifft_ba.set_input([&](int) {
 			convolutionShader->enable();
 			//convolutionShader->bindUniformBool( "showFft", spatialFilter->showFft );
 			convolutionShader->bindUniformTextureRect("kernel", spatialKernelId, 0);

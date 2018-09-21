@@ -102,19 +102,12 @@ PassRenderer::~PassRenderer()
 	if(videoFrameV) delete videoFrameV;
 }
 
-void PassRenderer::renderPass(int skippedFrames)
+void PassRenderer::_renderPass(float time, uint& slot)
 {
 	auto stimulus = pass->getStimulus();
 	auto sequenceRenderer = stimulusRenderer->getSequenceRenderer();
 
-	//TODO manage skipped frames in some consistent manner. With PRNGs or videos just skipping a frame is not really tolerable
-	//iFrame += skippedFrames;
-
-	float time = stimulus->sequence->getTimeForFrame(getCurrentFrame());
-
-	stimulusGeneratorShader->enable();
-
-	if( stimulusRenderer->hasSpatialFilter() && stimulus->spatialFilter->useFft )
+	if(stimulusRenderer->hasSpatialFilter() && stimulus->spatialFilter->useFft)
 		stimulusGeneratorShader->bindUniformFloat2("patternSizeOnRetina", stimulus->sequence->getSpatialFilteredFieldWidth_um(), stimulus->sequence->getSpatialFilteredFieldHeight_um());
 	else
 		stimulusGeneratorShader->bindUniformFloat2("patternSizeOnRetina", stimulus->sequence->fieldWidth_um, stimulus->sequence->fieldHeight_um);
@@ -142,7 +135,6 @@ void PassRenderer::renderPass(int skippedFrames)
 		stimulusGeneratorShader->bindUniformFloat2(setting.first.c_str(), setting.second.x, setting.second.y);
 	}
 
-	uint slot=0;
 	for(auto& setting : textureSettings)
 	{
 		stimulusGeneratorShader->bindUniformTexture(setting.first.c_str(), setting.second->getTextureHandle(), slot++);
@@ -179,12 +171,12 @@ void PassRenderer::renderPass(int skippedFrames)
 		stimulusGeneratorShader->bindUniformFloat("toneRangeMax", stimulus->toneRangeMax);
 		if(stimulus->toneMappingMode == Stimulus::ToneMappingMode::ERF)
 		{
-			stimulusGeneratorShader->bindUniformFloat("toneRangeMean",stimulus->toneRangeMean);
+			stimulusGeneratorShader->bindUniformFloat("toneRangeMean", stimulus->toneRangeMean);
 			stimulusGeneratorShader->bindUniformFloat("toneRangeVar", stimulus->toneRangeVar);
 		}
 		else
 		{
-			stimulusGeneratorShader->bindUniformFloat("toneRangeMean",0.f);
+			stimulusGeneratorShader->bindUniformFloat("toneRangeMean", 0.f);
 			stimulusGeneratorShader->bindUniformFloat("toneRangeVar", -1.f);
 		}
 		stimulusGeneratorShader->bindUniformBool("doTone", !stimulus->doesDynamicToneMapping);
@@ -194,7 +186,22 @@ void PassRenderer::renderPass(int skippedFrames)
 			stimulusGeneratorShader->bindUniformTexture("histogram", stimulusRenderer->measuredHistogramTexture->getTextureHandle(), slot++);
 		stimulusGeneratorShader->bindUniformInt("gammaSampleCount", stimulus->gammaSamplesCount);
 	}
+}
 
+void PassRenderer::renderPass(int skippedFrames, int offset)
+{
+	auto stimulus = pass->getStimulus();
+	auto sequenceRenderer = stimulusRenderer->getSequenceRenderer();
+
+	//TODO manage skipped frames in some consistent manner. With PRNGs or videos just skipping a frame is not really tolerable
+	//iFrame += skippedFrames;
+
+	float time = stimulus->sequence->getTimeForFrame(getCurrentFrame() + offset);
+
+	stimulusGeneratorShader->enable();
+
+	uint slot = 0;
+	_renderPass(time, slot);
 
 	if(pass->hasVideo() && videoFrameY != nullptr )
 	{

@@ -21,7 +21,6 @@
 #include "ShaderManager.h"
 #include "TextureManager.h"
 #include "filter/KernelManager.h"
-#include "filter/SpatialFilterRenderer.h"
 #include "Ticker.h"
 #include "filter/fft/glFFT.h"
 #include "filter/fft/openCLFFT.h"
@@ -38,7 +37,6 @@ class SequenceRenderer
 	//! Active sequence.
 	Sequence::CP sequence;
 	Framebuffer* spatialDomainFilteringBuffers[2];
-	boost::shared_ptr<SpatialFilterRenderer> spatialFilterRenderer;
 
 	bool paused;
 	unsigned int iFrame;
@@ -257,6 +255,4 @@ public:
 	{
 		return sequence->useOpenCL;
 	}
-
-	boost::shared_ptr<SpatialFilterRenderer> getSpatialFilterRenderer() { return spatialFilterRenderer; }
 };
