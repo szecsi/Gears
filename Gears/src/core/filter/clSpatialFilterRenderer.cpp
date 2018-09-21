@@ -1,9 +1,11 @@
 #include <stdafx.h>
+#include <chrono>
 #include "clSpatialFilterRenderer.h"
 
 CLSpatialFilterRenderer::CLSpatialFilterRenderer(boost::shared_ptr<SequenceRenderer> sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager, unsigned int width, unsigned int height)
 	: SpatialFilterRenderer(sequenceRenderer, shaderManager, _kernelManager)
 	, fft(width, height)
+	, fft_prepare(width, height)
 	, width(width)
 	, height(height)
 {
@@ -27,16 +29,31 @@ CLSpatialFilterRenderer::CLSpatialFilterRenderer(boost::shared_ptr<SequenceRende
 			}
 		)GLSLC0D3"
 	);
+	current_fft = &fft;
+	other_fft = &fft_prepare;
 }
 
 void CLSpatialFilterRenderer::fftConvolution()
 {
-
+	auto start = std::chrono::system_clock::now();
 	// Fourier transformation
-	fft.set_input(renderStim);
-	fft.redraw_input();
+	other_fft->set_input(renderStim);
+	other_fft->redraw_input();
+	glFinish();
+
+	auto end = std::chrono::system_clock::now();
+	std::chrono::duration<double> drawelapsedSeconds = end - start;
+	
+
+	start = std::chrono::system_clock::now();
+
 	if(!spatialFilter->stimulusGivenInFrequencyDomain)
-		fft.do_fft(channelMode);
+		other_fft->do_fft(channelMode);
+
+	end = std::chrono::system_clock::now();
+	std::chrono::duration<double> fftelapsedSeconds = end - start;
+
+	start = std::chrono::system_clock::now();
 
 	// Multiply in frequency domain
 	cl_mem filterr;
@@ -48,22 +65,39 @@ void CLSpatialFilterRenderer::fftConvolution()
 
 	if(kernelManager->getKernelChannels(spatialFilter, filterr, filterg, filterb))
 	{
-		fft.get_channels(imager, imageg, imageb);
+		other_fft->get_channels(imager, imageg, imageb);
 		size_t size[1] = {width * height};
 		if(channelMode == FFTChannelMode::Monochrome)
-			OpenCLCore::Get()->MultiplyFFT(imager, filterr, size);
+			OpenCLCore::Get()->MultiplyFFT(other_fft->getQueue(), imager, filterr, size);
 		else
-			OpenCLCore::Get()->MultiplyFFT(imager, imageg, imageb, filterr, filterr, filterr, size); // Filter is monochrome, stored in red
+			OpenCLCore::Get()->MultiplyFFT(other_fft->getQueue(), imager, imageg, imageb, filterr, filterr, filterr, size); // Filter is monochrome, stored in red
 	}
+
+	end = std::chrono::system_clock::now();
+	std::chrono::duration<double> melapsedSeconds = end - start;
+
+	start = std::chrono::system_clock::now();
 
 	// Do inverse fft
 	if(!spatialFilter->showFft)
 	{
-		fft.do_inverse_fft();
+		other_fft->do_inverse_fft();
+		if(has_current_fft)
+			current_fft->finishConv();
 	}
+
+	end = std::chrono::system_clock::now();
+	std::chrono::duration<double> ielapsedSeconds = end - start;
+	std::cout << "   Length of draw for clfft: " << drawelapsedSeconds.count() * 1000 << "ms." << std::endl;
+	std::cout << "   Length of fft for clfft: " << fftelapsedSeconds.count() * 1000 << "ms." << std::endl;
+	std::cout << "   Length of multiply for clfft: " << melapsedSeconds.count() * 1000 << "ms." << std::endl;
+	std::cout << "   Length of inverse fft for clfft: " << ielapsedSeconds.count() * 1000 << "ms." << std::endl;
+
 }
 
 void CLSpatialFilterRenderer::bindTexture(Shader* shader)
 {
-	copyShader->bindUniformTextureRect("srcrg", fft.get_fullTex(), 0);
+	copyShader->bindUniformTextureRect("srcrg", current_fft->get_fullTex(), 0);
+	std::swap(current_fft, other_fft);
+	has_current_fft = true;
 }

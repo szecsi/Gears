@@ -23,6 +23,8 @@ public:
 	virtual void redraw_input() override;
 	virtual bool storeFrequencyInTexture() const override { return false; }
 	void finish() { if ( queue ) clFinish( queue ); }
+	void finishConv();
+	cl_command_queue getQueue() const { return queue; }
 
 	const char* separateChannelsProgram =R"(
 		__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;

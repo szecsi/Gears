@@ -32,6 +32,7 @@ OPENCLFFT::OPENCLFFT( unsigned int width, unsigned int height, unsigned int inpu
 
 OPENCLFFT::~OPENCLFFT()
 {
+	clReleaseMemObject(clImgFull);
 	if ( ownsTex )
 		glDeleteTextures( 1, &fullTex );
 
@@ -126,7 +127,10 @@ void OPENCLFFT::initCl()
 	OpenCLCore::Get()->RegistKernel( "separateChannelsMono", separateChannelsMonoProgram );
 	OpenCLCore::Get()->RegistKernel( "combineChannelsMono", combineChannelsMonoProgram );
 
-	queue = OpenCLCore::Get()->queue;
+	queue = OpenCLCore::Get()->createCommandQueue();
+
+	clImgFull = clCreateFromGLTexture(ctx, CL_MEM_READ_WRITE, GL_TEXTURE_RECTANGLE_ARB, 0, fullTex, &err);
+	clPrintError(err);
 
 	clImgr = clCreateBuffer( ctx, CL_MEM_READ_ONLY, channel_img_size * sizeof( float ), NULL, &err );
 	clPrintError( err );
@@ -153,9 +157,6 @@ void OPENCLFFT::separateChannels( FFTChannelMode channelMode )
 	//ImageHelper::printImg( res, size[0], size[1] );
 
 	//delete[] res;
-
-	clImgFull = clCreateFromGLTexture( ctx, CL_MEM_READ_WRITE, GL_TEXTURE_RECTANGLE_ARB, 0, fullTex, &err );
-	clPrintError( err );
 
 	cl_kernel separatorKernel = nullptr; 
 	switch ( channelMode )
@@ -191,10 +192,6 @@ void OPENCLFFT::separateChannels( FFTChannelMode channelMode )
 	clPrintError( err );
 	err = clEnqueueNDRangeKernel( queue, separatorKernel, work_dim, &global_work_offset, global_work_size, local_work_size, 0, NULL, NULL );
 	clPrintError( err );
-
-	clFinish( queue );
-	clEnqueueReleaseGLObjects( queue, 1, &clImgFull, 0, 0, NULL );
-
 	// Read result
 	/*float* res;
 	res = new float[channel_img_size];
@@ -264,9 +261,6 @@ void OPENCLFFT::combineChannels()
 		err = clSetKernelArg( combinatorKernel, 4, sizeof( cl_mem ), &clImgb );
 		clPrintError( err );
 	}
-	
-	glFinish();
-	clEnqueueAcquireGLObjects( queue, 1, &clImgFull, 0, 0, NULL );
 
 	err = clSetKernelArg( combinatorKernel, 0, sizeof( cl_mem ), &clImgFull );
 	clPrintError( err );
@@ -282,16 +276,6 @@ void OPENCLFFT::combineChannels()
 	// delete[] res;
 
 	auto clEnd = std::chrono::system_clock::now();
-
-	clFinish( queue );
-	auto finishEnd = std::chrono::system_clock::now();
-	clEnqueueReleaseGLObjects( queue, 1, &clImgFull, 0, 0, NULL );
-
-	auto releaseEnd = std::chrono::system_clock::now();
-
-	clReleaseMemObject( clImgFull );
-
-	clImgFull = nullptr;
 
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsedSeconds = clEnd - start;
@@ -344,7 +328,12 @@ void OPENCLFFT::do_inverse_fft()
 	/*std::cout << "      Inverse FFT before combined time for clFFT: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
 	elapsedSeconds = end - start;
 	std::cout << "      Full inverse FFT time for clFFT: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;*/
+}
 
+void OPENCLFFT::finishConv()
+{
+	clFinish(queue);
+	clEnqueueReleaseGLObjects(queue, 1, &clImgFull, 0, 0, NULL);
 }
 
 void OPENCLFFT::do_fft( FFTChannelMode channelMode )

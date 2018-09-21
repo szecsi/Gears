@@ -191,7 +191,7 @@ cl_kernel OpenCLCore::CompileKernel( const char* name, const char* source, size_
 	return kernel;
 }
 
-void OpenCLCore::MultiplyFFT( cl_mem lhs, cl_mem rhs, size_t* imageSize, size_t* localWorkSize )
+void OpenCLCore::MultiplyFFT(cl_command_queue q, cl_mem lhs, cl_mem rhs, size_t* imageSize, size_t* localWorkSize )
 {
 	using OpenCLHelper::clPrintError;
 	cl_kernel multiplyFFTKernel = OpenCLCore::Get()->GetKernel( "multiplyFFTMono" );
@@ -200,7 +200,7 @@ void OpenCLCore::MultiplyFFT( cl_mem lhs, cl_mem rhs, size_t* imageSize, size_t*
 		return;
 	cl_int err;
 	err = clSetKernelArg( multiplyFFTKernel, 0, sizeof( cl_mem ), &lhs );
-	clPrintError( err );
+	clPrintError(err);
 	err = clSetKernelArg( multiplyFFTKernel, 1, sizeof( cl_mem ), &rhs );
 	clPrintError( err );
 
@@ -217,11 +217,11 @@ void OpenCLCore::MultiplyFFT( cl_mem lhs, cl_mem rhs, size_t* imageSize, size_t*
 		local = defaultLocal;
 	}
 
-	err = clEnqueueNDRangeKernel( _instance->queue, multiplyFFTKernel, 1, 0, global, local, 0, NULL, NULL );
+	err = clEnqueueNDRangeKernel( q, multiplyFFTKernel, 1, 0, global, local, 0, NULL, NULL );
 	clPrintError( err );
 }
 
-void OpenCLCore::MultiplyFFT( cl_mem lhsr, cl_mem lhsg, cl_mem lhsb, cl_mem rhsr, cl_mem rhsg, cl_mem rhsb, size_t* imageSize, size_t* localWorkSize )
+void OpenCLCore::MultiplyFFT(cl_command_queue q, cl_mem lhsr, cl_mem lhsg, cl_mem lhsb, cl_mem rhsr, cl_mem rhsg, cl_mem rhsb, size_t* imageSize, size_t* localWorkSize )
 {
 	using OpenCLHelper::clPrintError;
 	cl_kernel multiplyFFTKernel = OpenCLCore::Get()->GetKernel( "multiplyFFT" );
@@ -255,7 +255,7 @@ void OpenCLCore::MultiplyFFT( cl_mem lhsr, cl_mem lhsg, cl_mem lhsb, cl_mem rhsr
 		local = defaultLocal;
 	}
 
-	err = clEnqueueNDRangeKernel( _instance->queue, multiplyFFTKernel, 1, 0, global, local, 0, NULL, NULL );
+	err = clEnqueueNDRangeKernel( q, multiplyFFTKernel, 1, 0, global, local, 0, NULL, NULL );
 	clPrintError( err );
 }
 
@@ -283,6 +283,14 @@ void OpenCLCore::Destroy()
 void OpenCLCore::getClData(cl_mem mem, float* data, unsigned size)
 {
 	cl_int err = clEnqueueReadBuffer(queue, mem, CL_TRUE, 0, size * sizeof(float), data, 0, NULL, NULL);
+}
+
+cl_command_queue OpenCLCore::createCommandQueue()
+{
+	cl_int err;
+	cl_command_queue q = clCreateCommandQueue(ctx, device, 0, &err);
+	OpenCLHelper::clPrintError(err);
+	return q;
 }
 
 OpenCLCore* OpenCLCore::_instance = nullptr;

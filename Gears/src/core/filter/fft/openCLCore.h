@@ -45,8 +45,9 @@ public:
 	static cl_kernel GetKernel( std::string name );
 	static void RegistKernel( std::string name, const char* source, size_t sourceSize = 0, bool compile = false );
 	static cl_kernel CompileKernel( const char* name, const char* source, size_t sourceSize = 0 );
-	static void MultiplyFFT( cl_mem lhs, cl_mem rhs, size_t* global_work_size, size_t* local_work_size = nullptr );
-	static void MultiplyFFT( cl_mem lhsr, cl_mem lhsg, cl_mem lhsb, cl_mem rhsr, cl_mem rhsg, cl_mem rhsb, size_t* global_work_size, size_t* local_work_size = nullptr );
+	static void MultiplyFFT( cl_command_queue q, cl_mem lhs, cl_mem rhs, size_t* global_work_size, size_t* local_work_size = nullptr );
+	static void MultiplyFFT(cl_command_queue q, cl_mem lhsr, cl_mem lhsg, cl_mem lhsb, cl_mem rhsr, cl_mem rhsg, cl_mem rhsb, size_t* global_work_size, size_t* local_work_size = nullptr );
 	void finish() { if ( queue ) clFinish( queue ); }
+	cl_command_queue createCommandQueue();
 	static void Destroy();
 };

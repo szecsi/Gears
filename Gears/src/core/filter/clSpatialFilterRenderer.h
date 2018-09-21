@@ -5,8 +5,12 @@
 class CLSpatialFilterRenderer: public SpatialFilterRenderer
 {
 	OPENCLFFT fft;
+	OPENCLFFT fft_prepare;
+	OPENCLFFT* current_fft = nullptr;
+	OPENCLFFT* other_fft = nullptr;
 	unsigned width;
 	unsigned height;
+	bool has_current_fft = false;
 protected:
 	void fftConvolution() override;
 	void bindTexture(Shader* shader) override;
