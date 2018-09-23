@@ -143,6 +143,8 @@ public:
 
 	void cleanup();
 	void reset();
+
+	void preRender();
 	//! Computes next stimulus and displays it on screen. Return true if not in a black phase between bar or spot stimuli.
 	bool renderFrame(GLuint defaultFrameBuffer, unsigned channelId);
 

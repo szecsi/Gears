@@ -25,6 +25,14 @@ SpatialFilterRenderer::SpatialFilterRenderer(SequenceRenderer::P sequenceRendere
 	}
 }
 
+void SpatialFilterRenderer::initFirstFrames(std::function<void(int)> stim)
+{
+	if(spatialFilter->useFft)
+	{
+		channelMode = sequenceRenderer->getSequence()->isMonochrome() ? FFTChannelMode::Monochrome : FFTChannelMode::Multichrome;
+	}
+}
+
 void SpatialFilterRenderer::renderFrame(std::function<void(int)> renderStimulus)
 {
 	renderStim = renderStimulus;
@@ -107,6 +115,8 @@ void SpatialFilterRenderer::renderFrame(std::function<void(int)> renderStimulus)
 		sequenceRenderer->getNothing()->renderQuad();
 
 		copyShader->disable();
+
+		prepareNext();
 
 		if(sequenceRenderer->sequence->getMaxTemporalProcessingStateCount() > 0)
 		{

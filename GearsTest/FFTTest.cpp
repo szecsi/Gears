@@ -202,10 +202,10 @@ protected:
 		//std::cout << "(" << i << ", " << j << "): " << *c1 << (c1im >= 0.f ? "+" : "") << c1im << " ?= " << *c2 << (*(c2 + 1) >= 0.f ? "+" : "") << *(c2 + 1) << std::endl;
 		if ( !floatIsEqual( *c1, *c2 ) || !floatIsEqual( c1im, *(c2 + 1) ) )
 		{
-			//std::cout << "At (" << i << ", " << j << ") values are not match in channel ";
-			//printChannelName(channel);
-			//std::cout << "! Diff: (" << *c1 - *c2 << ", " << c1im - *(c2+1) << ")" << std::endl;
-			//std::cout << *c1 << "+" << *(c1 + 1) << " != " << *c2 << "+" << *(c2 + 1) << std::endl;
+			std::cout << "At (" << i << ", " << j << ") values are not match in channel ";
+			printChannelName(channel);
+			std::cout << "! Diff: (" << *c1 - *c2 << ", " << c1im - *(c2+1) << ")" << std::endl;
+			std::cout << *c1 << "+" << *(c1 + 1) << " != " << *c2 << "+" << *(c2 + 1) << std::endl;
 			return false;
 		}
 		return true;
@@ -308,7 +308,7 @@ TEST_F( FFTTest, SimpleCLFFT )
 {
 	clfft->do_fft();
 	clfft->do_inverse_fft();
-	OpenCLCore::Get()->finish();
+	clFinish(clfft->getQueue());
 
 	float* img = new float[w*h * 4];
 
@@ -337,7 +337,7 @@ TEST_F( FFTTest, CLFFTSequenceTest )
 
 	clfft->do_fft( FFTChannelMode::Multichrome );
 	clfft->do_inverse_fft();
-	OpenCLCore::Get()->finish();
+	clFinish(clfft->getQueue());
 
 	float* img = new float[w * h * 4];
 
@@ -351,7 +351,7 @@ TEST_F( FFTTest, CLFFTSequenceTest )
 
 	clfft->do_fft( FFTChannelMode::Multichrome );
 	clfft->do_inverse_fft();
-	OpenCLCore::Get()->finish();
+	clFinish(clfft->getQueue());
 
 	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, textures[0] );
 	glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, img );
@@ -364,8 +364,8 @@ TEST_F( FFTTest, CLFFTSequenceTest )
 
 TEST_F( FFTTest, clAndglFFT )
 {
-	clfft->do_fft( FFTChannelMode::Multichrome );
-	OpenCLCore::Get()->finish();
+	clfft->do_fft(FFTChannelMode::Multichrome);
+	clFinish(clfft->getQueue());
 	float* img[2];
 	img[0] = new float[w * h * 4];
 	img[1] = new float[w * h * 4];
@@ -379,7 +379,7 @@ TEST_F(FFTTest, convolutionWithclFFT)
 {
 	// Kernel
 	clfft->do_fft(FFTChannelMode::Monochrome);
-	OpenCLCore::Get()->finish();
+	clFinish(clfft->getQueue());
 
 	float* t = new float[w * h * 4];
 	for (size_t i = 0; i < h; i++)
@@ -425,7 +425,7 @@ TEST_F(FFTTest, convolutionWithclFFT)
 	//ImageHelper::printImg(cldata, w / 2, h, "Filter ft", 1, true, 1);
 
 	size_t size[1] = { (16 / 2) * 16 };
-	OpenCLCore::Get()->MultiplyFFT(imager, filterr, size);
+	OpenCLCore::Get()->MultiplyFFT(clfft->getQueue(), imager, filterr, size);
 
 	clEnqueueReadBuffer(OpenCLCore::Get()->queue, imager, CL_TRUE, 0, (h * (w + 2)) * sizeof(float), cldata, 0, NULL, NULL);
 	//ImageHelper::printImg(cldata, w / 2, h, "Convolution ft", 1, true, 1);
@@ -500,5 +500,5 @@ TEST_F(FFTTest, SimpleclFFTTime)
 	std::chrono::duration<double> fullDuration = fullEnd - fullStart;
 	std::cout << runNumber << " FFT finished elapsed time: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
 	std::cout << runNumber << " FFT finished elapsed time: " << fullDuration.count() * 1000 << "ms." << std::endl;
-	OpenCLCore::Get()->finish();
+	clFinish(clfft->getQueue());
 }

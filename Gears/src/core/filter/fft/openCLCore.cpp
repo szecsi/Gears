@@ -89,8 +89,8 @@ OpenCLCore* OpenCLCore::Get()
 	if ( !_instance )
 	{
 		_instance = new OpenCLCore();
-		RegistKernel( "multiplyFFTMono", multiplyFFTMonoProgram );
-		RegistKernel( "multiplyFFT", multiplyFFTProgram );
+		RegistKernel( "multiplyFFTMono", multiplyFFTMonoProgram, 0, true );
+		RegistKernel( "multiplyFFT", multiplyFFTProgram, 0, true );
 	}
 	return _instance;
 }

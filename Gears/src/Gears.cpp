@@ -30,6 +30,7 @@
 #include "StimulusWindow.h"
 #include "event/events.h"
 #include "Response.h"
+#include "filter/fft/OpenCLFFT.h"
 
 Sequence::P				sequence = nullptr;
 SequenceRenderer::P		sequenceRenderer = nullptr;
@@ -52,6 +53,7 @@ std::string createStimulusWindow()
 	shaderManager  = ShaderManager::create();
 	textureManager = TextureManager::create();
 	kernelManager = KernelManager::create(sequenceRenderer, shaderManager);
+	OPENCLFFT::staticInit();
 	return stimulusWindow->getSpecs();
 }
 

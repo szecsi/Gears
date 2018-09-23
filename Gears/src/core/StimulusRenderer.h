@@ -53,6 +53,7 @@ public:
 	~StimulusRenderer();
 	void apply( ShaderManager::P shaderManager, TextureManager::P textureManager);
 	
+	void preRender();
 	void renderStimulus(GLuint defaultFrameBuffer, int skippedFrames);
 	void renderSample(uint sFrame, int left, int top, int width, int height);
 	void renderTimeline(bool* signals, uint startFrame, uint frameCount);

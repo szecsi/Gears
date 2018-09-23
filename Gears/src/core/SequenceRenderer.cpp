@@ -247,6 +247,14 @@ void SequenceRenderer::apply(Sequence::P sequence, ShaderManager::P shaderManage
 
 }
 
+void SequenceRenderer::preRender()
+{
+	for(auto s : stimulusRenderers)
+	{
+		s.second->preRender();
+	}
+}
+
 bool SequenceRenderer::renderFrame(GLuint defaultFrameBuffer, unsigned channelIdx)
 {
 	typedef std::chrono::high_resolution_clock Clock;

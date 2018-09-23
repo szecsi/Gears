@@ -97,6 +97,32 @@ StimulusRenderer::~StimulusRenderer()
 	delete gammaTexture;
 }
 
+void StimulusRenderer::preRender()
+{
+		if(sequenceRenderer->clFFT() && spatialFilterRenderer)
+		{
+			std::function<void(int)> stim = [&](int frame) {
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+				if(stimulus->requiresClearing)
+				{
+					glClearColor(stimulus->clearColor.x, stimulus->clearColor.y, stimulus->clearColor.z, 1.0);
+					glClear(GL_COLOR_BUFFER_BIT);
+				}
+
+				for(auto& passRenderer : passRenderers)
+				{
+					passRenderer->renderSample(frame);
+					glEnable(GL_BLEND);
+					glBlendFunc(GL_ONE, GL_ONE);
+				}
+				glDisable(GL_BLEND);
+			};
+			spatialFilterRenderer->initFirstFrames(stim);
+		}
+}
+
 void StimulusRenderer::renderStimulus(GLuint defaultFrameBuffer, int skippedFrames)
 {
 	{

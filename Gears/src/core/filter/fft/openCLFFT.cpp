@@ -5,6 +5,58 @@
 #include <chrono>
 #include <algorithm>
 
+const char* separateChannelsProgram = R"(
+		__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
+		__kernel void separateChannels(
+		  __read_only image2d_t fullImg,
+		  const int w,
+		  __global float* imgr,
+		  __global float* imgg,
+		  __global float* imgb)
+		  {
+			int i = get_global_id( 0 );
+			int channelIndex = (i/w)*(w+2)+(i%w);
+			imgr[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).x;
+			imgg[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).y;
+			imgb[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).z;
+		  })";
+
+const char* separateChannelsMonoProgram = R"(
+		__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE	| CLK_FILTER_NEAREST;
+		__kernel void separateChannelsMono(
+		  __read_only image2d_t fullImg,
+		  const int w,
+		  __global float* imgr)
+		  {
+			int i = get_global_id( 0 );
+			int channelIndex = (i/w)*(w+2)+(i%w);
+			imgr[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).x;
+		  })";
+
+const char* combineChannelsProgram = R"(
+		__kernel void combineChannels(
+		  __write_only image2d_t fullImg,
+		  const int w,
+		  __global float* imgr,
+		  __global float* imgg,
+		  __global float* imgb)
+		  {
+			int i = get_global_id( 0 );
+			int index = i + (i/w)*2;
+			write_imagef( fullImg, (int2)(i/w, i%w), (float4)(imgr[index], imgg[index], imgb[index], 1.0f) );
+		  })";
+
+const char* combineChannelsMonoProgram = R"(
+		__kernel void combineChannelsMono(
+		  __write_only image2d_t fullImg,
+		  const int w,
+		  __global float* imgr)
+		  {
+			int i = get_global_id( 0 );
+			int index = i + (i/w)*2;
+			write_imagef( fullImg, (int2)(i/w, i%w), (float4)(imgr[index], imgr[index], imgr[index], 1.0f) );
+		  })";
+
 OPENCLFFT::OPENCLFFT( unsigned int width, unsigned int height, unsigned int input_tex ):
 	FFT( width, height ), fullTex( input_tex ),
 	full_img_size( size[0] * size[1] * 4 ), channel_img_size( size[1] * (size[0] + 2) ), transformed( false ), ownsChannels( true )
@@ -113,6 +165,14 @@ void OPENCLFFT::bakePlans()
 
 }
 
+void OPENCLFFT::staticInit()
+{
+	OpenCLCore::Get()->RegistKernel("separateChannels", separateChannelsProgram, 0, true);
+	OpenCLCore::Get()->RegistKernel("combineChannels", combineChannelsProgram, 0, true);
+	OpenCLCore::Get()->RegistKernel("separateChannelsMono", separateChannelsMonoProgram, 0, true);
+	OpenCLCore::Get()->RegistKernel("combineChannelsMono", combineChannelsMonoProgram, 0, true);
+}
+
 void OPENCLFFT::initCl()
 {
 	using OpenCLHelper::clPrintError;
@@ -121,11 +181,6 @@ void OPENCLFFT::initCl()
 
 	ctx = OpenCLCore::Get()->ctx;
 	device = OpenCLCore::Get()->device;
-
-	OpenCLCore::Get()->RegistKernel( "separateChannels", separateChannelsProgram );
-	OpenCLCore::Get()->RegistKernel( "combineChannels", combineChannelsProgram );
-	OpenCLCore::Get()->RegistKernel( "separateChannelsMono", separateChannelsMonoProgram );
-	OpenCLCore::Get()->RegistKernel( "combineChannelsMono", combineChannelsMonoProgram );
 
 	queue = OpenCLCore::Get()->createCommandQueue();
 
@@ -184,8 +239,8 @@ void OPENCLFFT::separateChannels( FFTChannelMode channelMode )
 		err = clSetKernelArg( separatorKernel, 4, sizeof( cl_mem ), &clImgb );
 		clPrintError( err );
 	}
-	glFinish();
 	clEnqueueAcquireGLObjects( queue, 1, &clImgFull, 0, 0, NULL );
+	hasImageObject = true;
 
 	//Kenels argument settings
 	err = clSetKernelArg( separatorKernel, 0, sizeof( cl_mem ), &clImgFull );
@@ -334,6 +389,7 @@ void OPENCLFFT::finishConv()
 {
 	clFinish(queue);
 	clEnqueueReleaseGLObjects(queue, 1, &clImgFull, 0, 0, NULL);
+	hasImageObject = false;
 }
 
 void OPENCLFFT::do_fft( FFTChannelMode channelMode )
@@ -343,7 +399,13 @@ void OPENCLFFT::do_fft( FFTChannelMode channelMode )
 	if ( !redrawn )
 		redraw_input();
 
+	auto start = std::chrono::system_clock::now();
 	separateChannels( channelMode );
+
+	auto end = std::chrono::system_clock::now();
+	std::chrono::duration<double> selapsedSeconds = end - start;
+
+	start = std::chrono::system_clock::now();
 
 	clfftEnqueueTransform( planHandleFFT, CLFFT_FORWARD, 1, &queue, 0, NULL, NULL, &clImgr, NULL, NULL );
 	if ( channelMode == FFTChannelMode::Multichrome )
@@ -353,6 +415,12 @@ void OPENCLFFT::do_fft( FFTChannelMode channelMode )
 	}
 	fftMode = channelMode;
 	transformed = true;
+
+	end = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsedSeconds = end - start;
+
+	/*std::cout << "        Length of separateChannels: " << selapsedSeconds.count() * 1000 << "ms." << std::endl;
+	std::cout << "        Length of fft: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;*/
 
 	/*cl_int err;
 	float* res = new float[full_img_size];

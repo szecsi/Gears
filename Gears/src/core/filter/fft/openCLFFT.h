@@ -25,64 +25,15 @@ public:
 	void finish() { if ( queue ) clFinish( queue ); }
 	void finishConv();
 	cl_command_queue getQueue() const { return queue; }
-
-	const char* separateChannelsProgram =R"(
-		__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
-		__kernel void separateChannels(
-		  __read_only image2d_t fullImg,
-		  const int w,
-		  __global float* imgr,
-		  __global float* imgg,
-		  __global float* imgb)
-		  {
-			int i = get_global_id( 0 );
-			int channelIndex = (i/w)*(w+2)+(i%w);
-			imgr[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).x;
-			imgg[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).y;
-			imgb[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).z;
-		  })";
-
-	const char* separateChannelsMonoProgram = R"(
-		__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE	| CLK_FILTER_NEAREST;
-		__kernel void separateChannelsMono(
-		  __read_only image2d_t fullImg,
-		  const int w,
-		  __global float* imgr)
-		  {
-			int i = get_global_id( 0 );
-			int channelIndex = (i/w)*(w+2)+(i%w);
-			imgr[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).x;
-		  })";
-
-	const char* combineChannelsProgram = R"(
-		__kernel void combineChannels(
-		  __write_only image2d_t fullImg,
-		  const int w,
-		  __global float* imgr,
-		  __global float* imgg,
-		  __global float* imgb)
-		  {
-			int i = get_global_id( 0 );
-			int index = i + (i/w)*2;
-			write_imagef( fullImg, (int2)(i/w, i%w), (float4)(imgr[index], imgg[index], imgb[index], 1.0f) );
-		  })";
-
-	const char* combineChannelsMonoProgram = R"(
-		__kernel void combineChannelsMono(
-		  __write_only image2d_t fullImg,
-		  const int w,
-		  __global float* imgr)
-		  {
-			int i = get_global_id( 0 );
-			int index = i + (i/w)*2;
-			write_imagef( fullImg, (int2)(i/w, i%w), (float4)(imgr[index], imgr[index], imgr[index], 1.0f) );
-		  })";
+	bool HasImageObject() { return hasImageObject; }
+	static void staticInit();
 
 protected:
 	unsigned int fullTex;
 	unsigned short has_input_tex;
 	bool transformed;
 	bool ownsChannels;
+	bool hasImageObject = false;
 	FFTChannelMode fftMode = FFTChannelMode::Monochrome;
 
 	cl_mem clImgr = nullptr;

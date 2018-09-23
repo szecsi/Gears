@@ -48,6 +48,8 @@ void StimulusWindow::preRender()
 	makeCurrent();
 	glViewport(0, 0, screenw, screenh);
 
+	sequenceRenderer->preRender();
+
 	if (sequenceRenderer->getSequence()->getUsesBusyWaitingThreadForSingals())
 		ticker = sequenceRenderer->startTicker();
 }

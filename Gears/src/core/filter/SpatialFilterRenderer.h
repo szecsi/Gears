@@ -40,6 +40,8 @@ public:
 	void renderFrame(std::function<void(int)> renderStimulus);
 
 	void updateKernel();
+	virtual void initFirstFrames(std::function<void(int)> stim);
+	virtual void prepareNext() {};
 
 protected:
 	virtual void fftConvolution() = 0;

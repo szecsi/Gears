@@ -32,6 +32,8 @@ namespace OpenCLHelper
 			break;
 			case CL_INVALID_ARG_INDEX:
 			std::cout << "Invaluid argumentum index";
+			case -9999:
+			std::cout << "Illegal read or write to a buffer";
 			break;
 
 		}
