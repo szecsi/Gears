@@ -25,6 +25,30 @@ const float gauss8x8[64] =
 	0.0000f,    0.0000f,    0.0000f,    0.0001f,    0.0001f,    0.0000f,    0.0000f,    0.0000f
 };
 
+const float circle[64] =
+{
+	0.0000f,    0.0000f,    0.0000f,    0.0000f,    0.0000f,    0.0000f,    0.0000f,    0.0000f,
+	0.0000f,    0.0000f,    0.0000f,    1.0000f,    1.0000f,    0.0000f,    0.0000f,    0.0000f,
+	0.0000f,    0.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    0.0000f,    0.0000f,
+	0.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    0.0000f,
+	0.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    0.0000f,
+	0.0000f,    0.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    0.0000f,    0.0000f,
+	0.0000f,    0.0000f,    0.0000f,    1.0000f,    1.0000f,    0.0000f,    0.0000f,    0.0000f,
+	0.0000f,    0.0000f,    0.0000f,    0.0000f,    0.0000f,    0.0000f,    0.0000f,    0.0000f,
+};
+
+const float wall[64] =
+{
+	1.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,
+	1.0000f,    0.0000f,    0.0000f,    0.0000f,    0.0000f,    0.0000f,    0.0000f,    1.0000f,
+	1.0000f,    0.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    0.0000f,    1.0000f,
+	1.0000f,    0.0000f,    1.0000f,    0.0000f,    0.0000f,    1.0000f,    0.0000f,    1.0000f,
+	1.0000f,    0.0000f,    1.0000f,    0.0000f,    0.0000f,    1.0000f,    0.0000f,    1.0000f,
+	1.0000f,    0.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    0.0000f,    1.0000f,
+	1.0000f,    0.0000f,    0.0000f,    0.0000f,    0.0000f,    0.0000f,    0.0000f,    1.0000f,
+	1.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f,    1.0000f
+};
+
 void separateRGBA( float* pixels, float* rg, float* ba )
 {
 	for ( unsigned i = 0; i < h; i++ )
@@ -62,8 +86,8 @@ void generateInputData()
 		for ( unsigned j = 0; j < w * 4; j += 4 )
 		{
 			p[i*w * 4 + j + 0] = gauss8x8[i*w + j / 4];
-			p[i*w * 4 + j + 1] = 1.0f;
-			p[i*w * 4 + j + 2] = 1.0f;
+			p[i*w * 4 + j + 1] = circle[i*w + j / 4];
+			p[i*w * 4 + j + 2] = wall[i*w + j / 4];
 			p[i*w * 4 + j + 3] = 1.0f;
 		}
 }
@@ -284,6 +308,43 @@ protected:
 	}
 };
 
+TEST_F( FFTTest, TestSeparateChannel )
+{
+	float* img;
+	img = new float[w * h * 4];
+	float* data;
+	data = new float[(w+2) * h]; // has padding
+
+	clfft->separateChannels( FFTChannelMode::Multichrome );
+	clEnqueueReadBuffer(clfft->getQueue(), clfft->clImgr, CL_TRUE, 0, (w+2) * h * sizeof(float), data, 0, NULL, NULL);
+
+	for(unsigned i = 0; i < h; i++)
+		for(unsigned j = 0; j < w; j ++)
+		{
+
+			EXPECT_EQ(data[i*(w+2) + j], gauss8x8[i*w + j]);
+		}
+
+	clEnqueueReadBuffer(clfft->getQueue(), clfft->clImgg, CL_TRUE, 0, (w + 2) * h * sizeof(float), data, 0, NULL, NULL);
+	for(unsigned i = 0; i < h; i++)
+		for(unsigned j = 0; j < w; j++)
+		{
+
+			EXPECT_EQ(data[i*(w + 2) + j], circle[i*w + j]);
+		}
+
+	clEnqueueReadBuffer(clfft->getQueue(), clfft->clImgb, CL_TRUE, 0, (w + 2) * h * sizeof(float), data, 0, NULL, NULL);
+	for(unsigned i = 0; i < h; i++)
+		for(unsigned j = 0; j < w; j++)
+		{
+
+			EXPECT_EQ(data[i*(w + 2) + j], wall[i*w + j]);
+		}
+
+	delete img;
+	delete data;
+}
+
 TEST_F( FFTTest, SimpleGLFFT )
 {
 	float* img[2];
@@ -316,7 +377,7 @@ TEST_F( FFTTest, SimpleCLFFT )
 	glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, img );
 	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, 0 );
 
-	EXPECT_TRUE( mtxIsEqualPart( img, p, w, h, 3 ) );
+	EXPECT_TRUE( mtxIsEqualPart( img, p, w, h, 0 ) );
 
 	delete[] img;
 }
@@ -340,23 +401,20 @@ TEST_F( FFTTest, CLFFTSequenceTest )
 	clFinish(clfft->getQueue());
 
 	float* img = new float[w * h * 4];
+	size_t origin[3] = {0,0,0};
+	size_t region[3] = {w,h,0};
 
-	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, textures[0] );
-	glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, img );
-	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, 0 );
-
+	clEnqueueReadImage(clfft->getQueue(), clfft->clImgFull, CL_TRUE, origin, region, 0, 0, img, 0, NULL, NULL);
+	ImageHelper::printImg(img, w, h, "fullImg", 4);
 	EXPECT_TRUE( mtxIsEqual( img, p, w, h ) );
 
-	setTextureData( w, h, t );
+	setTextureData(w, h, t);
 
 	clfft->do_fft( FFTChannelMode::Multichrome );
 	clfft->do_inverse_fft();
 	clFinish(clfft->getQueue());
 
-	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, textures[0] );
-	glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, img );
-	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, 0 );
-
+	clEnqueueReadImage(clfft->getQueue(), clfft->clImgFull, CL_TRUE, origin, region, 0, 0, img, 0, NULL, NULL);
 	EXPECT_TRUE( mtxIsEqual( img, t, w, h ) );
 
 	delete[] img;
@@ -395,8 +453,6 @@ TEST_F(FFTTest, convolutionWithclFFT)
 		}
 	}
 
-	ImageHelper::printImgChannel(t, w, h, 4, 1, "Img for conv");
-
 	unsigned imgTex;
 	glGenTextures(1, &imgTex);
 	initTexture(imgTex);
@@ -424,8 +480,9 @@ TEST_F(FFTTest, convolutionWithclFFT)
 	clEnqueueReadBuffer(OpenCLCore::Get()->queue, filterr, CL_TRUE, 0, (h * (w + 2)) * sizeof(float), cldata, 0, NULL, NULL);
 	//ImageHelper::printImg(cldata, w / 2, h, "Filter ft", 1, true, 1);
 
-	size_t size[1] = { (16 / 2) * 16 };
-	OpenCLCore::Get()->MultiplyFFT(clfft->getQueue(), imager, filterr, size);
+	size_t size[1] = { (16 / 2 + 1) * 16 };
+	size_t local_size[1] = {16};
+	OpenCLCore::Get()->MultiplyFFT(clfft->getQueue(), imager, filterr, size, local_size);
 
 	clEnqueueReadBuffer(OpenCLCore::Get()->queue, imager, CL_TRUE, 0, (h * (w + 2)) * sizeof(float), cldata, 0, NULL, NULL);
 	//ImageHelper::printImg(cldata, w / 2, h, "Convolution ft", 1, true, 1);
@@ -501,4 +558,59 @@ TEST_F(FFTTest, SimpleclFFTTime)
 	std::cout << runNumber << " FFT finished elapsed time: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
 	std::cout << runNumber << " FFT finished elapsed time: " << fullDuration.count() * 1000 << "ms." << std::endl;
 	clFinish(clfft->getQueue());
+}
+
+TEST_F(FFTTest, clFFTBatch)
+{
+	using OpenCLHelper::clPrintError;
+	cl_int err;
+	clfftDim dim = CLFFT_2D;
+	clfftPlanHandle planHandleFFT;
+	cl_context ctx = OpenCLCore::Get()->ctx;
+	unsigned size[2] = {4,4};
+	cl_command_queue queue = OpenCLCore::Get()->createCommandQueue();
+
+	err = clfftCreateDefaultPlan(&planHandleFFT, ctx, dim, size);
+	clPrintError(err);
+
+	err = clfftSetPlanPrecision(planHandleFFT, CLFFT_SINGLE);
+	clPrintError(err);
+	err = clfftSetLayout(planHandleFFT, CLFFT_REAL, CLFFT_HERMITIAN_INTERLEAVED);
+	clPrintError(err);
+	size_t strides[3] = {1, 6};
+	clfftSetPlanInStride(planHandleFFT, dim, strides);
+	strides[1] = 3;
+	clfftSetPlanOutStride(planHandleFFT, dim, strides);
+	err = clfftSetResultLocation(planHandleFFT, CLFFT_INPLACE);
+	clPrintError(err);
+	clfftSetPlanBatchSize(planHandleFFT, 2);
+	clfftSetPlanDistance(planHandleFFT, 24, 12);
+
+	err = clfftBakePlan(planHandleFFT, 1, &queue, NULL, NULL);
+	clPrintError(err);
+	//6=4+2 for rows
+	float alma[4 * 6 * 2] =
+	{
+		0.0f, 0.0f, 0.0f, 0.0f,/**/ 0.0f, 0.0f, 
+		0.0f, 1.0f, 1.0f, 0.0f,/**/ 0.0f, 0.0f,
+		0.0f, 1.0f, 1.0f, 0.0f,/**/ 0.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,/**/ 0.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,/**/ 0.0f, 0.0f,
+		0.0f, 1.0f, 1.0f, 0.0f,/**/ 0.0f, 0.0f,
+		0.0f, 1.0f, 1.0f, 0.0f,/**/ 0.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,/**/ 0.0f, 0.0f
+	};
+
+	float res[4 * 6 * 2];
+
+	cl_mem clalma = clCreateBuffer(ctx, CL_MEM_READ_WRITE, 4 * 6 * 2 * sizeof(float), NULL, &err);
+
+	clEnqueueWriteBuffer(queue, clalma, CL_TRUE, 0, 4 * 6 * 2 * sizeof(float), alma, 0, NULL, NULL);
+	clFinish(queue);
+
+	clfftEnqueueTransform(planHandleFFT, CLFFT_BACKWARD, 1, &queue, 0, NULL, NULL, &clalma, NULL, NULL);
+	clFinish(queue);
+	clEnqueueReadBuffer(queue, clalma, CL_TRUE, 0, 4 * 6 * 2 * sizeof(float), res, 0, NULL, NULL);
+	ImageHelper::printImg(res, 3, 8, "res", 1, true);
+
 }

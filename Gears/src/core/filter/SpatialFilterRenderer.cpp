@@ -13,6 +13,7 @@
 SpatialFilterRenderer::SpatialFilterRenderer(SequenceRenderer::P sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager, SpatialFilter::P _spatialFilter):
 	sequenceRenderer(sequenceRenderer), kernelManager(_kernelManager), shaderManager(shaderManager), spatialFilter(_spatialFilter)
 {
+	channelMode = sequenceRenderer->getSequence()->isMonochrome() ? FFTChannelMode::Monochrome : FFTChannelMode::Multichrome;
 	renderQuad = [this]() 
 	{
 		this->sequenceRenderer->getNothing()->renderQuad();
@@ -27,10 +28,6 @@ SpatialFilterRenderer::SpatialFilterRenderer(SequenceRenderer::P sequenceRendere
 
 void SpatialFilterRenderer::initFirstFrames(std::function<void(int)> stim)
 {
-	if(spatialFilter->useFft)
-	{
-		channelMode = sequenceRenderer->getSequence()->isMonochrome() ? FFTChannelMode::Monochrome : FFTChannelMode::Multichrome;
-	}
 }
 
 void SpatialFilterRenderer::renderFrame(std::function<void(int)> renderStimulus)
@@ -38,7 +35,6 @@ void SpatialFilterRenderer::renderFrame(std::function<void(int)> renderStimulus)
 	renderStim = renderStimulus;
 	if(spatialFilter->useFft)
 	{
-		channelMode = sequenceRenderer->getSequence()->isMonochrome() ? FFTChannelMode::Monochrome : FFTChannelMode::Multichrome;
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();

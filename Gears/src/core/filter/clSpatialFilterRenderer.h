@@ -16,7 +16,7 @@ protected:
 	void bindTexture(Shader* shader) override;
 	void multiply(OPENCLFFT* fft);
 public:
-	CLSpatialFilterRenderer(boost::shared_ptr<SequenceRenderer> sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager, SpatialFilter::P _spatialFilter, unsigned int width, unsigned int height);
+	CLSpatialFilterRenderer(boost::shared_ptr<SequenceRenderer> sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager, SpatialFilter::P _spatialFilter, unsigned int width, unsigned int height, FFTChannelMode channelMode);
 
 	void initFirstFrames(std::function<void(int)> stim) override;
 	void prepareNext() override;

@@ -2,13 +2,14 @@
 #include <chrono>
 #include "clSpatialFilterRenderer.h"
 
-CLSpatialFilterRenderer::CLSpatialFilterRenderer(boost::shared_ptr<SequenceRenderer> sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager, SpatialFilter::P _spatialFilter, unsigned int width, unsigned int height)
+CLSpatialFilterRenderer::CLSpatialFilterRenderer(boost::shared_ptr<SequenceRenderer> sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager, SpatialFilter::P _spatialFilter, unsigned int width, unsigned int height, FFTChannelMode channelMode)
 	: SpatialFilterRenderer(sequenceRenderer, shaderManager, _kernelManager, _spatialFilter)
-	, fft(width, height)
-	, fft_prepare(width, height)
+	, fft(width, height, channelMode)
+	, fft_prepare(width, height, channelMode)
 	, width(width)
 	, height(height)
 {
+	this->channelMode = channelMode;
 	copyShader = shaderManager->loadShader(R"GLSLC0D3(
 			#version 150 compatibility
 	    	#extension GL_ARB_texture_rectangle : enable
@@ -36,18 +37,14 @@ CLSpatialFilterRenderer::CLSpatialFilterRenderer(boost::shared_ptr<SequenceRende
 void CLSpatialFilterRenderer::multiply(OPENCLFFT* fft)
 {
 	cl_mem filterr;
-	cl_mem filterg;
-	cl_mem filterb;
 	cl_mem imager;
-	cl_mem imageg;
-	cl_mem imageb;
 
-	if(kernelManager->getKernelChannels(spatialFilter, filterr, filterg, filterb))
+	if(kernelManager->getKernelChannels(spatialFilter, filterr))
 	{
-		fft->get_channels(imager, imageg, imageb);
-		size_t size[1] = {width * height};
+		fft->get_channels(imager);
+		size_t size[1] = {(width / 2 + 1) * height};
 		if(channelMode == FFTChannelMode::Monochrome)
-			OpenCLCore::Get()->MultiplyFFT(fft->getQueue(), imager, filterr, size);
+			OpenCLCore::Get()->MultiplyMonoFFT(fft->getQueue(), imager, filterr, size);
 		else
 			OpenCLCore::Get()->MultiplyFFT(fft->getQueue(), imager, filterr, size); // Filter is monochrome, stored in red
 	}
@@ -65,7 +62,7 @@ void CLSpatialFilterRenderer::fftConvolution()
 	{
 		firstFrame = false;
 		if(!spatialFilter->stimulusGivenInFrequencyDomain)
-			current_fft->do_fft(channelMode);
+			current_fft->do_fft();
 
 		multiply(current_fft);
 
@@ -82,7 +79,7 @@ void CLSpatialFilterRenderer::fftConvolution()
 	start = std::chrono::system_clock::now();
 
 	if(!spatialFilter->stimulusGivenInFrequencyDomain)
-		other_fft->do_fft(channelMode);
+		other_fft->do_fft();
 
 	end = std::chrono::system_clock::now();
 	std::chrono::duration<double> fftelapsedSeconds = end - start;
@@ -146,7 +143,7 @@ void CLSpatialFilterRenderer::initFirstFrames(std::function<void(int)> stim)
 	other_fft->redraw_input();
 
 	/*if(!spatialFilter->stimulusGivenInFrequencyDomain)
-		current_fft->do_fft(channelMode);
+		current_fft->do_fft();
 
 	multiply(current_fft);
 

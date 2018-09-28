@@ -5,14 +5,14 @@ namespace ImageHelper
 {
 
 #ifdef _DEBUG
-	void printPixel(std::ostream& st, float* img, unsigned& idx, unsigned channels, bool complex, unsigned channel = 0)
+	void printPixel(std::ostream& st, const float* img, unsigned& idx, unsigned channels, bool complex, unsigned channel = 0)
 	{
-		if (abs(img[idx]) < 0.0000001f)
+		/*if (abs(img[idx]) < 0.0000001f)
 		{
 			idx += channels;
 			return;
-		}
-		st << idx / channels << "(";
+		}*/
+		st << "(";
 		for ( unsigned k = 0; k < channels; k++ )
 		{
 			if (channel > 0 && channel != k + 1)
@@ -32,7 +32,7 @@ namespace ImageHelper
 	}
 #endif
 
-	void _printImg( float* img, unsigned w, unsigned h, const char* name, unsigned channels, bool complex, unsigned pad, unsigned channel, unsigned offsetW, unsigned offsetH, std::ostream& st )
+	void _printImg( const float* img, unsigned w, unsigned h, const char* name, unsigned channels, bool complex, unsigned pad, unsigned channel, unsigned offsetW, unsigned offsetH, std::ostream& st )
 	{
 #ifdef _DEBUG
 		if (w < offsetW || h < offsetH)
@@ -55,25 +55,24 @@ namespace ImageHelper
 					printPixel(st, img, idx, channels, complex, channel);
 				}
 			}
-			if (abs(img[idx - 4]) > 0.0000001f)
-				st << std::endl;
+			st << std::endl;
 		}
 		st << std::endl;
 		st << std::endl;
 #endif
 	}
 
-	void printImg( float* img, unsigned w, unsigned h, const char* name, unsigned channels, bool complex, unsigned pad, unsigned offsetW, unsigned offsetH)
+	void printImg(const float* img, unsigned w, unsigned h, const char* name, unsigned channels, bool complex, unsigned pad, unsigned offsetW, unsigned offsetH)
 	{
 		_printImg( img, w, h, name, channels, complex, pad, 0, offsetW, offsetH, std::cout );
 	}
 
-	void printImgStream(std::ostream& st, float* img, unsigned w, unsigned h, const char* name, unsigned channels, bool complex, unsigned pad, unsigned offsetW, unsigned offsetH)
+	void printImgStream(std::ostream& st, const float* img, unsigned w, unsigned h, const char* name, unsigned channels, bool complex, unsigned pad, unsigned offsetW, unsigned offsetH)
 	{
 		_printImg(img, w, h, name, channels, complex, pad, 0, offsetW, offsetH, st);
 	}
 
-	void printImgChannel( float* img, unsigned w, unsigned h, unsigned channels, unsigned channel, const char* name, bool complex, unsigned pad, unsigned offsetW, unsigned offsetH)
+	void printImgChannel(  const float* img, unsigned w, unsigned h, unsigned channels, unsigned channel, const char* name, bool complex, unsigned pad, unsigned offsetW, unsigned offsetH)
 	{
 		_printImg( img, w, h, name, channels, complex, pad, channel, offsetW, offsetH, std::cout );
 	}

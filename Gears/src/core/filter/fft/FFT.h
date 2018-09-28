@@ -22,7 +22,7 @@ public:
 
 	void set_input( std::function<void(int)> f ) { draw_input = f; has_draw_input = true; }
 
-	virtual void do_fft( FFTChannelMode mode = FFTChannelMode::Monochrome ) = 0;
+	virtual void do_fft() = 0;
 	virtual unsigned int get_fullTex() const = 0;
 	virtual unsigned int take_fullTex_ownership() = 0;
 	virtual void redraw_input() = 0;

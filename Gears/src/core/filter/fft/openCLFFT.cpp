@@ -10,15 +10,13 @@ const char* separateChannelsProgram = R"(
 		__kernel void separateChannels(
 		  __read_only image2d_t fullImg,
 		  const int w,
-		  __global float* imgr,
-		  __global float* imgg,
-		  __global float* imgb)
+		  __global float* imgrgb)
 		  {
 			int i = get_global_id( 0 );
 			int channelIndex = (i/w)*(w+2)+(i%w);
-			imgr[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).x;
-			imgg[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).y;
-			imgb[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).z;
+			imgrgb[channelIndex] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).x;
+			imgrgb[channelIndex + (w+2)*w] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).y;
+			imgrgb[channelIndex + (w+2)*w*2] = read_imagef( fullImg, sampler, (int2)(i / w, i % w) ).z;
 		  })";
 
 const char* separateChannelsMonoProgram = R"(
@@ -37,13 +35,11 @@ const char* combineChannelsProgram = R"(
 		__kernel void combineChannels(
 		  __write_only image2d_t fullImg,
 		  const int w,
-		  __global float* imgr,
-		  __global float* imgg,
-		  __global float* imgb)
+		  __global float* imgrgb)
 		  {
 			int i = get_global_id( 0 );
 			int index = i + (i/w)*2;
-			write_imagef( fullImg, (int2)(i/w, i%w), (float4)(imgr[index], imgg[index], imgb[index], 1.0f) );
+			write_imagef( fullImg, (int2)(i/w, i%w), (float4)(imgrgb[index], imgrgb[index+(w+2)*w], imgrgb[index+(w+2)*w*2], 1.0f) );
 		  })";
 
 const char* combineChannelsMonoProgram = R"(
@@ -57,9 +53,9 @@ const char* combineChannelsMonoProgram = R"(
 			write_imagef( fullImg, (int2)(i/w, i%w), (float4)(imgr[index], imgr[index], imgr[index], 1.0f) );
 		  })";
 
-OPENCLFFT::OPENCLFFT( unsigned int width, unsigned int height, unsigned int input_tex ):
+OPENCLFFT::OPENCLFFT( unsigned int width, unsigned int height, FFTChannelMode channelMode, unsigned int input_tex ):
 	FFT( width, height ), fullTex( input_tex ),
-	full_img_size( size[0] * size[1] * 4 ), channel_img_size( size[1] * (size[0] + 2) ), transformed( false ), ownsChannels( true )
+	full_img_size( size[0] * size[1] * 4 ), channel_img_size( size[1] * (size[0] + 2) ), transformed( false ), ownsChannels( true ), channelMode(channelMode)
 {
 	ownsTex = false;
 	has_input_tex = glIsTexture( input_tex );
@@ -157,6 +153,15 @@ void OPENCLFFT::bakePlans()
 	err = clfftSetResultLocation( planHandleIFFT, CLFFT_INPLACE );
 	clPrintError( err );
 
+	if(channelMode == FFTChannelMode::Multichrome)
+	{
+		clfftSetPlanBatchSize(planHandleFFT, 3);
+		clfftSetPlanDistance(planHandleFFT, channel_img_size, channel_img_size / 2);
+
+		clfftSetPlanBatchSize(planHandleIFFT, 3);
+		clfftSetPlanDistance(planHandleIFFT, channel_img_size / 2, channel_img_size);
+	}
+
 	/* Bake the plan. */
 	err = clfftBakePlan( planHandleFFT, 1, &queue, NULL, NULL );
 	clPrintError( err );
@@ -187,7 +192,7 @@ void OPENCLFFT::initCl()
 	clImgFull = clCreateFromGLTexture(ctx, CL_MEM_READ_WRITE, GL_TEXTURE_RECTANGLE_ARB, 0, fullTex, &err);
 	clPrintError(err);
 
-	clImgr = clCreateBuffer( ctx, CL_MEM_READ_ONLY, channel_img_size * sizeof( float ), NULL, &err );
+	clImgr = clCreateBuffer( ctx, CL_MEM_READ_ONLY, (channelMode == FFTChannelMode::Monochrome ? 1 : 3) *channel_img_size * sizeof( float ), NULL, &err );
 	clPrintError( err );
 	clImgg = clCreateBuffer( ctx, CL_MEM_READ_ONLY, channel_img_size * sizeof( float ), NULL, &err );
 	clPrintError( err );
@@ -230,19 +235,21 @@ void OPENCLFFT::separateChannels( FFTChannelMode channelMode )
 
 	err = clSetKernelArg( separatorKernel, 1, sizeof( int ), (void*) &size[0] );
 	clPrintError( err );
-	err = clSetKernelArg( separatorKernel, 2, sizeof( cl_mem ), &clImgr );
-	clPrintError( err );
-	if ( channelMode == FFTChannelMode::Multichrome )
+
+	err = clSetKernelArg(separatorKernel, 2, sizeof(cl_mem), &clImgr);
+	clPrintError(err);
+
+	/*if ( channelMode == FFTChannelMode::Multichrome )
 	{
 		err = clSetKernelArg( separatorKernel, 3, sizeof( cl_mem ), &clImgg );
 		clPrintError( err );
 		err = clSetKernelArg( separatorKernel, 4, sizeof( cl_mem ), &clImgb );
 		clPrintError( err );
-	}
+	}*/
 	clEnqueueAcquireGLObjects( queue, 1, &clImgFull, 0, 0, NULL );
 	hasImageObject = true;
 
-	//Kenels argument settings
+	//Kernels argument settings
 	err = clSetKernelArg( separatorKernel, 0, sizeof( cl_mem ), &clImgFull );
 	clPrintError( err );
 	err = clEnqueueNDRangeKernel( queue, separatorKernel, work_dim, &global_work_offset, global_work_size, local_work_size, 0, NULL, NULL );
@@ -291,7 +298,7 @@ void OPENCLFFT::combineChannels()
 	auto start = std::chrono::system_clock::now();
 
 	cl_kernel combinatorKernel = nullptr;
-	switch ( fftMode )
+	switch (channelMode)
 	{
 		case FFTChannelMode::Monochrome:
 		combinatorKernel = OpenCLCore::Get()->GetKernel( "combineChannelsMono" );
@@ -306,16 +313,19 @@ void OPENCLFFT::combineChannels()
 	//Kenels argument settings
 	err = clSetKernelArg( combinatorKernel, 1, sizeof( int ), (void*) &size[0] );
 	clPrintError( err );
-	err = clSetKernelArg( combinatorKernel, 2, sizeof( cl_mem ), &clImgr );
-	clPrintError( err );
 
-	if ( fftMode == FFTChannelMode::Multichrome )
+	err = clSetKernelArg(combinatorKernel, 2, sizeof(cl_mem), &clImgr);
+	clPrintError(err);
+	
+
+
+	/*if ( channelMode == FFTChannelMode::Multichrome )
 	{
 		err = clSetKernelArg( combinatorKernel, 3, sizeof( cl_mem ), &clImgg );
 		clPrintError( err );
 		err = clSetKernelArg( combinatorKernel, 4, sizeof( cl_mem ), &clImgb );
 		clPrintError( err );
-	}
+	}*/
 
 	err = clSetKernelArg( combinatorKernel, 0, sizeof( cl_mem ), &clImgFull );
 	clPrintError( err );
@@ -352,12 +362,14 @@ void OPENCLFFT::do_inverse_fft()
 	if ( !transformed )
 		return;
 	auto start = std::chrono::system_clock::now();
+	
 	clfftEnqueueTransform( planHandleIFFT, CLFFT_BACKWARD, 1, &queue, 0, NULL, NULL, &clImgr, NULL, NULL );
-	if ( fftMode == FFTChannelMode::Multichrome )
+
+	/*if ( channelMode == FFTChannelMode::Multichrome )
 	{
 		clfftEnqueueTransform( planHandleIFFT, CLFFT_BACKWARD, 1, &queue, 0, NULL, NULL, &clImgg, NULL, NULL );
 		clfftEnqueueTransform( planHandleIFFT, CLFFT_BACKWARD, 1, &queue, 0, NULL, NULL, &clImgb, NULL, NULL );
-	}
+	}*/
 	transformed = false;
 
 	// Read result
@@ -392,7 +404,7 @@ void OPENCLFFT::finishConv()
 	hasImageObject = false;
 }
 
-void OPENCLFFT::do_fft( FFTChannelMode channelMode )
+void OPENCLFFT::do_fft()
 {
 	if ( !fullTex || transformed )
 		return;
@@ -408,12 +420,11 @@ void OPENCLFFT::do_fft( FFTChannelMode channelMode )
 	start = std::chrono::system_clock::now();
 
 	clfftEnqueueTransform( planHandleFFT, CLFFT_FORWARD, 1, &queue, 0, NULL, NULL, &clImgr, NULL, NULL );
-	if ( channelMode == FFTChannelMode::Multichrome )
-	{
-		clfftEnqueueTransform( planHandleFFT, CLFFT_FORWARD, 1, &queue, 0, NULL, NULL, &clImgg, NULL, NULL );
-		clfftEnqueueTransform( planHandleFFT, CLFFT_FORWARD, 1, &queue, 0, NULL, NULL, &clImgb, NULL, NULL );
-	}
-	fftMode = channelMode;
+	//if ( channelMode == FFTChannelMode::Multichrome )
+	//{
+	//	/*clfftEnqueueTransform( planHandleFFT, CLFFT_FORWARD, 1, &queue, 0, NULL, NULL, &clImgg, NULL, NULL );
+	//	clfftEnqueueTransform( planHandleFFT, CLFFT_FORWARD, 1, &queue, 0, NULL, NULL, &clImgb, NULL, NULL );*/
+	//}
 	transformed = true;
 
 	end = std::chrono::system_clock::now();
@@ -441,11 +452,9 @@ void OPENCLFFT::do_fft( FFTChannelMode channelMode )
 	delete[] res;*/
 }
 
-void OPENCLFFT::get_channels( cl_mem& r, cl_mem& g, cl_mem& b ) const
+void OPENCLFFT::get_channels( cl_mem& r ) const
 {
 	r = clImgr;
-	g = clImgg;
-	b = clImgb;
 }
 
 unsigned int OPENCLFFT::get_fullTex() const

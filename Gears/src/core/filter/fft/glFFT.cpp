@@ -415,7 +415,7 @@ void GLFFT::do_fft(int d)
     do_stage(d, i);
 }
 
-void GLFFT::do_fft( FFTChannelMode mode )
+void GLFFT::do_fft( )
 {
   int vp[4];
   glGetIntegerv(GL_VIEWPORT, vp);

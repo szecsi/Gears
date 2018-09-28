@@ -8,16 +8,18 @@
 #include <GL/glew.h>
 #include "openCLCore.h"
 
+class FFTTest;
+
 class OPENCLFFT: public FFT
 {
 public:
-	OPENCLFFT( unsigned int width, unsigned int height, unsigned int input_tex = 0 );
+	OPENCLFFT( unsigned int width, unsigned int height, FFTChannelMode channelMode = FFTChannelMode::Monochrome, unsigned int input_tex = 0 );
 	~OPENCLFFT();
 
-	virtual void do_fft( FFTChannelMode channelMode = FFTChannelMode::Monochrome ) override;
+	virtual void do_fft() override;
 	virtual void do_inverse_fft();
 	virtual unsigned int get_fullTex() const override;
-	void get_channels( cl_mem& r, cl_mem& g, cl_mem& b ) const;
+	void get_channels( cl_mem& r ) const;
 	void take_channels( cl_mem& r, cl_mem& g, cl_mem& b );
 	virtual unsigned int take_fullTex_ownership() override;
 	virtual void redraw_input() override;
@@ -28,13 +30,13 @@ public:
 	bool HasImageObject() { return hasImageObject; }
 	static void staticInit();
 
-protected:
+protected_test:
 	unsigned int fullTex;
 	unsigned short has_input_tex;
 	bool transformed;
 	bool ownsChannels;
 	bool hasImageObject = false;
-	FFTChannelMode fftMode = FFTChannelMode::Monochrome;
+	FFTChannelMode channelMode;
 
 	cl_mem clImgr = nullptr;
 	cl_mem clImgg = nullptr;

@@ -36,7 +36,8 @@ StimulusRenderer::StimulusRenderer(SequenceRenderer::P sequenceRenderer, Stimulu
 		auto height = sequenceRenderer->getSequence()->fftHeight_px;
 		if(sequenceRenderer->clFFT())
 		{
-			spatialFilterRenderer = make_unique<CLSpatialFilterRenderer>(boost::shared_ptr<SequenceRenderer>(sequenceRenderer), shaderManager, kernelManager, stimulus->spatialFilter, width, height);
+			FFTChannelMode mode = sequenceRenderer->getSequence()->isMonochrome() ? FFTChannelMode::Monochrome : FFTChannelMode::Multichrome;
+			spatialFilterRenderer = make_unique<CLSpatialFilterRenderer>(boost::shared_ptr<SequenceRenderer>(sequenceRenderer), shaderManager, kernelManager, stimulus->spatialFilter, width, height, mode);
 		}
 		else
 		{

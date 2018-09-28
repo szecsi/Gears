@@ -43,7 +43,7 @@ uint KernelManager::getKernel(SpatialFilter::CP spatialFilter)
 	return update(spatialFilter);
 }
 
-bool KernelManager::getKernelChannels( SpatialFilter::CP spatialFilter, cl_mem& r, cl_mem& g, cl_mem& b )
+bool KernelManager::getKernelChannels( SpatialFilter::CP spatialFilter, cl_mem& r )
 {
 	std::string slongid = spatialFilter->getKernelGeneratorShaderSourceWithParameters();
 	KernelMap::iterator i = kernels.find( slongid );
@@ -51,7 +51,7 @@ bool KernelManager::getKernelChannels( SpatialFilter::CP spatialFilter, cl_mem& 
 	{
 		if ( i->second.fft )
 		{
-			static_cast<OPENCLFFT*>(i->second.fft)->get_channels(r, g, b);
+			static_cast<OPENCLFFT*>(i->second.fft)->get_channels(r);
 			return true;
 		}
 		return false;
