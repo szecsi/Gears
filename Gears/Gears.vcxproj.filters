@@ -154,6 +154,8 @@
     </ClCompile>
     <ClCompile Include="src\core\filter\clSpatialFilterRenderer.cpp" />
     <ClCompile Include="src\core\filter\glSpatialFilterRenderer.cpp" />
+    <ClCompile Include="src\curve\p2t_all.cpp" />
+    <ClCompile Include="src\curve\Poly2TriWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -399,5 +401,18 @@
     </ClInclude>
     <ClInclude Include="src\core\filter\clSpatialFilterRenderer.h" />
     <ClInclude Include="src\core\filter\glSpatialFilterRenderer.h" />
+    <ClInclude Include="src\curve\common\shapes.h" />
+    <ClInclude Include="src\curve\common\utils.h" />
+    <ClInclude Include="src\curve\sweep\cdt.h" />
+    <ClInclude Include="src\curve\sweep\advancing_front.h" />
+    <ClInclude Include="src\curve\sweep\sweep.h" />
+    <ClInclude Include="src\curve\sweep\sweep_context.h" />
+    <ClInclude Include="src\curve\poly2tri.h" />
+    <ClInclude Include="src\curve\common\shapes.cc" />
+    <ClInclude Include="src\curve\sweep\advancing_front.cc" />
+    <ClInclude Include="src\curve\sweep\cdt.cc" />
+    <ClInclude Include="src\curve\sweep\sweep.cc" />
+    <ClInclude Include="src\curve\sweep\sweep_context.cc" />
+    <ClInclude Include="src\curve\Poly2TriWrapper.h" />
   </ItemGroup>
 </Project>
