@@ -2,6 +2,7 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QLabel, QDialog, QApplication
 from PyQt5.Qsci import QsciScintilla, QsciScintillaBase, QsciLexerPython, QsciAPIs
+from PolymaskGenerator.PolymaskGeneratorWindow import *
 
 import AppData
 
@@ -109,6 +110,7 @@ class Editor(QsciScintilla):
         super(Editor, self).__init__(parent)
         #Set the default font
         self.sequencePath = sequencePath
+        self.polyMaskGenWnd = PolymaskGeneratorWindow()
         font = QFont()
         font.setFamily('Courier')
         font.setFixedPitch(True)
@@ -256,7 +258,7 @@ class Editor(QsciScintilla):
                 ct = ctmin
         return ct
 
-    def get_next_param(self, pos, text, end_pos):
+    def read_param(self, pos, text, end_pos):
         start_pos = pos
         while text[pos] != ',' and pos != end_pos:
             p = text[pos]
@@ -452,7 +454,7 @@ class Editor(QsciScintilla):
         pos = lpos
         pdict = {}
         while(pos <= rpos):
-            pos, p = self.get_next_param(pos, fileText, rpos)
+            pos, p = self.read_param(pos, fileText, rpos)
             #p = self.stripParens(p)
             p = p.partition('=')
             p0 = p[0].strip(' \n\t\r')
@@ -518,15 +520,40 @@ class Editor(QsciScintilla):
         self.insertAt('\n' + indent + '\t\t' + code, line, index)
         self.calltip = None
 
+    def savePolymask(self, triangles, curPos, basePos):
+        if triangles == None:
+            return
+        code = "polygonMask = ["
+        i = 0
+        while i < len(triangles):
+            if i > 0:
+                code += ", "
+            code += "{"
+            code += '''
+                'x': {xcoord}, 'y': {ycoord}
+            '''.format(xcoord=triangles[i] * AppData.configParams["field_width_px"][0][0], ycoord=triangles[i+1] * AppData.configParams["field_height_px"][0][0])
+            code += "}"
+            i+=2 
+        code += "],"
+        if curPos != basePos:
+            start_line, _ = self.lineIndexFromPosition(curPos)
+            headerline = self.text(start_line)
+            indent = headerline[:headerline.find(headerline.strip())]
+            file_text = self.text()
+            pos, _ = self.read_param(curPos, file_text, len(file_text))
+            end_line, _ = self.lineIndexFromPosition(pos)
+            self.setSelection(start_line, 0, end_line+1, 0)
+            self.replaceSelectedText(indent + code + '\n')
+            self.calltip = None
+        else:
+            self.addKeyword(code, curPos)
+
     def save(self):
         print('Saving sequence:')
         print(self.sequencePath)
         self.file = open(self.sequencePath, 'w')
         self.file.write(self.text())
         self.file.close()
-
-    def closeEvent(self, e):
-        self.calltip = None
 
     def focusOutEvent(self, e):
         if self.calltip and not self.calltip.isActiveWindow():

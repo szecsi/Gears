@@ -2,6 +2,7 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QLabel, QDialog, QWidget, QGridLayout
 from PyQt5.Qsci import QsciScintilla, QsciScintillaBase, QsciLexerPython, QsciAPIs
+from PolymaskGenerator.PolymaskGeneratorWindow import *
 
 class Calltip(QLabel):
 
@@ -25,6 +26,10 @@ class Calltip(QLabel):
     def onLink(self, link):
         if link in self.pdict:
             self.editor.jumpTo(self.pdict[link][1])
+        elif link == "generate_polymask":
+            pos = self.pdict["polygonMask"][1] if "polygonMask" in self.pdict else self.lpos
+            self.editor.polyMaskGenWnd.set(lambda triangles: self.editor.savePolymask(triangles, pos, self.lpos))
+            self.editor.polyMaskGenWnd.show()
         else:
             citem = self.cdict[link]
             valrep = repr(citem[0])
@@ -46,9 +51,18 @@ class Calltip(QLabel):
             if ckw in pdict.keys() :
                 text += '''
                 <TR>
-                <TD> <A HREF="{varname}" style="color:blue;">{varname}</A></TD> <TD align=right style="color:black">{val}</TD><TD>{doc}</TD></TR>
+                <TD> <A HREF="{varname}" style="color:blue;">{varname}</A></TD>
                 '''.format(
-                            varname = ckw, val=pdict[ckw][0], doc=canno)
+                            varname = ckw)
+                if ckw == "polygonMask":
+                    text+='''<TD><A HREF="generate_polymask" style="color:green;">Generate Polymask</A></TD>'''
+                else:
+                    text+='''<TD align=right style="color:black">{val}</TD>'''.format(val=pdict[ckw][0])
+                text += '''
+                <TD>{doc}</TD>
+                </TR>
+                '''.format(doc=canno)
+
             #    text = text.replace('>' + key + '</A>', 'style="color:red;">' + key + '</A>')
             else:
                 valrep = repr(cdefault)
@@ -59,9 +73,18 @@ class Calltip(QLabel):
                     pass
                 text += '''
                 <TR>
-                <TD> <A HREF="{varname}" style="color:red;">{varname}</A></TD> <TD align=right style="color:green">{val}</TD><TD>{doc}</TD></TR>
+                <TD> <A HREF="{varname}" style="color:red;">{varname}</A></TD> 
                 '''.format(
-                            varname = ckw, val=valrep, doc=canno)
+                            varname = ckw)
+
+                if ckw == "polygonMask":
+                    text+='''<TD><A HREF="generate_polymask" style="color:green;">Generate Polymask</A></TD>'''
+                else:
+                    text+='''<TD align=right style="color:green">{val}</TD>'''.format(val = valrep)
+                text += '''
+                <TD>{doc}</TD>
+                </TR>
+                '''.format(doc=canno)
         text += '</TABLE>'
         first = True
         for kw in pdict.keys() :

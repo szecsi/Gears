@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import (QWidget, QSplitter, QGridLayout, QPushButton, QVBox
 from PolymaskGenerator.PolymaskGenerator import PolymaskGenerator, PolymaskChangeEvent
 
 class PolymaskGeneratorWindow(QWidget):
-    def __init__(self, controlPoints = None):
+    def __init__(self):
         super().__init__()
         self.setMinimumSize(1628, 742) # 1600 plus margins
         self.setMaximumSize(1628, 742)
@@ -12,13 +12,12 @@ class PolymaskGeneratorWindow(QWidget):
         self.setLayout(layout)
         self.setWindowTitle("Polymask Generator")
 
-        if controlPoints == None:
-            controlPoints = [
-                [-0.25, -0.25],
-                [-0.25, 0.25],
-                [0.25, 0.25],
-                [0.25, -0.25]
-            ]
+        controlPoints = [
+            [-0.25, -0.25],
+            [-0.25, 0.25],
+            [0.25, 0.25],
+            [0.25, -0.25]
+        ]
 
         self.polymaskGenerator = PolymaskGenerator(self, self.winId(), controlPoints, self.dataChanged)
         layout.addWidget(self.polymaskGenerator)
@@ -29,6 +28,7 @@ class PolymaskGeneratorWindow(QWidget):
         right_panel.setLayout(right_panel_layout)
 
         saveButton = QPushButton("Save", right_panel)
+        saveButton.clicked.connect(self.save)
         right_panel_layout.addWidget(saveButton)
 
         generateButton = QPushButton("Show filled polygon", right_panel)
@@ -63,6 +63,11 @@ class PolymaskGeneratorWindow(QWidget):
     def pointToString(self, idx, point):
         return "P" + str(idx) + " ( " + "{:.4f}".format(point[0]) + ", " + "{:.4f}".format(point[1]) + " )"
 
+    def save(self):
+        self.generateTriangles()
+        self.saveFunction(self.polymaskGenerator.fill)
+        self.close()
+
     def addBefore(self):
         self.polymaskGenerator.addBefore(self.cp_list.currentRow())
 
@@ -72,6 +77,9 @@ class PolymaskGeneratorWindow(QWidget):
     def generateTriangles(self):
         self.polymaskGenerator.generateTriangles()
 
+    def set(self, saveFunction):
+        self.saveFunction = saveFunction
+
     def dataChanged(self, type, index, value = None):
         if type == PolymaskChangeEvent.SelectionChanged:
             self.cp_list.setCurrentRow(index)
@@ -79,3 +87,7 @@ class PolymaskGeneratorWindow(QWidget):
             self.cp_list.item(index).setText(self.pointToString(index, value))
         elif type == PolymaskChangeEvent.ItemAdded:
             self.cp_list.insertItem(index, self.pointToString(index, value))
+
+    def closeEvent(self, event):
+        self.saveFunction = None
+        event.accept()
