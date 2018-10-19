@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import (QWidget, QSplitter, QGridLayout, QPushButton, QVBoxLayout, QListWidget)
+from PyQt5.QtCore import (Qt)
 from PolymaskGenerator.PolymaskGenerator import PolymaskGenerator, PolymaskChangeEvent
 
 class PolymaskGeneratorWindow(QWidget):
@@ -19,21 +20,41 @@ class PolymaskGeneratorWindow(QWidget):
             [0.25, -0.25]
         ]
 
-        self.polymaskGenerator = PolymaskGenerator(self, self.winId(), controlPoints, self.dataChanged)
+        panelStyleSheet = """
+        .QWidget {
+            border: 2px solid black;
+            }
+        """
+
+        self.polymaskGenerator = PolymaskGenerator(self, self.winId(), [controlPoints, controlPoints], self.dataChanged)
         layout.addWidget(self.polymaskGenerator)
         layout.setColumnStretch(0, 4)
 
-        right_panel = QWidget(self)
-        right_panel_layout = QVBoxLayout(right_panel)
-        right_panel.setLayout(right_panel_layout)
+        right_panel = QSplitter(self)
+        right_panel.setChildrenCollapsible(False)
+
+        generate_panel = QWidget(right_panel)
+        generate_panel.setStyleSheet(panelStyleSheet)
+        generate_layout = QVBoxLayout(generate_panel)
+        generate_panel.setLayout(generate_layout)
+
+        control_polygon_panel = QWidget(right_panel)
+        control_polygon_panel.setStyleSheet(panelStyleSheet)
+        control_polygon_layout = QVBoxLayout(control_polygon_panel)
+        control_polygon_panel.setLayout(control_polygon_layout)
+
+        control_splines_panel = QWidget(right_panel)
+        control_splines_panel.setStyleSheet(panelStyleSheet)
+        control_splines_layout = QVBoxLayout(control_splines_panel)
+        control_splines_panel.setLayout(control_splines_layout)
 
         saveButton = QPushButton("Save", right_panel)
         saveButton.clicked.connect(self.save)
-        right_panel_layout.addWidget(saveButton)
+        generate_layout.addWidget(saveButton)
 
-        generateButton = QPushButton("Show filled polygon", right_panel)
+        generateButton = QPushButton("Show filled polygons", right_panel)
         generateButton.clicked.connect(self.generateTriangles)
-        right_panel_layout.addWidget(generateButton)
+        generate_layout.addWidget(generateButton)
         
         self.cp_list = QListWidget()
 
@@ -45,28 +66,44 @@ class PolymaskGeneratorWindow(QWidget):
             self.cp_list.addItem(self.pointToString(idx, cp))
             idx += 1
 
-        self.cp_list.setFixedHeight(200)
+        self.cp_list.setFixedHeight(100)
         self.cp_list.setCurrentRow(0)
-        right_panel_layout.addWidget(self.cp_list)
+        self.cp_list.currentItemChanged.connect(self.currentPointChanged)
+        control_polygon_layout.addWidget(self.cp_list)
 
         addBeforeButton = QPushButton("Add Controlpoint before selected", right_panel)
         addBeforeButton.clicked.connect(self.addBefore)
-        right_panel_layout.addWidget(addBeforeButton)
+        control_polygon_layout.addWidget(addBeforeButton)
 
         addAfterButton = QPushButton("Add Controlpoint after selected", right_panel)
         addAfterButton.clicked.connect(self.addAfter)
-        right_panel_layout.addWidget(addAfterButton)
+        control_polygon_layout.addWidget(addAfterButton)
 
+        self.curve_list = QListWidget()
+        self.curve_list.addItem("Spline 1")
+        self.curve_list.setFixedHeight(100)
+        self.curve_list.setCurrentRow(0)
+        control_splines_layout.addWidget(self.curve_list)
+
+        addSplineButton = QPushButton("Add New Spline", right_panel)
+        addSplineButton.clicked.connect(self.addSpline)
+        control_splines_layout.addWidget(addSplineButton)
+
+        right_panel.setOrientation(Qt.Vertical)
+        right_panel.addWidget(generate_panel)
+        right_panel.addWidget(control_polygon_panel)
+        right_panel.addWidget(control_splines_panel)
+        
         layout.addWidget(right_panel, 0, 1)
         layout.setColumnStretch(1, 1)
 
     def pointToString(self, idx, point):
-        return "P" + str(idx) + " ( " + "{:.4f}".format(point[0]) + ", " + "{:.4f}".format(point[1]) + " )"
+        return "P" + str(idx) + " ( " + "{:.4f}".format(point[0]) + ", " + "{:.4f}".format(point[1]) + " )" if idx >=0 else "( " + "{:.4f}".format(point[0]) + ", " + "{:.4f}".format(point[1]) + " )"
 
     def save(self):
-        self.generateTriangles()
-        self.saveFunction(self.polymaskGenerator.fill)
-        self.close()
+        if self.generateTriangles():
+            self.saveFunction(self.polymaskGenerator.fill)
+            self.close()
 
     def addBefore(self):
         self.polymaskGenerator.addBefore(self.cp_list.currentRow())
@@ -75,7 +112,7 @@ class PolymaskGeneratorWindow(QWidget):
         self.polymaskGenerator.addAfter(self.cp_list.currentRow())
 
     def generateTriangles(self):
-        self.polymaskGenerator.generateTriangles()
+        return self.polymaskGenerator.generateTriangles()
 
     def set(self, saveFunction):
         self.saveFunction = saveFunction
@@ -84,10 +121,19 @@ class PolymaskGeneratorWindow(QWidget):
         if type == PolymaskChangeEvent.SelectionChanged:
             self.cp_list.setCurrentRow(index)
         elif type == PolymaskChangeEvent.ItemChanged:
-            self.cp_list.item(index).setText(self.pointToString(index, value))
+            item_text = self.cp_list.item(index).text()
+            last_idx = item_text.index("(")
+            item_text = item_text[:last_idx]
+            self.cp_list.item(index).setText(item_text + self.pointToString(-1, value))
         elif type == PolymaskChangeEvent.ItemAdded:
-            self.cp_list.insertItem(index, self.pointToString(index, value))
+            self.cp_list.insertItem(index, self.pointToString(self.cp_list.count(), value))
+
+    def currentPointChanged(self):
+        self.polymaskGenerator.currentPointChanged(self.cp_list.currentRow())
 
     def closeEvent(self, event):
         self.saveFunction = None
         event.accept()
+
+    def addSpline(self):
+        pass
