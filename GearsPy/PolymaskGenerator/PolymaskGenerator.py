@@ -51,6 +51,7 @@ class PolymaskChangeEvent(Enum):
     ItemChanged = 1
     ItemAdded = 2
     ItemRemoved = 3
+    SplineSelectionChanged = 4
 
 CATMULL_ROM_MTX = np.array([
             [    0,    1,    0,    0],
@@ -65,6 +66,7 @@ class PolymaskGenerator(QGLWidget):
 
         self.selectedControlIndex = None
         self.last_selected = 0
+        self.selected_spline = 0
         self.dataChanged = dataChanged
         self.splines = []
         for s in splines:
@@ -101,14 +103,17 @@ class PolymaskGenerator(QGLWidget):
         mouse = [(e.x()-self.width() / 2) * 2, (-e.y()+self.height()/2)*2]
 
         self.selectedControlIndex = None
-        for idx, point in enumerate(self.splines[0]): #TODO check all splines
-            p = point.tolist()
-            if np.linalg.norm(np.array([p[0]*self.width(), p[1]*self.height()])-np.array(mouse)) < 10:
-                self.selectedControlIndex = idx
-                self.last_selected = idx
-                break
+        for s_idx in range(len(self.splines)):
+            for idx, point in enumerate(self.splines[s_idx]):
+                p = point.tolist()
+                if np.linalg.norm(np.array([p[0]*self.width(), p[1]*self.height()])-np.array(mouse)) < 10:
+                    self.selectedControlIndex = idx
+                    self.last_selected = idx
+                    self.selected_spline = s_idx
+                    break
 
         if self.selectedControlIndex != None:
+            self.onDataChanged(PolymaskChangeEvent.SplineSelectionChanged, self.selected_spline)
             self.onDataChanged(PolymaskChangeEvent.SelectionChanged, self.selectedControlIndex)
 
     def mouseReleaseEvent(self, e):
@@ -120,8 +125,8 @@ class PolymaskGenerator(QGLWidget):
         mouse = [e.x()/self.width(), (self.height()-e.y())/self.height()]
         mouse = [(i-0.5)*2 for i in mouse]
 
-        if not next((True for item in self.splines[0] if np.array_equal(item, np.array(mouse))), False): # TODO all splines
-            self.splines[0][self.selectedControlIndex] = np.array(mouse) # TODO all splines
+        if not next((True for item in self.splines[self.selected_spline] if np.array_equal(item, np.array(mouse))), False): # TODO all splines
+            self.splines[self.selected_spline][self.selectedControlIndex] = np.array(mouse) # TODO all splines
             self.onDataChanged(PolymaskChangeEvent.ItemChanged, self.selectedControlIndex, mouse)
             self.update()
 
@@ -239,4 +244,13 @@ class PolymaskGenerator(QGLWidget):
 
     def currentPointChanged(self, idx):
         self.last_selected = idx
+        self.update()
+
+    def addSpline(self):
+        self.splines.append([
+            np.array([-0.25, -0.25]),
+            np.array([-0.25, 0.25]),
+            np.array([0.25, 0.25]),
+            np.array([0.25, -0.25])
+        ])
         self.update()

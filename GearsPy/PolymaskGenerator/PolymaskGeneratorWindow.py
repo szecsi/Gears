@@ -12,7 +12,6 @@ class PolymaskGeneratorWindow(QWidget):
         layout = QGridLayout(self)
         self.setLayout(layout)
         self.setWindowTitle("Polymask Generator")
-
         controlPoints = [
             [-0.25, -0.25],
             [-0.25, 0.25],
@@ -20,13 +19,15 @@ class PolymaskGeneratorWindow(QWidget):
             [0.25, -0.25]
         ]
 
+        splines = [controlPoints, controlPoints]
+
         panelStyleSheet = """
         .QWidget {
             border: 2px solid black;
             }
         """
 
-        self.polymaskGenerator = PolymaskGenerator(self, self.winId(), [controlPoints, controlPoints], self.dataChanged)
+        self.polymaskGenerator = PolymaskGenerator(self, self.winId(), splines, self.dataChanged)
         layout.addWidget(self.polymaskGenerator)
         layout.setColumnStretch(0, 4)
 
@@ -80,7 +81,8 @@ class PolymaskGeneratorWindow(QWidget):
         control_polygon_layout.addWidget(addAfterButton)
 
         self.curve_list = QListWidget()
-        self.curve_list.addItem("Spline 1")
+        for idx in range(len(splines)):
+            self.curve_list.addItem("Spline " + str(idx))
         self.curve_list.setFixedHeight(100)
         self.curve_list.setCurrentRow(0)
         control_splines_layout.addWidget(self.curve_list)
@@ -136,4 +138,4 @@ class PolymaskGeneratorWindow(QWidget):
         event.accept()
 
     def addSpline(self):
-        pass
+        self.polymaskGenerator.addSpline()
