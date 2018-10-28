@@ -1,9 +1,10 @@
 from PyQt5.QtWidgets import (QWidget, QSplitter, QGridLayout, QPushButton, QVBoxLayout, QListWidget)
 from PyQt5.QtCore import (Qt)
+from numpy import array as ar
 from PolymaskGenerator.PolymaskGenerator import PolymaskGenerator, PolymaskChangeEvent
 
 class PolymaskGeneratorWindow(QWidget):
-    def __init__(self):
+    def __init__(self, splines = []):
         super().__init__()
         self.setMinimumSize(1628, 742) # 1600 plus margins
         self.setMaximumSize(1628, 742)
@@ -12,24 +13,12 @@ class PolymaskGeneratorWindow(QWidget):
         layout = QGridLayout(self)
         self.setLayout(layout)
         self.setWindowTitle("Polymask Generator")
-        controlPoints = [
-            [-0.25, -0.25],
-            [-0.25, 0.25],
-            [0.25, 0.25],
-            [0.25, -0.25]
-        ]
-
-        splines = [controlPoints, controlPoints]
 
         panelStyleSheet = """
         .QWidget {
             border: 2px solid black;
             }
         """
-
-        self.polymaskGenerator = PolymaskGenerator(self, self.winId(), splines, self.dataChanged)
-        layout.addWidget(self.polymaskGenerator)
-        layout.setColumnStretch(0, 4)
 
         right_panel = QSplitter(self)
         right_panel.setChildrenCollapsible(False)
@@ -58,17 +47,7 @@ class PolymaskGeneratorWindow(QWidget):
         generate_layout.addWidget(generateButton)
         
         self.cp_list = QListWidget()
-
-        idx = 0
-        for cp in controlPoints:
-            if len(cp) < 2:
-                print("Error: controlPoint size less then 2")
-                continue
-            self.cp_list.addItem(self.pointToString(idx, cp))
-            idx += 1
-
         self.cp_list.setFixedHeight(100)
-        self.cp_list.setCurrentRow(0)
         self.cp_list.currentItemChanged.connect(self.currentPointChanged)
         control_polygon_layout.addWidget(self.cp_list)
 
@@ -80,31 +59,74 @@ class PolymaskGeneratorWindow(QWidget):
         addAfterButton.clicked.connect(self.addAfter)
         control_polygon_layout.addWidget(addAfterButton)
 
+        removeButton = QPushButton("Remove selected Controlpoint", right_panel)
+        removeButton.clicked.connect(self.removeCurrent)
+        control_polygon_layout.addWidget(removeButton)
+
         self.curve_list = QListWidget()
-        for idx in range(len(splines)):
-            self.curve_list.addItem("Spline " + str(idx))
         self.curve_list.setFixedHeight(100)
-        self.curve_list.setCurrentRow(0)
+
+        splines = self.set_control_points(splines)
+        
+        self.curve_list.currentItemChanged.connect(self.currentSplineChanged)
         control_splines_layout.addWidget(self.curve_list)
 
         addSplineButton = QPushButton("Add New Spline", right_panel)
         addSplineButton.clicked.connect(self.addSpline)
         control_splines_layout.addWidget(addSplineButton)
 
+        removeSplineButton = QPushButton("Remove selected Spline", right_panel)
+        removeSplineButton.clicked.connect(self.removeSpline)
+        control_splines_layout.addWidget(removeSplineButton)
+
         right_panel.setOrientation(Qt.Vertical)
         right_panel.addWidget(generate_panel)
         right_panel.addWidget(control_polygon_panel)
         right_panel.addWidget(control_splines_panel)
         
+        self.polymaskGenerator = PolymaskGenerator(self, self.winId(), splines, self.dataChanged)
+        layout.addWidget(self.polymaskGenerator)
+        layout.setColumnStretch(0, 4)
+
+        self.cp_list.setCurrentRow(0)
+        self.curve_list.setCurrentRow(0)
+
         layout.addWidget(right_panel, 0, 1)
         layout.setColumnStretch(1, 1)
 
-    def pointToString(self, idx, point):
-        return "P" + str(idx) + " ( " + "{:.4f}".format(point[0]) + ", " + "{:.4f}".format(point[1]) + " )" if idx >=0 else "( " + "{:.4f}".format(point[0]) + ", " + "{:.4f}".format(point[1]) + " )"
+    def set_control_points(self, splines):
+        self.cp_list.clear()
+        self.curve_list.clear()
+        if len(splines) == 0:
+            controlPoints = [
+                ar([-0.25, -0.25]),
+                ar([-0.25, 0.25]),
+                ar([0.25, 0.25]),
+                ar([0.25, -0.25])
+            ]
+
+            splines = [controlPoints]
+
+        idx = 0
+        for npcp in splines[0]:
+            cp = npcp.tolist()
+            if len(cp) < 2:
+                print("Error: controlPoint size less then 2")
+                continue
+            self.cp_list.addItem(self.pointToString(cp))
+            idx += 1
+
+        for idx in range(len(splines)):
+            self.curve_list.addItem("Spline " + str(idx))
+
+        return splines
+
+    def pointToString(self, point):
+        return "( " + "{:.4f}".format(point[0]) + ", " + "{:.4f}".format(point[1]) + " )"
 
     def save(self):
         if self.generateTriangles():
-            self.saveFunction(self.polymaskGenerator.fill)
+            self.saveFunction(self.polymaskGenerator.fill, self.polymaskGenerator.splines)
             self.close()
 
     def addBefore(self):
@@ -113,22 +135,41 @@ class PolymaskGeneratorWindow(QWidget):
     def addAfter(self):
         self.polymaskGenerator.addAfter(self.cp_list.currentRow())
 
+    def removeCurrent(self):
+        self.polymaskGenerator.removeCurrent(self.cp_list.currentRow())
+
     def generateTriangles(self):
         return self.polymaskGenerator.generateTriangles()
 
-    def set(self, saveFunction):
+    def set(self, saveFunction, splines):
         self.saveFunction = saveFunction
+        if len(splines) > 0:
+            self.set_control_points(splines)
+            self.polymaskGenerator.splines = splines
 
-    def dataChanged(self, type, index, value = None):
+            self.cp_list.setCurrentRow(0)
+            self.curve_list.setCurrentRow(0)
+
+    def dataChanged(self, type, data):
         if type == PolymaskChangeEvent.SelectionChanged:
-            self.cp_list.setCurrentRow(index)
+            if self.curve_list.currentRow() != data["s_idx"]:
+                self.changeSpline(data["s_idx"])
+            self.cp_list.setCurrentRow(data["idx"])
         elif type == PolymaskChangeEvent.ItemChanged:
-            item_text = self.cp_list.item(index).text()
+            item_text = self.cp_list.item(data["idx"]).text()
             last_idx = item_text.index("(")
             item_text = item_text[:last_idx]
-            self.cp_list.item(index).setText(item_text + self.pointToString(-1, value))
+            self.cp_list.item(data["idx"]).setText(item_text + self.pointToString(data["value"]))
         elif type == PolymaskChangeEvent.ItemAdded:
-            self.cp_list.insertItem(index, self.pointToString(self.cp_list.count(), value))
+            self.cp_list.insertItem(data["idx"], self.pointToString(data["value"]))
+        elif type == PolymaskChangeEvent.ItemRemoved:
+            self.cp_list.takeItem(data["idx"])
+
+    def changeSpline(self, idx):
+        self.curve_list.setCurrentRow(idx)
+        self.cp_list.clear()
+        for s in self.polymaskGenerator.splines[idx]:
+            self.cp_list.addItem(self.pointToString(s.tolist()))
 
     def currentPointChanged(self):
         self.polymaskGenerator.currentPointChanged(self.cp_list.currentRow())
@@ -138,4 +179,18 @@ class PolymaskGeneratorWindow(QWidget):
         event.accept()
 
     def addSpline(self):
-        self.polymaskGenerator.addSpline()
+        points = [[-0.25, -0.25],
+                  [-0.25, 0.25],
+                  [0.25, 0.25],
+                  [0.25, -0.25]]
+        self.curve_list.addItem("Spline " + str(len(self.polymaskGenerator.splines)))
+        self.polymaskGenerator.addSpline(points)
+
+    def removeSpline(self):
+        current = self.curve_list.currentRow()
+        if current >= 0:
+            self.curve_list.takeItem(current)
+            self.polymaskGenerator.removeSpline(current, self.curve_list.currentRow())
+
+    def currentSplineChanged(self):
+        self.polymaskGenerator.currentSplineChanged(self.curve_list.currentRow())

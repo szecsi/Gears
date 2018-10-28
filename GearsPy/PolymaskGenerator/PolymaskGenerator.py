@@ -51,7 +51,6 @@ class PolymaskChangeEvent(Enum):
     ItemChanged = 1
     ItemAdded = 2
     ItemRemoved = 3
-    SplineSelectionChanged = 4
 
 CATMULL_ROM_MTX = np.array([
             [    0,    1,    0,    0],
@@ -68,9 +67,7 @@ class PolymaskGenerator(QGLWidget):
         self.last_selected = 0
         self.selected_spline = 0
         self.dataChanged = dataChanged
-        self.splines = []
-        for s in splines:
-            self.splines.append([np.array(a) for a in s])
+        self.splines = splines
 
         utils.initQGLWidget(self, super(), parent, winId)
 
@@ -86,8 +83,9 @@ class PolymaskGenerator(QGLWidget):
     def paintGL(self):
         glClear( GL_COLOR_BUFFER_BIT )
         glEnableClientState( GL_VERTEX_ARRAY )
-        self.drawCurve()
-        self.drawControlPoints()
+        if len(self.splines) > 0: 
+            self.drawCurves()
+            self.drawControlPoints()
         glDisableClientState( GL_VERTEX_ARRAY )
 
     def drawControlPoints(self):
@@ -95,9 +93,14 @@ class PolymaskGenerator(QGLWidget):
         glVertexPointer( 2, GL_FLOAT, 0, cp_list)
         glColor3f(1.0, 0.0, 0.0)
         glPointSize(10)
-        glDrawArrays( GL_POINTS, 0, int(len([i for i in [s for sp in self.splines for s in sp]])) )
+        glDrawArrays( GL_POINTS, 0, int(len(cp_list) / 2) )
         glColor3f(0.0, 0.0, 1.0)
-        glDrawArrays( GL_POINTS, self.last_selected, 1 )
+        current_idx = 0
+        for i in range(self.selected_spline):
+            current_idx += len(self.splines[i])
+
+        current_idx += self.last_selected
+        glDrawArrays( GL_POINTS, current_idx, 1 )
 
     def mousePressEvent(self, e):
         mouse = [(e.x()-self.width() / 2) * 2, (-e.y()+self.height()/2)*2]
@@ -113,7 +116,6 @@ class PolymaskGenerator(QGLWidget):
                     break
 
         if self.selectedControlIndex != None:
-            self.onDataChanged(PolymaskChangeEvent.SplineSelectionChanged, self.selected_spline)
             self.onDataChanged(PolymaskChangeEvent.SelectionChanged, self.selectedControlIndex)
 
     def mouseReleaseEvent(self, e):
@@ -123,14 +125,14 @@ class PolymaskGenerator(QGLWidget):
         if self.selectedControlIndex == None:
             return
         mouse = [e.x()/self.width(), (self.height()-e.y())/self.height()]
-        mouse = [(i-0.5)*2 for i in mouse]
+        mouse = [min(max((i-0.5)*2, -1.0), 1.0) for i in mouse]
 
-        if not next((True for item in self.splines[self.selected_spline] if np.array_equal(item, np.array(mouse))), False): # TODO all splines
-            self.splines[self.selected_spline][self.selectedControlIndex] = np.array(mouse) # TODO all splines
+        if not next((True for item in self.splines[self.selected_spline] if np.array_equal(item, np.array(mouse))), False):
+            self.splines[self.selected_spline][self.selectedControlIndex] = np.array(mouse)
             self.onDataChanged(PolymaskChangeEvent.ItemChanged, self.selectedControlIndex, mouse)
             self.update()
 
-    def drawCurve(self):
+    def drawCurves(self):
         self.vertecies = []
         for s_idx in range(len(self.splines)):
             if s_idx in self.fill:
@@ -139,30 +141,35 @@ class PolymaskGenerator(QGLWidget):
                 glDrawArrays( GL_TRIANGLES, 0, int(len(self.fill[s_idx])/2) )
 
         for s in self.splines:
-            current_vertecies = []
-            for idx, val in enumerate(s):
-                i0 = idx - 1
-                i2 = idx + 1
-                i3 = idx + 2
-                if i2 >= len(s):
-                    i2 = 0
-                    i3 = 1
-                elif i3 >= len(s):
-                    i3 = 0
+            self.vertecies.append(self.drawCurve(s, 0.0))
 
-                current_vertecies.extend(self.drawSegment(np.array([
-                    s[i0],
-                    val,
-                    s[i2],
-                    s[i3]
-                ])))
-            current_vertecies.extend(s[0].tolist())
+        self.drawCurve(self.splines[self.selected_spline], 1.0)
 
-            glVertexPointer( 2, GL_FLOAT, 0, current_vertecies ) # TODO right vertecies
-            glColor3f(0.0, 0.0, 0.0)
-            glDrawArrays( GL_LINE_STRIP, 0, int(len(current_vertecies)/2) )
+    def drawCurve(self, spline, blue):
+        current_vertecies = []
+        for idx, val in enumerate(spline):
+            i0 = idx - 1
+            i2 = idx + 1
+            i3 = idx + 2
+            if i2 >= len(spline):
+                i2 = 0
+                i3 = 1
+            elif i3 >= len(spline):
+                i3 = 0
 
-            self.vertecies.append(current_vertecies)
+            current_vertecies.extend(self.drawSegment(np.array([
+                spline[i0],
+                val,
+                spline[i2],
+                spline[i3]
+            ])))
+        current_vertecies.extend(spline[0].tolist())
+
+        glVertexPointer( 2, GL_FLOAT, 0, current_vertecies ) # TODO right vertecies
+        glColor3f(0.0, 0.0, blue)
+        glDrawArrays( GL_LINE_STRIP, 0, int(len(current_vertecies)/2) )
+
+        return current_vertecies
 
     def drawSegment(self, P, precision = 50):
         vertecies = []
@@ -182,18 +189,31 @@ class PolymaskGenerator(QGLWidget):
     def addBefore(self, index):
         before = index - 1
         if before < 0:
-            before = len(self.splines[0])-1
+            before = len(self.splines[self.selected_spline])-1
 
-        new_point = (self.splines[0][before] + self.splines[0][index]) / 2
-        self.splines[0].insert(index, new_point)
+        new_point = (self.splines[self.selected_spline][before] + self.splines[self.selected_spline][index]) / 2
+        self.splines[self.selected_spline].insert(index, new_point)
         self.onDataChanged(PolymaskChangeEvent.ItemAdded, index, new_point.tolist())
         self.update()
 
     def addAfter(self, index):
-        if not next((True for item in self.splines[0] if np.array_equal(item, np.array([0,0]))), False):
-            self.splines[0].insert(index+1, np.array([0,0]))
-            self.onDataChanged(PolymaskChangeEvent.ItemAdded, index+1, [0,0])
-            self.update()
+        after = index + 1
+        if after >= len(self.splines[self.selected_spline]):
+            after = 0
+
+        new_point = (self.splines[self.selected_spline][after] + self.splines[self.selected_spline][index]) / 2
+        self.splines[self.selected_spline].insert(index+1, new_point)
+        self.onDataChanged(PolymaskChangeEvent.ItemAdded, index+1, new_point.tolist())
+        self.update()
+
+    def removeCurrent(self, index):
+        if len(self.splines[self.selected_spline]) == 3:
+            box = QErrorMessage(self)
+            box.showMessage("A curve must have minimum 3 control points!")
+            return
+
+        self.splines[self.selected_spline].pop(index)
+        self.onDataChanged(PolymaskChangeEvent.ItemRemoved, index)
 
     def generateTriangles(self):
         self.fill = {}
@@ -240,17 +260,31 @@ class PolymaskGenerator(QGLWidget):
 
     def onDataChanged(self, type, index, value = None):
         self.fill = {}
-        self.dataChanged(type, index, value)
+        data = {
+            "s_idx": self.selected_spline,
+            "idx": index,
+            "value": value
+        }
+        self.dataChanged(type, data)
 
     def currentPointChanged(self, idx):
         self.last_selected = idx
         self.update()
 
-    def addSpline(self):
+    def addSpline(self, points):
         self.splines.append([
-            np.array([-0.25, -0.25]),
-            np.array([-0.25, 0.25]),
-            np.array([0.25, 0.25]),
-            np.array([0.25, -0.25])
+            np.array(points[0]),
+            np.array(points[1]),
+            np.array(points[2]),
+            np.array(points[3])
         ])
+        self.update()
+
+    def removeSpline(self, index, new_index):
+        self.splines.pop(index)
+        self.selected_spline = new_index
+        self.update()
+
+    def currentSplineChanged(self, index):
+        self.selected_spline = index
         self.update()

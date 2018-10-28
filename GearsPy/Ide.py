@@ -1,4 +1,4 @@
-﻿from PyQt5.QtCore import *
+from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QApplication, QLabel, QDialog, QWidget, QGridLayout, QPushButton, QSplitter, QHBoxLayout, QSlider
 from PyQt5.Qsci import QsciScintilla, QsciScintillaBase, QsciLexerPython, QsciAPIs
@@ -34,10 +34,6 @@ class Ide(QWidget):
         self.discardButton = QPushButton('Discard changes', self.rpanel)
         self.discardButton.clicked.connect(self.discard)
         grid.addWidget(self.discardButton, 5, 2, 1, 8)
-
-        self.polyButton = QPushButton('Open PolymaskGenerator window', self.rpanel)
-        self.polyButton.clicked.connect( self.openPolyGenWindow )
-        grid.addWidget(self.polyButton, 6, 2, 1, 8)
 
         self.preview = Preview(self.rpanel, self.editor, self.winId())
         grid.addWidget(self.preview, 2, 2, 1, 8)
