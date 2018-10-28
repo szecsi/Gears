@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import (QWidget, QSplitter, QGridLayout, QPushButton, QVBoxLayout, QListWidget)
+from PyQt5.QtWidgets import (QWidget, QSplitter, QGridLayout, QPushButton, QVBoxLayout, QListWidget, QFileDialog, QColorDialog)
 from PyQt5.QtCore import (Qt)
 from numpy import array as ar
 from PolymaskGenerator.PolymaskGenerator import PolymaskGenerator, PolymaskChangeEvent
@@ -45,6 +45,14 @@ class PolymaskGeneratorWindow(QWidget):
         generateButton = QPushButton("Show filled polygons", right_panel)
         generateButton.clicked.connect(self.generateTriangles)
         generate_layout.addWidget(generateButton)
+
+        backgroundButton = QPushButton("Select background image", right_panel)
+        backgroundButton.clicked.connect(self.setBackground)
+        generate_layout.addWidget(backgroundButton)
+
+        splineColorButton = QPushButton("Set spline color", right_panel)
+        splineColorButton.clicked.connect(self.setSplineColor)
+        generate_layout.addWidget(splineColorButton)
         
         self.cp_list = QListWidget()
         self.cp_list.setFixedHeight(100)
@@ -194,3 +202,11 @@ class PolymaskGeneratorWindow(QWidget):
 
     def currentSplineChanged(self):
         self.polymaskGenerator.currentSplineChanged(self.curve_list.currentRow())
+
+    def setBackground(self):
+        fname = QFileDialog.getOpenFileName(self, 'Select Background Image', "","Image files(*.jpg *.png *.gif *.bmp);;All Files (*)")
+        self.polymaskGenerator.setBackground(fname[0])
+
+    def setSplineColor(self):
+        color = QColorDialog().getColor()
+        self.polymaskGenerator.setSplineColor(color.red(), color.green(), color.blue())

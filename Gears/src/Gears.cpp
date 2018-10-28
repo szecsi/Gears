@@ -326,10 +326,12 @@ void run()
 	stimulusWindow->run();
 }
 
-void loadTexture(std::string filename)
+int loadTexture(std::string filename)
 {
 	if(textureManager)
-		textureManager->loadTexture(filename);
+		return textureManager->loadTexture(filename)->getTextureHandle();
+
+	return -1;
 }
 
 void bindTexture(std::string filename)

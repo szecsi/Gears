@@ -5,11 +5,45 @@ import GearsUtils as utils
 import numpy as np
 from math import sqrt
 from Gears import CDT
+from Gears import loadTexture
 from enum import Enum
 try:
     from OpenGL.GL import *
+    from OpenGL.GL import shaders
 except:
     print ('ERROR: PyOpenGL not installed properly.')
+
+PASSTHROUGH_VERTEX = '''
+    #version 330
+
+    in vec4 vPosition;
+
+    out vec2 fTexCoord;
+
+    void main(void) {
+        gl_Position = vPosition;
+        fTexCoord = (vec2(vPosition.x, -vPosition.y) + vec2(1.f, 1.f)) * 0.5f;
+    }
+'''
+
+SIMPLE_FRAGMENT = '''
+    #version 330
+
+    uniform sampler2D tex;
+    in vec2 fTexCoord;
+    out vec4 outColor;
+
+    void main() {
+        outColor = vec4(texture(tex,fTexCoord));
+    }
+'''
+
+QUAD = [-1.0,  1.0,
+		 1.0,  1.0,
+		-1.0, -1.0,
+		-1.0, -1.0,
+		 1.0,  1.0,
+		 1.0, -1.0]
 
 def get_lines_intersection(P1, P2, P3, P4):
     a1 = P2[1] - P1[1]
@@ -68,13 +102,22 @@ class PolymaskGenerator(QGLWidget):
         self.selected_spline = 0
         self.dataChanged = dataChanged
         self.splines = splines
+        self.background = None
 
         utils.initQGLWidget(self, super(), parent, winId)
 
         color = QColor (255, 255, 255, 255)
         self.qglClearColor(color)
 
+        self.splineColor = (0,0,0)
+
         self.fill = {}
+
+        vertex_shader = shaders.compileShader(PASSTHROUGH_VERTEX, GL_VERTEX_SHADER)
+        fragment_shader = shaders.compileShader(SIMPLE_FRAGMENT, GL_FRAGMENT_SHADER)
+
+        self.shader = shaders.compileProgram(vertex_shader, fragment_shader)
+
 
     def resizeGL(self, w, h):
         self.setFixedSize(1280, 720)
@@ -83,10 +126,28 @@ class PolymaskGenerator(QGLWidget):
     def paintGL(self):
         glClear( GL_COLOR_BUFFER_BIT )
         glEnableClientState( GL_VERTEX_ARRAY )
+        if self.background != None:
+            self.drawBackground()
         if len(self.splines) > 0: 
             self.drawCurves()
             self.drawControlPoints()
         glDisableClientState( GL_VERTEX_ARRAY )
+
+    def drawBackground(self):
+        shaders.glUseProgram(self.shader)
+        glEnable(GL_TEXTURE_2D)
+        varid = glGetUniformLocation(self.shader, "tex")
+        texid = loadTexture(self.background)
+        if texid >= 0:
+            glActiveTexture(GL_TEXTURE0 + texid)
+            glBindTexture(GL_TEXTURE_2D, texid)
+            glUniform1i(varid, texid)
+
+        glVertexPointer( 2, GL_FLOAT, 0, QUAD )
+        glDrawArrays( GL_TRIANGLES, 0, 6 )
+
+        glDisable(GL_TEXTURE_2D)
+        shaders.glUseProgram(0)
 
     def drawControlPoints(self):
         cp_list = [ c for vec in [i.tolist() for i in [s for sp in self.splines for s in sp]] for c in vec ]
@@ -100,7 +161,8 @@ class PolymaskGenerator(QGLWidget):
             current_idx += len(self.splines[i])
 
         current_idx += self.last_selected
-        glDrawArrays( GL_POINTS, current_idx, 1 )
+        if current_idx > 0:
+            glDrawArrays( GL_POINTS, current_idx, 1 )
 
     def mousePressEvent(self, e):
         mouse = [(e.x()-self.width() / 2) * 2, (-e.y()+self.height()/2)*2]
@@ -134,18 +196,21 @@ class PolymaskGenerator(QGLWidget):
 
     def drawCurves(self):
         self.vertecies = []
+
         for s_idx in range(len(self.splines)):
             if s_idx in self.fill:
                 glVertexPointer( 2, GL_FLOAT, 0, self.fill[s_idx] )
-                glColor3f(0.8, 0.8, 0.8)
                 glDrawArrays( GL_TRIANGLES, 0, int(len(self.fill[s_idx])/2) )
 
+        glLineWidth(2.0)
+        glColor3f(self.splineColor[0], self.splineColor[1], self.splineColor[2])
         for s in self.splines:
-            self.vertecies.append(self.drawCurve(s, 0.0))
+            self.vertecies.append(self.drawCurve(s))
 
-        self.drawCurve(self.splines[self.selected_spline], 1.0)
+        glColor3f(0.0, 0.0, 1.0)
+        self.drawCurve(self.splines[self.selected_spline])
 
-    def drawCurve(self, spline, blue):
+    def drawCurve(self, spline):
         current_vertecies = []
         for idx, val in enumerate(spline):
             i0 = idx - 1
@@ -165,8 +230,7 @@ class PolymaskGenerator(QGLWidget):
             ])))
         current_vertecies.extend(spline[0].tolist())
 
-        glVertexPointer( 2, GL_FLOAT, 0, current_vertecies ) # TODO right vertecies
-        glColor3f(0.0, 0.0, blue)
+        glVertexPointer( 2, GL_FLOAT, 0, current_vertecies )
         glDrawArrays( GL_LINE_STRIP, 0, int(len(current_vertecies)/2) )
 
         return current_vertecies
@@ -288,3 +352,11 @@ class PolymaskGenerator(QGLWidget):
     def currentSplineChanged(self, index):
         self.selected_spline = index
         self.update()
+
+    def setBackground(self, file):
+        if len(file) > 0:
+            self.background = file
+            self.update()
+
+    def setSplineColor(self, r, g, b):
+        self.splineColor = (r / 255, g / 255, b / 255)
