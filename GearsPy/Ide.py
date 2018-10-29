@@ -6,6 +6,7 @@ from PyQt5.Qsci import QsciScintilla, QsciScintillaBase, QsciLexerPython, QsciAP
 from Editor import Editor
 from Preview import Preview
 from SequenceLoader import *
+from PolymaskGenerator.PolymaskGeneratorWindow import *
 
 class Ide(QWidget):
 
@@ -13,6 +14,7 @@ class Ide(QWidget):
         super().__init__(parent)
         self.sequencePath = sequencePath
         self.browser = browser
+        self.polyMaskGenWnd = PolymaskGeneratorWindow()
 
         self.playSpeed = 1
 
@@ -108,3 +110,6 @@ class Ide(QWidget):
 
     def play2(self, e):
         self.playSpeed = 2
+
+    def openPolyGenWindow(self):
+        self.polyMaskGenWnd.show()

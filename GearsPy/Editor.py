@@ -2,6 +2,7 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QLabel, QDialog, QApplication
 from PyQt5.Qsci import QsciScintilla, QsciScintillaBase, QsciLexerPython, QsciAPIs
+from PolymaskGenerator.PolymaskGeneratorWindow import *
 
 import AppData
 
@@ -109,6 +110,7 @@ class Editor(QsciScintilla):
         super(Editor, self).__init__(parent)
         #Set the default font
         self.sequencePath = sequencePath
+        self.polyMaskGenWnd = PolymaskGeneratorWindow()
         font = QFont()
         font.setFamily('Courier')
         font.setFixedPitch(True)
@@ -256,10 +258,48 @@ class Editor(QsciScintilla):
                 ct = ctmin
         return ct
 
+    def read_param(self, pos, text, end_pos):
+        start_pos = pos
+        while pos != end_pos and text[pos] != ',':
+            p = text[pos]
+            if p == '(' or p == '[' or p == '{':
+                pos = self.skip_parens(pos, text, end_pos)
+            else:
+                pos+=1
+
+        pos += 1 # skip ,
+        return pos, text[start_pos:pos-1] # , not included
+
+    def skip_parens(self, pos, text, end_pos):
+        skipRound = 0
+        skipCurly = 0
+        skipSquare = 0
+        while pos < end_pos:
+            p  = text[pos]
+            if p == '[':
+                skipSquare += 1
+            elif p == '(':
+                skipRound += 1
+            elif p == '{':
+                skipCurly += 1
+            elif p == ']' and skipSquare > 0:
+                skipSquare -= 1
+            elif p == ')'and skipRound > 0:
+                skipRound -= 1
+            elif p == '}' and skipCurly > 0:
+                skipCurly -= 1
+            elif skipRound == 0 and skipCurly == 0 and skipSquare == 0:
+                return pos
+
+            pos += 1
+
+        return pos
+
     def stripParens(self, test_str):
         ret = ''
         skip1c = 0
         skip2c = 0
+        skipped = 0
         for i in test_str:
             if i == '[':
                 skip1c += 1
@@ -271,7 +311,9 @@ class Editor(QsciScintilla):
                 skip2c -= 1
             elif skip1c == 0 and skip2c == 0:
                 ret += i
-        return ret
+            else:
+                skipped += 1
+        return ret, skipped
 
     def callTip(self):
         pos = self.SendScintilla(QsciScintilla.SCI_GETCURRENTPOS)
@@ -404,17 +446,20 @@ class Editor(QsciScintilla):
 
         #parse context
         fileText = self.text()
-        parlist = fileText[lpos:rpos]
-        parlist = self.stripParens(parlist)
-        params = parlist.split(',')
+        #parlist_text = fileText[lpos:rpos]
+        # parlist = self.stripParens(parlist_text)
+        # params = parlist.split(',')
+        # parpos = lpos
+        # for p in params:
+        pos = lpos
         pdict = {}
-        parpos = lpos
-        for p in params:
-            parpos += len(p)+1
+        while(pos <= rpos):
+            pos, p = self.read_param(pos, fileText, len(fileText))
+            #p = self.stripParens(p)
             p = p.partition('=')
             p0 = p[0].strip(' \n\t\r')
             if p0 and not ' ' in p0:
-                pdict[p0] = (p[2].strip(' \n\t\r'), parpos)
+                pdict[p0] = (p[2].strip(' \n\t\r'), pos-len(p[2])-1, p[2])
 
         self.calltip = Calltip(self, lpos)
         #self.calltip.setStyleSheet("""
@@ -475,15 +520,64 @@ class Editor(QsciScintilla):
         self.insertAt('\n' + indent + '\t\t' + code, line, index)
         self.calltip = None
 
+    def savePolymask(self, trianglesPerSpline, controlPoints, curPos, basePos):
+        if trianglesPerSpline == None:
+            return
+
+        indent = ""
+        if curPos != basePos:
+            start_line, _ = self.lineIndexFromPosition(curPos)
+            headerline = self.text(start_line)
+            indent = headerline[:headerline.find(headerline.strip())]
+        newline = '\n' + indent + '\t'
+        code = "polygonMask = {" + newline + "'triangles': ["
+        first = True
+        for key in trianglesPerSpline:
+            triangles = trianglesPerSpline[key]
+            i = 0
+            while i < len(triangles):
+                if i > 0 or not first:
+                    code += ","
+                    code += " " #"\n" if i%3 == 0 else " "
+                code += "{"
+                code += "'x': {xcoord}, 'y': {ycoord}".format(xcoord=triangles[i] * AppData.configParams["field_width_px"][0][0], ycoord=triangles[i+1] * AppData.configParams["field_height_px"][0][0])
+                code += "}"
+                i+=2
+            if first:
+                first = False
+        code += "]," + newline + "'controlPoints': ["
+        first_s = True
+        for s in controlPoints:
+            if first_s:
+                first_s = False
+            else:
+                code += ", "
+            code += "["
+            first = True
+            for p in s:
+                if first:
+                    first = False
+                else:
+                    code += ", "
+                code += "{xcoord}, {ycoord}".format(xcoord=p[0], ycoord=p[1])
+            code += "]"
+        code += "]" + newline + "},"
+        if curPos != basePos:
+            file_text = self.text()
+            pos, _ = self.read_param(curPos, file_text, len(file_text))
+            end_line, _ = self.lineIndexFromPosition(pos)
+            self.setSelection(start_line, 0, end_line+1, 0)
+            self.replaceSelectedText(indent + code + '\n')
+            self.calltip = None
+        else:
+            self.addKeyword(code, curPos)
+
     def save(self):
         print('Saving sequence:')
         print(self.sequencePath)
         self.file = open(self.sequencePath, 'w')
         self.file.write(self.text())
         self.file.close()
-
-    def closeEvent(self, e):
-        self.calltip = None
 
     def focusOutEvent(self, e):
         if self.calltip and not self.calltip.isActiveWindow():

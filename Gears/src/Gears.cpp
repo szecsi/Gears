@@ -32,6 +32,8 @@
 #include "Response.h"
 #include "filter/fft/OpenCLFFT.h"
 
+#include "curve/Poly2TriWrapper.h"
+
 Sequence::P				sequence = nullptr;
 SequenceRenderer::P		sequenceRenderer = nullptr;
 ShaderManager::P		shaderManager = nullptr;
@@ -324,10 +326,12 @@ void run()
 	stimulusWindow->run();
 }
 
-void loadTexture(std::string filename)
+int loadTexture(std::string filename)
 {
 	if(textureManager)
-		textureManager->loadTexture(filename);
+		return textureManager->loadTexture(filename)->getTextureHandle();
+
+	return -1;
 }
 
 void bindTexture(std::string filename)
@@ -719,4 +723,13 @@ BOOST_PYTHON_MODULE(Gears)
 	def("renderSample", renderSample );
 	def("setResponded", setResponded);
 	def("toggleChannelsOrPreview", toggleChannelsOrPreview);
+
+	class_<p2t::Poly2TriWrapper, boost::noncopyable>("CDT",
+		"This is poly2tri CDT class python version"
+		"Poly2Tri Copyright (c) 2009-2010, Poly2Tri Contributors"
+		"http://code.google.com/p/poly2tri/",
+		init<boost::python::list>(args("polyline"), "Create CDT object with list of polyline 2D points. For example: [[-0.25, -0.25], [0.25, -0.25], [0.5, 0.5]]")
+		)
+		.def("triangulate", &p2t::Poly2TriWrapper::Triangulate)
+		.def("get_triangles", &p2t::Poly2TriWrapper::GetTriangles);
 }

@@ -39,6 +39,7 @@ class Generic(Base) :
         if(duration_s != 0):
             self.duration = int(duration_s // sequence.getFrameInterval_s() + 1)
         
+        polygonMask = polygonMask["triangles"] if type(polygonMask) is dict else polygonMask
         self.setPolygonMask(rasterizingMode, polygonMask)
         if rasterizingMode == 'triangles':
             polygonMotion.applyForward(self, 'polygonMotionTransform')

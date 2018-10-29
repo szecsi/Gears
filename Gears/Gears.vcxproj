@@ -57,7 +57,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;OPHTHO_EXPORTS;BOOST_PYTHON_STATIC_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;OPHTHO_EXPORTS;BOOST_PYTHON_STATIC_LIB;_CRT_SECURE_NO_WARNINGS;protected_test=protected;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(CUDA_PATH)\include;$(PythonPath)\include;$(BoostPath);$(SolutionDir)libs/freeglut/include;$(SolutionDir)libs/glew-1.10.0/include;$(SolutionDir)libs/devil1.6.8-rc2/include;$(ProjectDir)src;$(ProjectDir)src/gpu;$(ProjectDir)src/core;$(ProjectDir)src/fft;$(ProjectDir)src/font;$(SolutionDir)libs/eigen-eigen-07105f7124f9;$(ProjectDir)src/video;$(SolutionDir)libs/libav-11.3-win32/win32/usr/include;$(SolutionDir)Thirdparty\clFFT\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -138,6 +138,13 @@
     <ClCompile Include="src\core\StimulusWindow.cpp" />
     <ClCompile Include="src\core\StimulusWindowWin32.cpp" />
     <ClCompile Include="src\core\Ticker.cpp" />
+    <ClInclude Include="src\curve\common\shapes.cc" />
+    <ClInclude Include="src\curve\sweep\advancing_front.cc" />
+    <ClInclude Include="src\curve\sweep\cdt.cc" />
+    <ClInclude Include="src\curve\sweep\sweep.cc" />
+    <ClInclude Include="src\curve\sweep\sweep_context.cc" />
+    <ClCompile Include="src\curve\p2t_all.cpp" />
+    <ClCompile Include="src\curve\Poly2TriWrapper.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\event\events.cpp" />
     <ClCompile Include="src\core\filter\fft\glFFT.cpp" />
@@ -228,6 +235,14 @@
     <ClInclude Include="src\core\TextureManager.h" />
     <ClInclude Include="src\core\Ticker.h" />
     <ClInclude Include="src\core\wglext.h" />
+    <ClInclude Include="src\curve\common\shapes.h" />
+    <ClInclude Include="src\curve\common\utils.h" />
+    <ClInclude Include="src\curve\Poly2TriWrapper.h" />
+    <ClInclude Include="src\curve\poly2tri.h" />
+    <ClInclude Include="src\curve\sweep\advancing_front.h" />
+    <ClInclude Include="src\curve\sweep\cdt.h" />
+    <ClInclude Include="src\curve\sweep\sweep.h" />
+    <ClInclude Include="src\curve\sweep\sweep_context.h" />
     <ClInclude Include="src\event\Base.h" />
     <ClInclude Include="src\event\events.h" />
     <ClInclude Include="src\event\Frame.h" />
