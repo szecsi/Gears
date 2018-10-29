@@ -50,9 +50,32 @@ class PolymaskGeneratorWindow(QWidget):
         backgroundButton.clicked.connect(self.setBackground)
         generate_layout.addWidget(backgroundButton)
 
-        splineColorButton = QPushButton("Set spline color", right_panel)
-        splineColorButton.clicked.connect(self.setSplineColor)
-        generate_layout.addWidget(splineColorButton)
+        colorGrid = QWidget(right_panel)
+        colorGrid.setStyleSheet("""
+        .QWidget {
+            border: 0px solid black;
+            }
+        """)
+        colorLayout = QGridLayout(colorGrid)
+        colorLayout.setColumnStretch(1,1)
+        colorLayout.setSpacing(1)
+
+        wnd = self
+        splineColorButton = QPushButton("Set spline color", colorGrid)
+        splineColorButton.clicked.connect(lambda: wnd.setSplineColor("splineColor"))
+        colorLayout.addWidget(splineColorButton)
+        splineColorButton = QPushButton("Set selected spline color", colorGrid)
+        splineColorButton.clicked.connect(lambda: wnd.setSplineColor("selectedSplineColor"))
+        colorLayout.addWidget(splineColorButton, 0, 1)
+        splineColorButton = QPushButton("Set control point color", colorGrid)
+        splineColorButton.clicked.connect(lambda: wnd.setSplineColor("CPColor"))
+        colorLayout.addWidget(splineColorButton, 1, 0)
+        splineColorButton = QPushButton("Set selected control point color", colorGrid)
+        splineColorButton.clicked.connect(lambda: wnd.setSplineColor("selectedCPColor"))
+        colorLayout.addWidget(splineColorButton, 1, 1)
+
+        colorGrid.setLayout(colorLayout)
+        generate_layout.addWidget(colorGrid)
         
         self.cp_list = QListWidget()
         self.cp_list.setFixedHeight(100)
@@ -207,6 +230,6 @@ class PolymaskGeneratorWindow(QWidget):
         fname = QFileDialog.getOpenFileName(self, 'Select Background Image', "","Image files(*.jpg *.png *.gif *.bmp);;All Files (*)")
         self.polymaskGenerator.setBackground(fname[0])
 
-    def setSplineColor(self):
+    def setSplineColor(self, obj):
         color = QColorDialog().getColor()
-        self.polymaskGenerator.setSplineColor(color.red(), color.green(), color.blue())
+        self.polymaskGenerator.setSplineColor(obj, color.red(), color.green(), color.blue())

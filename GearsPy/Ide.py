@@ -1,4 +1,4 @@
-from PyQt5.QtCore import *
+﻿from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QApplication, QLabel, QDialog, QWidget, QGridLayout, QPushButton, QSplitter, QHBoxLayout, QSlider
 from PyQt5.Qsci import QsciScintilla, QsciScintillaBase, QsciLexerPython, QsciAPIs

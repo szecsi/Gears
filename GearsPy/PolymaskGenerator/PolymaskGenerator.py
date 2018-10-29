@@ -109,7 +109,10 @@ class PolymaskGenerator(QGLWidget):
         color = QColor (255, 255, 255, 255)
         self.qglClearColor(color)
 
-        self.splineColor = (0,0,0)
+        self.splineColor = (0.0,0.0,0.0)
+        self.selectedSplineColor = (0.0,0.0,1.0)
+        self.CPColor = (1.0,0.0,0.0)
+        self.selectedCPColor = (0.0,0.0,1.0)
 
         self.fill = {}
 
@@ -152,16 +155,16 @@ class PolymaskGenerator(QGLWidget):
     def drawControlPoints(self):
         cp_list = [ c for vec in [i.tolist() for i in [s for sp in self.splines for s in sp]] for c in vec ]
         glVertexPointer( 2, GL_FLOAT, 0, cp_list)
-        glColor3f(1.0, 0.0, 0.0)
+        glColor3f(*(self.CPColor))
         glPointSize(10)
         glDrawArrays( GL_POINTS, 0, int(len(cp_list) / 2) )
-        glColor3f(0.0, 0.0, 1.0)
+        glColor3f(*(self.selectedCPColor))
         current_idx = 0
         for i in range(self.selected_spline):
             current_idx += len(self.splines[i])
 
         current_idx += self.last_selected
-        if current_idx > 0:
+        if current_idx >= 0:
             glDrawArrays( GL_POINTS, current_idx, 1 )
 
     def mousePressEvent(self, e):
@@ -197,17 +200,18 @@ class PolymaskGenerator(QGLWidget):
     def drawCurves(self):
         self.vertecies = []
 
+        glColor3f(0.8, 0.8, 0.8)
         for s_idx in range(len(self.splines)):
             if s_idx in self.fill:
                 glVertexPointer( 2, GL_FLOAT, 0, self.fill[s_idx] )
                 glDrawArrays( GL_TRIANGLES, 0, int(len(self.fill[s_idx])/2) )
 
         glLineWidth(2.0)
-        glColor3f(self.splineColor[0], self.splineColor[1], self.splineColor[2])
+        glColor3f(*(self.splineColor))
         for s in self.splines:
             self.vertecies.append(self.drawCurve(s))
 
-        glColor3f(0.0, 0.0, 1.0)
+        glColor3f(*(self.selectedSplineColor))
         self.drawCurve(self.splines[self.selected_spline])
 
     def drawCurve(self, spline):
@@ -358,5 +362,5 @@ class PolymaskGenerator(QGLWidget):
             self.background = file
             self.update()
 
-    def setSplineColor(self, r, g, b):
-        self.splineColor = (r / 255, g / 255, b / 255)
+    def setSplineColor(self, obj, r, g, b):
+        setattr(self, obj, (r / 255, g / 255, b / 255))
