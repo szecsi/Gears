@@ -206,18 +206,6 @@ void OPENCLFFT::separateChannels( FFTChannelMode channelMode )
 	using OpenCLHelper::clPrintError;
 
 	cl_int err;
-
-	//float* res;
-	//res = new float[full_img_size];
-
-	//glBindTexture( GL_TEXTURE_RECTANGLE_ARB, fullTex );
-	//glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, res );
-	//glBindTexture( GL_TEXTURE_RECTANGLE_ARB, 0 );
-
-	//ImageHelper::printImg( res, size[0], size[1] );
-
-	//delete[] res;
-
 	cl_kernel separatorKernel = nullptr; 
 	switch ( channelMode )
 	{
@@ -239,13 +227,6 @@ void OPENCLFFT::separateChannels( FFTChannelMode channelMode )
 	err = clSetKernelArg(separatorKernel, 2, sizeof(cl_mem), &clImgr);
 	clPrintError(err);
 
-	/*if ( channelMode == FFTChannelMode::Multichrome )
-	{
-		err = clSetKernelArg( separatorKernel, 3, sizeof( cl_mem ), &clImgg );
-		clPrintError( err );
-		err = clSetKernelArg( separatorKernel, 4, sizeof( cl_mem ), &clImgb );
-		clPrintError( err );
-	}*/
 	clEnqueueAcquireGLObjects( queue, 1, &clImgFull, 0, 0, NULL );
 	hasImageObject = true;
 
@@ -254,17 +235,6 @@ void OPENCLFFT::separateChannels( FFTChannelMode channelMode )
 	clPrintError( err );
 	err = clEnqueueNDRangeKernel( queue, separatorKernel, work_dim, &global_work_offset, global_work_size, local_work_size, 0, NULL, NULL );
 	clPrintError( err );
-	// Read result
-	/*float* res;
-	res = new float[channel_img_size];
-	err = clEnqueueReadBuffer( queue, clImgr, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "r channel", 1 );
-	err = clEnqueueReadBuffer( queue, clImgg, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "g channel", 1 );
-	err = clEnqueueReadBuffer( queue, clImgb, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "b channel", 1 );
-
-	delete[] res;*/
 }
 
 void OPENCLFFT::combineChannels()
@@ -272,28 +242,6 @@ void OPENCLFFT::combineChannels()
 	using OpenCLHelper::clPrintError;
 
 	cl_int err = 0;
-
-	/*float* res;
-	res = new float[full_img_size];*/
-
-	/*err = clEnqueueReadImage( queue, clImgFull, CL_TRUE, origin, region, size[0] * 4 * sizeof( float ), 0, res, 0, NULL, NULL );
-	if ( !err )
-		printImg( res, size[0], size[1] );
-	clPrintError( err );
-
-	// Read inverse fourier transform per channel
-	err = clEnqueueReadBuffer( queue, clImgr, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	if ( !err )
-		printImg( res, size[0], size[1], "r channel", 1, false, 2 );
-	clPrintError( err );
-	err = clEnqueueReadBuffer( queue, clImgg, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	if ( !err )
-		printImg( res, size[0], size[1], "g channel", 1, false, 2 );
-	clPrintError( err );
-	err = clEnqueueReadBuffer( queue, clImgb, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	if ( !err )
-		printImg( res, size[0], size[1], "b channel", 1, false, 2 );
-	clPrintError( err );*/
 	
 	auto start = std::chrono::system_clock::now();
 
@@ -316,45 +264,16 @@ void OPENCLFFT::combineChannels()
 
 	err = clSetKernelArg(combinatorKernel, 2, sizeof(cl_mem), &clImgr);
 	clPrintError(err);
-	
-
-
-	/*if ( channelMode == FFTChannelMode::Multichrome )
-	{
-		err = clSetKernelArg( combinatorKernel, 3, sizeof( cl_mem ), &clImgg );
-		clPrintError( err );
-		err = clSetKernelArg( combinatorKernel, 4, sizeof( cl_mem ), &clImgb );
-		clPrintError( err );
-	}*/
 
 	err = clSetKernelArg( combinatorKernel, 0, sizeof( cl_mem ), &clImgFull );
 	clPrintError( err );
 	err = clEnqueueNDRangeKernel( queue, combinatorKernel, work_dim, &global_work_offset, global_work_size, local_work_size, 0, NULL, NULL );
 	clPrintError( err );
 
-	// Read result
-	/*err = clEnqueueReadImage( queue, clImgFull, CL_TRUE, origin, region, size[0] * 4 * sizeof( float ), 0, res, 0, NULL, NULL );
-	if ( !err )
-		printImg( res, size[0], size[1], "Full image after combine channels in cl mem" );
-	clPrintError( err );*/
-
-	// delete[] res;
-
 	auto clEnd = std::chrono::system_clock::now();
 
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsedSeconds = clEnd - start;
-	/*std::cout << "          Combined channels time until release gl: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
-	elapsedSeconds = finishEnd - start;
-	std::cout << "          Combined channels time after clFinish: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
-	elapsedSeconds = releaseEnd - start;
-	std::cout << "          Combined channels time until release mem obj: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
-	elapsedSeconds = end - start;
-	std::cout << "          Combined channels time: "<< elapsedSeconds.count() * 1000 << "ms." << std::endl;*/
-
-	/*glBindTexture( GL_TEXTURE_RECTANGLE_ARB, fullTex );
-	glGetTexImage( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GL_FLOAT, res );
-	printImg( res, size[0], size[1], "Full image after combine channels in texture" );*/
 }
 
 void OPENCLFFT::do_inverse_fft()
@@ -364,27 +283,7 @@ void OPENCLFFT::do_inverse_fft()
 	auto start = std::chrono::system_clock::now();
 	
 	clfftEnqueueTransform( planHandleIFFT, CLFFT_BACKWARD, 1, &queue, 0, NULL, NULL, &clImgr, NULL, NULL );
-
-	/*if ( channelMode == FFTChannelMode::Multichrome )
-	{
-		clfftEnqueueTransform( planHandleIFFT, CLFFT_BACKWARD, 1, &queue, 0, NULL, NULL, &clImgg, NULL, NULL );
-		clfftEnqueueTransform( planHandleIFFT, CLFFT_BACKWARD, 1, &queue, 0, NULL, NULL, &clImgb, NULL, NULL );
-	}*/
 	transformed = false;
-
-	// Read result
-	/*float* res;
-	res = new float[channel_img_size];
-	err = clEnqueueReadBuffer( queue, clImgr, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "r channel", 1 );
-	for ( unsigned i = 0; i < size[1] * (size[0] + 2); i++ )
-		std::cout << res[i] << " ";
-	std::cout << std::endl;
-	err = clEnqueueReadBuffer( queue, clImgg, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "g channel", 1 );
-	err = clEnqueueReadBuffer( queue, clImgb, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	printImg( res, "b channel", 1 );
-	delete[] res;*/
 
 	/* Combine channels and write it two texture */
 	auto enqueueEnd = std::chrono::system_clock::now();
@@ -392,9 +291,6 @@ void OPENCLFFT::do_inverse_fft()
 
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsedSeconds = enqueueEnd - start;
-	/*std::cout << "      Inverse FFT before combined time for clFFT: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
-	elapsedSeconds = end - start;
-	std::cout << "      Full inverse FFT time for clFFT: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;*/
 }
 
 void OPENCLFFT::finishConv()
@@ -415,41 +311,16 @@ void OPENCLFFT::do_fft()
 	separateChannels( channelMode );
 
 	auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> selapsedSeconds = end - start;
+	std::chrono::duration<double> elapsedSeconds = end - start;
+	std::cout << "\tLength of separate channels " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
 
 	start = std::chrono::system_clock::now();
-
-	clfftEnqueueTransform( planHandleFFT, CLFFT_FORWARD, 1, &queue, 0, NULL, NULL, &clImgr, NULL, NULL );
-	//if ( channelMode == FFTChannelMode::Multichrome )
-	//{
-	//	/*clfftEnqueueTransform( planHandleFFT, CLFFT_FORWARD, 1, &queue, 0, NULL, NULL, &clImgg, NULL, NULL );
-	//	clfftEnqueueTransform( planHandleFFT, CLFFT_FORWARD, 1, &queue, 0, NULL, NULL, &clImgb, NULL, NULL );*/
-	//}
-	transformed = true;
-
+	clfftEnqueueTransform(planHandleFFT, CLFFT_FORWARD, 1, &queue, 0, NULL, NULL, &clImgr, NULL, NULL);
 	end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsedSeconds = end - start;
-
-	/*std::cout << "        Length of separateChannels: " << selapsedSeconds.count() * 1000 << "ms." << std::endl;
-	std::cout << "        Length of fft: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;*/
-
-	/*cl_int err;
-	float* res = new float[full_img_size];
-	// Read result
-	err = clEnqueueReadBuffer( queue, clImgr, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	if ( !err )
-		printImg( res, size[0], size[1], "r channel", 1, true );
-	clPrintError( err );
-	err = clEnqueueReadBuffer( queue, clImgg, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	if ( !err )
-		printImg( res, size[0], size[1], "g channel", 1, true );
-	clPrintError( err );
-	err = clEnqueueReadBuffer( queue, clImgb, CL_TRUE, 0, channel_img_size * sizeof( float ), res, 0, NULL, NULL );
-	if ( !err )
-		printImg( res, size[0], size[1], "b channel", 1, true );
-	clPrintError( err );
-
-	delete[] res;*/
+	elapsedSeconds = end - start;
+	std::cout << "\tLength of enqueue transform " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
+	
+	transformed = true;
 }
 
 void OPENCLFFT::get_channels( cl_mem& r ) const

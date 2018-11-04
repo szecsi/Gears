@@ -30,12 +30,8 @@ void StimulusWindow::render()
 		}
 		auto end = std::chrono::system_clock::now();
 		std::chrono::duration<double> elapsedSeconds = end - start;
-		std::cout << "Length of renderFrame for " << (sequenceRenderer->getSequence()->useOpenCL ? "cl" : "gl") << "fft: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
+		//std::cout << "Length of renderFrame for " << (sequenceRenderer->getSequence()->useOpenCL ? "cl" : "gl") << "fft: " << elapsedSeconds.count() * 1000 << "ms." << std::endl;
 	}
-	//TODO finish
-	// jelek az eszközre, nem tudjuk mikor vált framet az eszköz
-	// 2. és 3.-nál felesleges kiküldeni az elektronikus jelet, ezt is ki kell kapcsolni
-	// elektronikus jelek -> nem tud 3 frame-en belül történni
 	
 	swapBuffers();
 	glFinish();

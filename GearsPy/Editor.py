@@ -520,32 +520,23 @@ class Editor(QsciScintilla):
         self.insertAt('\n' + indent + '\t\t' + code, line, index)
         self.calltip = None
 
-    def savePolymask(self, trianglesPerSpline, controlPoints, curPos, basePos):
-        if trianglesPerSpline == None:
-            return
-
-        indent = ""
-        if curPos != basePos:
-            start_line, _ = self.lineIndexFromPosition(curPos)
-            headerline = self.text(start_line)
-            indent = headerline[:headerline.find(headerline.strip())]
-        newline = '\n' + indent + '\t'
-        code = "polygonMask = {" + newline + "'triangles': ["
+    def saveTriangles(self, trianglesPerSpline, code):
         first = True
         for key in trianglesPerSpline:
             triangles = trianglesPerSpline[key]
             i = 0
             while i < len(triangles):
                 if i > 0 or not first:
-                    code += ","
-                    code += " " #"\n" if i%3 == 0 else " "
+                    code += ", "
                 code += "{"
-                code += "'x': {xcoord}, 'y': {ycoord}".format(xcoord=triangles[i] * AppData.configParams["field_width_px"][0][0], ycoord=triangles[i+1] * AppData.configParams["field_height_px"][0][0])
+                code += "'x': {xcoord}, 'y': {ycoord}".format(xcoord=triangles[i], ycoord=triangles[i+1])
                 code += "}"
                 i+=2
             if first:
                 first = False
-        code += "]," + newline + "'controlPoints': ["
+        return code
+
+    def saveControlpoints(self, controlPoints, code):
         first_s = True
         for s in controlPoints:
             if first_s:
@@ -561,6 +552,23 @@ class Editor(QsciScintilla):
                     code += ", "
                 code += "{xcoord}, {ycoord}".format(xcoord=p[0], ycoord=p[1])
             code += "]"
+        
+        return code
+
+    def savePolymask(self, trianglesPerSpline, controlPoints, curPos, basePos):
+        if trianglesPerSpline == None:
+            return
+
+        indent = ""
+        if curPos != basePos:
+            start_line, _ = self.lineIndexFromPosition(curPos)
+            headerline = self.text(start_line)
+            indent = headerline[:headerline.find(headerline.strip())]
+        newline = '\n' + indent + '\t'
+        code = "polygonMask = {" + newline + "'triangles': ["
+        code = self.saveTriangles(trianglesPerSpline, code)
+        code += "]," + newline + "'controlPoints': ["
+        code = self.saveControlpoints(controlPoints, code)
         code += "]" + newline + "},"
         if curPos != basePos:
             file_text = self.text()

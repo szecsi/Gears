@@ -52,9 +52,6 @@ void CLSpatialFilterRenderer::multiply(OPENCLFFT* fft)
 
 void CLSpatialFilterRenderer::fftConvolution()
 {
-	auto start = std::chrono::system_clock::now();
-	// Fourier transformation
-
 	if(other_fft->HasImageObject())
 		return;
 
@@ -72,27 +69,12 @@ void CLSpatialFilterRenderer::fftConvolution()
 		}
 	}
 
-	auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> drawelapsedSeconds = end - start;
-	
-
-	start = std::chrono::system_clock::now();
-
+	// Fourier transformation
 	if(!spatialFilter->stimulusGivenInFrequencyDomain)
 		other_fft->do_fft();
 
-	end = std::chrono::system_clock::now();
-	std::chrono::duration<double> fftelapsedSeconds = end - start;
-
-	start = std::chrono::system_clock::now();
-
 	// Multiply in frequency domain
 	multiply(other_fft);
-
-	end = std::chrono::system_clock::now();
-	std::chrono::duration<double> melapsedSeconds = end - start;
-
-	start = std::chrono::system_clock::now();
 
 	// Do inverse fft
 	if(!spatialFilter->showFft)
@@ -111,16 +93,9 @@ void CLSpatialFilterRenderer::fftConvolution()
 		}
 	}
 
-	end = std::chrono::system_clock::now();
-	std::chrono::duration<double> ielapsedSeconds = end - start;
-	/*std::cout << "   Length of draw for clfft: " << drawelapsedSeconds.count() * 1000 << "ms." << std::endl;
-	std::cout << "   Length of fft for clfft: " << fftelapsedSeconds.count() * 1000 << "ms." << std::endl;
-	std::cout << "   Length of multiply for clfft: " << melapsedSeconds.count() * 1000 << "ms." << std::endl;
-	std::cout << "   Length of inverse fft for clfft: " << ielapsedSeconds.count() * 1000 << "ms." << std::endl;*/
-
 }
 
-void CLSpatialFilterRenderer::bindTexture(Shader* shader)
+void CLSpatialFilterRenderer::bindTexture()
 {
 	copyShader->bindUniformTextureRect("srcrg", current_fft->get_fullTex(), 0);
 	
@@ -141,14 +116,4 @@ void CLSpatialFilterRenderer::initFirstFrames(std::function<void(int)> stim)
 
 	other_fft->set_input([&stim](int) { stim(2); });
 	other_fft->redraw_input();
-
-	/*if(!spatialFilter->stimulusGivenInFrequencyDomain)
-		current_fft->do_fft();
-
-	multiply(current_fft);
-
-	if(!spatialFilter->showFft)
-	{
-		current_fft->do_inverse_fft();
-	}*/
 }

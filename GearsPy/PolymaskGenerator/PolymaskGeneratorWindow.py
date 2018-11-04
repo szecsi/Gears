@@ -187,10 +187,7 @@ class PolymaskGeneratorWindow(QWidget):
                 self.changeSpline(data["s_idx"])
             self.cp_list.setCurrentRow(data["idx"])
         elif type == PolymaskChangeEvent.ItemChanged:
-            item_text = self.cp_list.item(data["idx"]).text()
-            last_idx = item_text.index("(")
-            item_text = item_text[:last_idx]
-            self.cp_list.item(data["idx"]).setText(item_text + self.pointToString(data["value"]))
+            self.cp_list.item(data["idx"]).setText(self.pointToString(data["value"]))
         elif type == PolymaskChangeEvent.ItemAdded:
             self.cp_list.insertItem(data["idx"], self.pointToString(data["value"]))
         elif type == PolymaskChangeEvent.ItemRemoved:

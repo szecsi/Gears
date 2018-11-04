@@ -13,7 +13,7 @@ class CLSpatialFilterRenderer: public SpatialFilterRenderer
 	bool firstFrame = true;
 protected:
 	void fftConvolution() override;
-	void bindTexture(Shader* shader) override;
+	void bindTexture() override;
 	void multiply(OPENCLFFT* fft);
 public:
 	CLSpatialFilterRenderer(boost::shared_ptr<SequenceRenderer> sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager, SpatialFilter::P _spatialFilter, unsigned int width, unsigned int height, FFTChannelMode channelMode);

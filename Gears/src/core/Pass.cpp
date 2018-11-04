@@ -394,10 +394,12 @@ std::string Pass::getStimulusGeneratorVertexShaderSource(Pass::RasterizationMode
 		s += stimulusGeneratorGeometryShaderMotionTransformFunction;
 		s += R"GLSLCODE(
 			out vec2 pos;
+			out vec2 fTexCoord;
 			void main(void) {
 				vec2 qpos =  texelFetch(vertices, ivec2(gl_VertexID, 0), 0).xy;
-			
-				gl_Position = vec4(polygonMotionTransform(time) * vec3(qpos, 1) / patternSizeOnRetina * 2, 0.5, 1);
+				vec2 posTime = polygonMotionTransform(time) * vec3(qpos, 1.0);
+				gl_Position = vec4(posTime, 0.5, 1.0);
+				pos = qpos * (patternSizeOnRetina / 2.0);
 			}
 			)GLSLCODE";
 		return s;

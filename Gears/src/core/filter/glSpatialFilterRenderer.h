@@ -10,7 +10,7 @@ class GLSpatialFilterRenderer: public SpatialFilterRenderer
 	Shader* convolutionShader;
 protected:
 	void fftConvolution() override;
-	void bindTexture(Shader* shader) override;
+	void bindTexture() override;
 public:
 	GLSpatialFilterRenderer(boost::shared_ptr<SequenceRenderer> sequenceRenderer, ShaderManager::P shaderManager, KernelManager::P _kernelManager, SpatialFilter::P _spatialFilter, unsigned int width, unsigned int height);
 };

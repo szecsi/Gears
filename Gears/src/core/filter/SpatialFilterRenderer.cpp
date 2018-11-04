@@ -101,7 +101,7 @@ void SpatialFilterRenderer::renderFrame(std::function<void(int)> renderStimulus)
 			/ (sequenceRenderer->sequence->getSpatialFilteredFieldHeight_um() * sequenceRenderer->sequence->fieldHeight_px));
 
 
-		bindTexture(copyShader);
+		bindTexture();
 
 		glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

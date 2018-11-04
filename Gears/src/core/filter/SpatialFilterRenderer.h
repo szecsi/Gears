@@ -39,12 +39,11 @@ protected:
 public:
 	void renderFrame(std::function<void(int)> renderStimulus);
 
-	void updateKernel();
 	virtual void initFirstFrames(std::function<void(int)> stim);
 	virtual void prepareNext() {};
 
 protected:
 	virtual void fftConvolution() = 0;
-	virtual void bindTexture(Shader* shader) = 0;
+	virtual void bindTexture() = 0;
 	void normalConvolution();
 };

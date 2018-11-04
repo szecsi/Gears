@@ -133,7 +133,7 @@ void GLSpatialFilterRenderer::fftConvolution()
 
 }
 
-void GLSpatialFilterRenderer::bindTexture(Shader* shader)
+void GLSpatialFilterRenderer::bindTexture()
 {
 	copyShader->bindUniformTextureRect("srcrg", ifft_rg.get_fullTex(), 0);
 	if(channelMode == FFTChannelMode::Multichrome)
